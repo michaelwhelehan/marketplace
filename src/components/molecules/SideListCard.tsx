@@ -23,14 +23,13 @@ const StyledCardInner = styled.div<{ height: number }>`
 `
 
 interface Props {
-  name: string
   height: number
 }
 
-const SideListCard: FC<Props> = ({ name, height }) => {
+const SideListCard: FC<Props> = ({ height, children }) => {
   return (
     <StyledCardOuter height={height}>
-      <StyledCardInner height={height}>{name}</StyledCardInner>
+      <StyledCardInner height={height}>{children}</StyledCardInner>
     </StyledCardOuter>
   )
 }

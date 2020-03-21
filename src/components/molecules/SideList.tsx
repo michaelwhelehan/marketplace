@@ -31,7 +31,9 @@ function rowRenderer({
 }) {
   return (
     <div key={key} style={style}>
-      <SideListCard name={list[index]} height={style.height} />
+      <SideListCard height={style.height}>
+        <>{list[index]}</>
+      </SideListCard>
     </div>
   )
 }

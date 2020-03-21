@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
-
 import styled from 'styled-components'
 import BaseContainer from '../atoms/Container'
+import FilterCustomSelect from '../atoms/FilterCustomSelect'
 
 const StyledHeader = styled.header`
   height: 56px;
@@ -10,15 +10,26 @@ const StyledHeader = styled.header`
 
 const StyledContainer = styled(BaseContainer)`
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
+`
+
+const FilterSelectContainer = styled.div`
+  flex-basis: 200px;
 `
 
 const SubHeader: FC = () => {
   return (
     <StyledHeader>
       <StyledContainer>
-        <p>&nbsp;</p>
+        <FilterSelectContainer>
+          <FilterCustomSelect name="Hamburg & remote" />
+        </FilterSelectContainer>
+        <FilterSelectContainer>
+          <FilterCustomSelect name="Any price" />
+        </FilterSelectContainer>
+        <FilterSelectContainer>
+          <FilterCustomSelect name="Task type" />
+        </FilterSelectContainer>
       </StyledContainer>
     </StyledHeader>
   )
