@@ -1,13 +1,15 @@
 import React from 'react'
-
 import GlobalStyle from './styles/global'
-import Marketplace from './components/organisms/Marketplace'
+import { BrowserRouter as Router } from 'react-router-dom'
+import Routes from './routes'
 
 function App() {
   return (
     <>
       <GlobalStyle />
-      <Marketplace />
+      <Router>
+        <Routes />
+      </Router>
     </>
   )
 }

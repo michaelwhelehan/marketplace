@@ -1,11 +1,14 @@
 import React, { FC, useState } from 'react'
-
+import styled from 'styled-components'
 import ReactMapGL from 'react-map-gl'
-
 import MapMarker from '../atoms/MapMarker'
 
 const TOKEN =
   'pk.eyJ1IjoibXdoZWxlaGFuIiwiYSI6ImNrODBpdm5vcTBndnczc211MGxmdzl6azYifQ.Q_qr9Jta1_VKX2YwlLAtng'
+
+const StyledDiv = styled.div`
+  height: calc(100vh - 64px - 56px - 2px);
+`
 
 const Map: FC = () => {
   const [viewport, setViewport] = useState({
@@ -15,15 +18,17 @@ const Map: FC = () => {
   })
 
   return (
-    <ReactMapGL
-      mapboxApiAccessToken={TOKEN}
-      width="100%"
-      height="100%"
-      {...viewport}
-      onViewportChange={setViewport}
-    >
-      <MapMarker />
-    </ReactMapGL>
+    <StyledDiv>
+      <ReactMapGL
+        mapboxApiAccessToken={TOKEN}
+        width="100%"
+        height="100%"
+        {...viewport}
+        onViewportChange={setViewport}
+      >
+        <MapMarker />
+      </ReactMapGL>
+    </StyledDiv>
   )
 }
 

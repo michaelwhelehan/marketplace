@@ -1,2 +1,5 @@
 export const primaryColor = '#45BF55'
-export const grey = '#eee'
+export const borderColor = '#eeeeee'
+export const white = '#ffffff'
+export const offWhite = '#FFFAFA'
+export const primaryFontColor = '#707070'

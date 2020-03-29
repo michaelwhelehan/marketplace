@@ -1,10 +1,12 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import Header from '../molecules/Header'
-import SubHeader from '../molecules/SubHeader'
+import FilterHeader from '../molecules/FilterHeader'
 import BaseContainer from '../atoms/Container'
-import Map from '../molecules/Map'
+import Map from './Map'
 import SideList from '../molecules/SideList'
+import { useRouteMatch, Switch, Route, useLocation } from 'react-router-dom'
+import ArticleDetailPage from './ArticleDetailPage'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 const StyledContainer = styled(BaseContainer)`
   border-left: 1px solid #eee;
@@ -17,22 +19,39 @@ const SideListContainer = styled.article`
   flex: 3;
 `
 
-const MapContainer = styled.article`
+const MainContainer = styled.article`
   flex: 9;
+
+  > div {
+    overflow: hidden;
+    position: relative;
+  }
 `
 
 const Marketplace: FC = () => {
+  const match = useRouteMatch()
+  const location = useLocation()
   return (
     <>
-      <Header />
-      <SubHeader />
+      <FilterHeader />
       <StyledContainer>
         <SideListContainer>
           <SideList />
         </SideListContainer>
-        <MapContainer>
-          <Map />
-        </MapContainer>
+        <MainContainer>
+          <TransitionGroup>
+            <CSSTransition key={location.key} classNames="slide" timeout={1000}>
+              <Switch location={location}>
+                <Route path={`${match.path}:topicId`}>
+                  <ArticleDetailPage />
+                </Route>
+                <Route path={match.path}>
+                  <Map />
+                </Route>
+              </Switch>
+            </CSSTransition>
+          </TransitionGroup>
+        </MainContainer>
       </StyledContainer>
     </>
   )

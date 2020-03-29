@@ -1,4 +1,5 @@
 import { css, createGlobalStyle } from 'styled-components'
+import { offWhite } from './colors'
 
 // prettier-ignore
 export const reset = css`
@@ -22,9 +23,8 @@ time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
-  font-family: 'Roboto', sans-serif !important;
-  font-size: 100%;
-  font: inherit;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
   vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
@@ -38,6 +38,7 @@ footer, header, hgroup, main, menu, nav, section {
 }
 body {
   line-height: 1;
+  background-color: ${offWhite};
 }
 ol, ul {
   list-style: none;

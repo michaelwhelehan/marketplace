@@ -2,10 +2,12 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import BaseContainer from '../atoms/Container'
 import FilterCustomSelect from '../atoms/FilterCustomSelect'
+import { borderColor, white } from '../../styles/colors'
 
 const StyledHeader = styled.header`
   height: 56px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid ${borderColor};
+  background-color: ${white};
 `
 
 const StyledContainer = styled(BaseContainer)`
@@ -14,10 +16,10 @@ const StyledContainer = styled(BaseContainer)`
 `
 
 const FilterSelectContainer = styled.div`
-  flex-basis: 200px;
+  margin-right: 20px;
 `
 
-const SubHeader: FC = () => {
+const FilterHeader: FC = () => {
   return (
     <StyledHeader>
       <StyledContainer>
@@ -35,4 +37,4 @@ const SubHeader: FC = () => {
   )
 }
 
-export default SubHeader
+export default FilterHeader

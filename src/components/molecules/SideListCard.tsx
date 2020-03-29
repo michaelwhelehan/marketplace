@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
 const CARD_PADDING = 20
 const CARD_SHADOW = 2
@@ -28,9 +29,11 @@ interface Props {
 
 const SideListCard: FC<Props> = ({ height, children }) => {
   return (
-    <StyledCardOuter height={height}>
-      <StyledCardInner height={height}>{children}</StyledCardInner>
-    </StyledCardOuter>
+    <Link to="/lol">
+      <StyledCardOuter height={height}>
+        <StyledCardInner height={height}>{children}</StyledCardInner>
+      </StyledCardOuter>
+    </Link>
   )
 }
 
