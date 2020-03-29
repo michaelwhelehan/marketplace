@@ -1,5 +1,5 @@
 export const primaryColor = '#45BF55'
-export const borderColor = '#eeeeee'
+export const borderColor = '#D3D3D3'
 export const white = '#ffffff'
 export const offWhite = '#FFFAFA'
 export const primaryFontColor = '#707070'

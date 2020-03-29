@@ -7,11 +7,12 @@ import SideList from '../molecules/SideList'
 import { useRouteMatch, Switch, Route, useLocation } from 'react-router-dom'
 import ArticleDetailPage from './ArticleDetailPage'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import { MAIN_HEADER_HEIGHT, FILTER_HEADER_HEIGHT } from '../../constants/sizes'
 
 const StyledContainer = styled(BaseContainer)`
   border-left: 1px solid #eee;
   border-right: 1px solid #eee;
-  height: calc(100vh - 64px - 56px - 2px);
+  height: calc(100vh - ${MAIN_HEADER_HEIGHT}px - ${FILTER_HEADER_HEIGHT}px);
   display: flex;
 `
 

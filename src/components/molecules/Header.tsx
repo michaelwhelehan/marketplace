@@ -3,9 +3,10 @@ import styled from 'styled-components'
 import logo from '../../assets/images/logo.svg'
 import BaseContainer from '../atoms/Container'
 import { white, borderColor } from '../../styles/colors'
+import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
 
 const StyledHeader = styled.header`
-  height: 64px;
+  height: ${MAIN_HEADER_HEIGHT}px;
   border-bottom: 1px solid ${borderColor};
   background-color: ${white};
 `

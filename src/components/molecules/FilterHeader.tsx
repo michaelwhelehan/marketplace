@@ -3,9 +3,10 @@ import styled from 'styled-components'
 import BaseContainer from '../atoms/Container'
 import FilterCustomSelect from '../atoms/FilterCustomSelect'
 import { borderColor, white } from '../../styles/colors'
+import { FILTER_HEADER_HEIGHT } from '../../constants/sizes'
 
 const StyledHeader = styled.header`
-  height: 56px;
+  height: ${FILTER_HEADER_HEIGHT}px;
   border-bottom: 1px solid ${borderColor};
   background-color: ${white};
 `

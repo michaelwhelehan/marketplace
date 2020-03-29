@@ -10,11 +10,12 @@ import {
 } from '../../styles/colors'
 import { Link } from 'react-router-dom'
 import Icon from '../atoms/Icon'
+import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
 
 const StyledContainer = styled(BaseContainer)`
   border-left: 1px solid ${borderColor};
   border-right: 1px solid ${borderColor};
-  height: calc(100vh - 64px - 56px - 2px);
+  min-height: calc(100vh - ${MAIN_HEADER_HEIGHT}px);
   display: flex;
 `
 
