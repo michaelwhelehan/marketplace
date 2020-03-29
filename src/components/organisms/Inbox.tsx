@@ -7,11 +7,15 @@ import {
   white,
   primaryFontColor,
 } from '../../styles/colors'
-import { Link } from 'react-router-dom'
+import { Link, Switch, Route, useRouteMatch } from 'react-router-dom'
 import Icon from '../atoms/Icon'
 import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
+import FilterSelect from '../atoms/FilterSelect'
+import InboxConversation from './InboxConversation'
+import { HeadingL } from '../atoms/Headings'
+import { ParagraphM } from '../atoms/Paragraphs'
 
-const INBOX_HEADER_HEIGHT = 100
+const INBOX_HEADER_HEIGHT = 75
 
 const StyledContainer = styled(BaseContainer)`
   border-left: 1px solid ${borderColor};
@@ -20,9 +24,14 @@ const StyledContainer = styled(BaseContainer)`
   display: flex;
 `
 
+const FilterContainer = styled.div`
+  height: ${INBOX_HEADER_HEIGHT}px;
+  padding: 20px;
+  border-bottom: 1px solid ${borderColor};
+`
+
 const LeftSideContainer = styled.article`
   flex-basis: 300px;
-  padding: 20px;
   border-right: 1px solid ${borderColor};
   background-color: ${white};
 `
@@ -30,44 +39,47 @@ const LeftSideContainer = styled.article`
 const MainContainer = styled.article`
   flex: 1;
   background-color: ${white};
+`
+
+const SelectConversation = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 `
 
-const TopInnerContainer = styled.article`
-  background-color: ${white};
-  border-bottom: 1px solid ${borderColor};
-  width: 100%;
-  height: ${INBOX_HEADER_HEIGHT}px;
-`
-
-const LeftInnerContainer = styled.article`
-  flex: 1;
-  padding: 20px;
-  background-color: ${white};
-  height: calc(100vh - ${MAIN_HEADER_HEIGHT}px - ${INBOX_HEADER_HEIGHT}px);
-`
-
-const RightInnerContainer = styled.article`
-  flex-basis: 300px;
-  padding: 20px;
-  border-left: 1px solid ${borderColor};
-  background-color: ${white};
-`
+const InboxHint: FC = () => (
+  <SelectConversation>
+    <Icon name="MdChat" size={40} color={primaryFontColor} />
+    <HeadingL>Select a Conversation</HeadingL>
+    <ParagraphM>
+      Try selecting a conversation or searching for someone specific.
+    </ParagraphM>
+  </SelectConversation>
+)
 
 const Inbox: FC = () => {
+  const match = useRouteMatch()
+
   return (
-    <>
-      <StyledContainer>
-        <LeftSideContainer />
-        <MainContainer>
-          <TopInnerContainer />
-          <LeftInnerContainer />
-          <RightInnerContainer />
-        </MainContainer>
-      </StyledContainer>
-    </>
+    <StyledContainer>
+      <LeftSideContainer>
+        <FilterContainer>
+          <FilterSelect placeholder="All Conversations" />
+        </FilterContainer>
+      </LeftSideContainer>
+      <MainContainer>
+        <Switch>
+          <Route path={`${match.path}/:conversationId`}>
+            <InboxConversation />
+          </Route>
+          <Route path={match.path}>
+            <InboxHint />
+          </Route>
+        </Switch>
+      </MainContainer>
+    </StyledContainer>
   )
 }
 

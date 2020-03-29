@@ -1,5 +1,6 @@
 import { css, createGlobalStyle } from 'styled-components'
 import { offWhite } from './colors'
+import { fontFamilyPrimary } from './typography'
 
 // prettier-ignore
 export const reset = css`
@@ -23,7 +24,7 @@ time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
-  font-family: 'Roboto', sans-serif;
+  ${fontFamilyPrimary};
   font-size: 16px;
   vertical-align: baseline;
 }

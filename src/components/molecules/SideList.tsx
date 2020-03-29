@@ -20,7 +20,7 @@ const list = [
   // And so on...
 ]
 
-const ROW_HEIGHT = 200
+const ROW_HEIGHT = 150
 
 function rowRenderer({
   key, // Unique key within array of rows

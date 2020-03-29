@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { memo, FC, useState } from 'react'
 import styled from 'styled-components'
 import ReactMapGL from 'react-map-gl'
 import MapMarker from '../atoms/MapMarker'
@@ -10,7 +10,7 @@ const StyledDiv = styled.div`
   height: calc(100vh - 64px - 56px - 2px);
 `
 
-const Map: FC = () => {
+const Map: FC = memo(() => {
   const [viewport, setViewport] = useState({
     latitude: 53.558572,
     longitude: 9.9278215,
@@ -30,6 +30,6 @@ const Map: FC = () => {
       </ReactMapGL>
     </StyledDiv>
   )
-}
+})
 
 export default Map
