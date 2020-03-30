@@ -1,21 +1,16 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import BaseContainer from '../atoms/Container'
-import {
-  borderColor,
-  offWhite,
-  white,
-  primaryFontColor,
-} from '../../styles/colors'
-import { Link, Switch, Route, useRouteMatch } from 'react-router-dom'
+import { borderColor, white, primaryFontColor } from '../../styles/colors'
+import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import Icon from '../atoms/Icon'
 import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
 import FilterSelect from '../atoms/FilterSelect'
 import InboxConversation from './InboxConversation'
 import { HeadingL } from '../atoms/Headings'
 import { ParagraphM } from '../atoms/Paragraphs'
-
-const INBOX_HEADER_HEIGHT = 75
+import { INBOX_HEADER_HEIGHT } from '../../constants/sizes'
+import InboxConversationList from '../molecules/InboxConversationList'
 
 const StyledContainer = styled(BaseContainer)`
   border-left: 1px solid ${borderColor};
@@ -68,6 +63,7 @@ const Inbox: FC = () => {
         <FilterContainer>
           <FilterSelect placeholder="All Conversations" />
         </FilterContainer>
+        <InboxConversationList />
       </LeftSideContainer>
       <MainContainer>
         <Switch>
