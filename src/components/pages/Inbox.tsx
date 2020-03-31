@@ -10,7 +10,7 @@ import InboxConversation from './InboxConversation'
 import { HeadingL } from '../atoms/Headings'
 import { ParagraphM } from '../atoms/Paragraphs'
 import { INBOX_HEADER_HEIGHT } from '../../constants/sizes'
-import InboxConversationList from '../molecules/InboxConversationList'
+import InboxConversationList from '../organisms/InboxConversationList'
 
 const StyledContainer = styled(BaseContainer)`
   border-left: 1px solid ${borderColor};
@@ -21,7 +21,7 @@ const StyledContainer = styled(BaseContainer)`
 
 const FilterContainer = styled.div`
   height: ${INBOX_HEADER_HEIGHT}px;
-  padding: 20px;
+  padding: 20px 10px 20px 10px;
   border-bottom: 1px solid ${borderColor};
 `
 

@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
 import Layout from './components/organisms/Layout'
-import Marketplace from './components/organisms/Marketplace'
-import Dashboard from './components/organisms/Dashboard'
-import Inbox from './components/organisms/Inbox'
+import Marketplace from './components/pages/Marketplace'
+import Dashboard from './components/pages/Dashboard'
+import Inbox from './components/pages/Inbox'
 import { Switch, Route } from 'react-router-dom'
 
 const Routes: FC = () => {

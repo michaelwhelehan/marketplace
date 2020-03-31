@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import SideListCard from './SideListCard'
-import InfiniteList from '../atoms/InfiniteList'
+import SideListCard from '../molecules/SideListCard'
+import InfiniteList from '../molecules/InfiniteList'
 
 const StyledSideList = styled.div`
   background: #f5f5f5;
