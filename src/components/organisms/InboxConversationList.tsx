@@ -129,7 +129,7 @@ const InboxConversationList: FC = () => {
     <ConversationList>
       <InfiniteList
         initialData={list}
-        threshold={1}
+        threshold={2}
         renderListItem={listItem => <InboxConversationListCard {...listItem} />}
         loadMore={lastListItem => {
           let promiseResolver

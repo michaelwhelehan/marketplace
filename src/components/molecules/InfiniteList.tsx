@@ -71,11 +71,10 @@ const InfiniteList: FC<Props> = ({
   }
 
   async function loadMoreRowsBottom({ startIndex }) {
-    setScrollToIndex(loadedData.length - 1)
+    console.log(startIndex)
     const data = await loadMore(loadedData[startIndex - 1])
     const newLoadedData = [...loadedData, ...data]
     setLoadedData(newLoadedData)
-    setScrollToIndex(newLoadedData.length - data.length - 1)
   }
 
   async function loadMoreRowsTop({ startIndex }) {
@@ -150,8 +149,8 @@ const InfiniteList: FC<Props> = ({
               height={height}
               rowCount={loadedData.length}
               rowRenderer={rowRenderer}
-              scrollToIndex={scrollToIndex}
-              scrollToAlignment={direction === 'forward' ? 'end' : 'start'}
+              scrollToIndex={direction === 'forward' ? -1 : scrollToIndex}
+              scrollToAlignment={direction === 'forward' ? 'auto' : 'start'}
               {...heightProps}
             />
           )}
