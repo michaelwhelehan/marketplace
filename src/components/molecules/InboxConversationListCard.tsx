@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import Avatar from '../atoms/Avatar'
-import { OnlineStatusType } from '../../types/user'
+import { OnlineStatusType, MemberType } from '../../types/user'
 import { ParagraphS, ParagraphXXS } from '../atoms/Paragraphs'
 import { black, borderColor, white } from '../../styles/colors'
 import dayjs from 'dayjs'
@@ -13,12 +13,13 @@ dayjs.extend(relativeTime)
 const StyledLink = styled(Link)`
   text-decoration: none;
   display: block;
+  height: 100%;
 `
 
-const StyledCard = styled.div<{ height: number }>`
+const StyledCard = styled.div`
   border-bottom: 1px solid ${borderColor};
   padding: 10px;
-  height: ${props => props.height}px;
+  height: 100%;
   background: ${white};
   display: flex;
   align-items: center;
@@ -36,26 +37,20 @@ const Message = styled(ParagraphS)`
   text-overflow: ellipsis;
 `
 
-const LeftContainer = styled.div`
+const PictureContainer = styled.div`
   flex: none;
 `
 
-const MiddleContainer = styled.div`
+const BodyContainer = styled.div`
   flex: 1;
   padding-left: 10px;
   overflow: hidden;
 `
 
-const RightContainer = styled.div`
+const TimestampContainer = styled.div`
   flex: none;
   margin-bottom: 30px;
 `
-
-type MemberType = {
-  name: string
-  profilePictureUrl: string
-  onlineStatus: OnlineStatusType
-}
 
 type MessageType = {
   lastMessage: string
@@ -64,34 +59,33 @@ type MessageType = {
 }
 
 interface Props {
-  height: number
   member: MemberType
   message: MessageType
 }
 
-const InboxConversationListCard: FC<Props> = ({ height, member, message }) => {
+const InboxConversationListCard: FC<Props> = ({ member, message }) => {
   return (
-    <StyledLink to="/lol">
-      <StyledCard height={height}>
-        <LeftContainer>
+    <StyledLink to="/dashboard/inbox/lol">
+      <StyledCard>
+        <PictureContainer>
           <Avatar
             src={member.profilePictureUrl}
             size={50}
             onlineStatus={member.onlineStatus}
           />
-        </LeftContainer>
-        <MiddleContainer>
+        </PictureContainer>
+        <BodyContainer>
           <UserName>{member.name}</UserName>
           <Message>
             {message.lastMessageFromMe && 'Me: '}
             {message.lastMessage}
           </Message>
-        </MiddleContainer>
-        <RightContainer>
+        </BodyContainer>
+        <TimestampContainer>
           <ParagraphXXS>
             {dayjs().from(message.lastMessageTimestamp)}
           </ParagraphXXS>
-        </RightContainer>
+        </TimestampContainer>
       </StyledCard>
     </StyledLink>
   )

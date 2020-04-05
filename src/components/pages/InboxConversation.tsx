@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { borderColor, white } from '../../styles/colors'
 import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
+import Conversation from '../organisms/Conversation'
 
 const INBOX_HEADER_HEIGHT = 75
 
@@ -20,7 +21,6 @@ const TitleContainer = styled.article`
 
 const DiscussionContainer = styled.article`
   flex: 1;
-  padding: 20px;
   background-color: ${white};
   height: calc(100vh - ${MAIN_HEADER_HEIGHT}px - ${INBOX_HEADER_HEIGHT}px);
 `
@@ -36,7 +36,9 @@ const InboxConversation: FC = () => {
   return (
     <ConversationWrapper>
       <TitleContainer />
-      <DiscussionContainer />
+      <DiscussionContainer>
+        <Conversation />
+      </DiscussionContainer>
       <DetailsContainer />
     </ConversationWrapper>
   )

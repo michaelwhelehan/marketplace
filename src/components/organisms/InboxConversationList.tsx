@@ -50,14 +50,121 @@ const list = [
       lastMessageTimestamp: new Date(),
     },
   },
+  {
+    member: { name: 'Mike Wells', profilePictureUrl, onlineStatus: 'online' },
+    message: {
+      lastMessageFromMe: true,
+      lastMessage: 'Ok blah blah blah blah',
+      lastMessageTimestamp: new Date(),
+    },
+  },
+  {
+    member: { name: 'Mike Wells', profilePictureUrl, onlineStatus: 'online' },
+    message: {
+      lastMessageFromMe: true,
+      lastMessage: 'Ok blah blah blah blah',
+      lastMessageTimestamp: new Date(),
+    },
+  },
+  {
+    member: { name: 'Mike Wells', profilePictureUrl, onlineStatus: 'online' },
+    message: {
+      lastMessageFromMe: true,
+      lastMessage: 'Ok blah blah blah blah',
+      lastMessageTimestamp: new Date(),
+    },
+  },
+  {
+    member: { name: 'Mike Wells', profilePictureUrl, onlineStatus: 'online' },
+    message: {
+      lastMessageFromMe: true,
+      lastMessage: 'Ok blah blah blah blah',
+      lastMessageTimestamp: new Date(),
+    },
+  },
+  {
+    member: { name: 'Mike Wells', profilePictureUrl, onlineStatus: 'online' },
+    message: {
+      lastMessageFromMe: true,
+      lastMessage: 'Ok blah blah blah blah',
+      lastMessageTimestamp: new Date(),
+    },
+  },
+  {
+    member: { name: 'Mike Wells', profilePictureUrl, onlineStatus: 'online' },
+    message: {
+      lastMessageFromMe: true,
+      lastMessage: 'Ok blah blah blah blah',
+      lastMessageTimestamp: new Date(),
+    },
+  },
+  {
+    member: { name: 'Mike Wells', profilePictureUrl, onlineStatus: 'online' },
+    message: {
+      lastMessageFromMe: true,
+      lastMessage: 'Ok blah blah blah blah',
+      lastMessageTimestamp: new Date(),
+    },
+  },
+  {
+    member: { name: 'Mike Wells', profilePictureUrl, onlineStatus: 'online' },
+    message: {
+      lastMessageFromMe: true,
+      lastMessage: 'Ok blah blah blah blah',
+      lastMessageTimestamp: new Date(),
+    },
+  },
+  {
+    member: { name: 'Mike Wells', profilePictureUrl, onlineStatus: 'online' },
+    message: {
+      lastMessageFromMe: true,
+      lastMessage: 'Ok blah blah blah blah',
+      lastMessageTimestamp: new Date(),
+    },
+  },
 ]
 
 const InboxConversationList: FC = () => {
   return (
     <ConversationList>
       <InfiniteList
-        list={list}
-        component={InboxConversationListCard}
+        initialData={list}
+        threshold={1}
+        renderListItem={listItem => <InboxConversationListCard {...listItem} />}
+        loadMore={lastListItem => {
+          let promiseResolver
+          setTimeout(() => {
+            promiseResolver([
+              {
+                member: {
+                  name: 'Mike Wells',
+                  profilePictureUrl,
+                  onlineStatus: 'online',
+                },
+                message: {
+                  lastMessageFromMe: true,
+                  lastMessage: 'One',
+                  lastMessageTimestamp: new Date(),
+                },
+              },
+              {
+                member: {
+                  name: 'Mike Wells',
+                  profilePictureUrl,
+                  onlineStatus: 'online',
+                },
+                message: {
+                  lastMessageFromMe: true,
+                  lastMessage: 'Two',
+                  lastMessageTimestamp: new Date(),
+                },
+              },
+            ])
+          }, 2000 + Math.round(Math.random() * 3000))
+          return new Promise(resolve => {
+            promiseResolver = resolve
+          })
+        }}
         rowHeight={80}
       />
     </ConversationList>
