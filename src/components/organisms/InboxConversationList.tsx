@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import styled from 'styled-components'
 import InboxConversationListCard from '../molecules/InboxConversationListCard'
 import InfiniteList from '../molecules/InfiniteList'
@@ -125,41 +125,47 @@ const list = [
 ]
 
 const InboxConversationList: FC = () => {
+  const [listItems, setListItems] = useState(list)
   return (
     <ConversationList>
       <InfiniteList
-        initialData={list}
-        threshold={2}
+        list={listItems}
+        loadAmount={2}
         renderListItem={listItem => <InboxConversationListCard {...listItem} />}
-        loadMore={lastListItem => {
+        onLoadMore={lastListItem => {
           let promiseResolver
           setTimeout(() => {
-            promiseResolver([
-              {
-                member: {
-                  name: 'Mike Wells',
-                  profilePictureUrl,
-                  onlineStatus: 'online',
+            const newListItems = [
+              ...listItems,
+              ...[
+                {
+                  member: {
+                    name: 'Mike Wells',
+                    profilePictureUrl,
+                    onlineStatus: 'online',
+                  },
+                  message: {
+                    lastMessageFromMe: true,
+                    lastMessage: 'One',
+                    lastMessageTimestamp: new Date(),
+                  },
                 },
-                message: {
-                  lastMessageFromMe: true,
-                  lastMessage: 'One',
-                  lastMessageTimestamp: new Date(),
+                {
+                  member: {
+                    name: 'Mike Wells',
+                    profilePictureUrl,
+                    onlineStatus: 'online',
+                  },
+                  message: {
+                    lastMessageFromMe: true,
+                    lastMessage: 'Two',
+                    lastMessageTimestamp: new Date(),
+                  },
                 },
-              },
-              {
-                member: {
-                  name: 'Mike Wells',
-                  profilePictureUrl,
-                  onlineStatus: 'online',
-                },
-                message: {
-                  lastMessageFromMe: true,
-                  lastMessage: 'Two',
-                  lastMessageTimestamp: new Date(),
-                },
-              },
-            ])
+              ],
+            ]
+            setListItems(newListItems)
+            promiseResolver()
           }, 2000 + Math.round(Math.random() * 3000))
           return new Promise(resolve => {
             promiseResolver = resolve

@@ -26,9 +26,9 @@ const SideList: FC = () => {
   return (
     <StyledSideList>
       <InfiniteList
-        initialData={list}
+        list={list}
         renderListItem={listItem => <SideListCard {...listItem} />}
-        loadMore={lastListItem => Promise.resolve([])}
+        onLoadMore={lastListItem => Promise.resolve()}
         rowHeight={ROW_HEIGHT}
       />
     </StyledSideList>

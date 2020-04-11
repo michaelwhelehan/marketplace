@@ -2,146 +2,94 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import InfiniteList from '../molecules/InfiniteList'
 import ConversationMessage from '../molecules/ConversationMessage'
-import faker from 'faker'
+import gql from 'graphql-tag'
+import { useQuery } from '@apollo/react-hooks'
 
 const StyledConversationMessageList = styled.div`
   height: 100%;
 `
 
-const now = new Date()
-now.setHours(0, 0, 0, 0)
-
-const list = [
-  {
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-    },
-    message: {
-      text: 'first',
-      timestamp: now,
-    },
-  },
-  {
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-    },
-  },
-  {
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-    },
-  },
-  {
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-    },
-  },
-  {
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-    },
-  },
-  {
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-    },
-  },
-  {
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-    },
-  },
-  {
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-    },
-  },
-]
-
-list.sort(
-  (a, b) => b.message.timestamp.getTime() - a.message.timestamp.getTime(),
-)
+const GET_CONVERSATION_MESSAGES = gql`
+  query ConversationMessages($channelId: ID!, $cursor: String) {
+    channel(id: $channelId) @client {
+      id
+      conversationMessages(cursor: $cursor)
+        @connection(key: "conversationMessageFeed") {
+        cursor
+        messages {
+          id
+          member {
+            name
+            profilePictureUrl
+            onlineStatus
+          }
+          message {
+            text
+            timestamp
+          }
+        }
+      }
+    }
+  }
+`
 
 const ConversationMessageList: FC = () => {
+  const { data, loading, fetchMore } = useQuery(GET_CONVERSATION_MESSAGES, {
+    variables: { channelId: '1', cursor: undefined },
+  })
+
+  if (!data) {
+    return null
+  }
+
+  console.log(data)
+
   return (
     <StyledConversationMessageList>
       <InfiniteList
-        initialData={list}
+        loading={loading}
+        list={data.channel.conversationMessages.messages}
+        loadAmount={5}
         renderListItem={listItem => <ConversationMessage {...listItem} />}
-        loadMore={lastListItem => {
-          let promiseResolver
-          setTimeout(() => {
-            promiseResolver([
-              {
-                member: {
-                  name: 'Mike Wells',
-                  profilePictureUrl: '',
-                  onlineStatus: 'online',
-                },
-                message: {
-                  text: faker.lorem.paragraph(5),
-                  timestamp: new Date(),
-                },
+        onLoadMore={async lastListItem => {
+          console.log('LOADING MORE')
+          await fetchMore({
+            query: GET_CONVERSATION_MESSAGES,
+            variables: {
+              channelId: '1',
+              cursor: lastListItem.id || data.moreConversationMessages.cursor,
+            },
+            updateQuery: (
+              previousResult: {
+                channel: {
+                  conversationMessages: { messages: any; cursor: string }
+                }
               },
-              {
-                member: {
-                  name: 'Mike Wells',
-                  profilePictureUrl: '',
-                  onlineStatus: 'online',
+              { fetchMoreResult },
+            ) => {
+              const previousConversationMessages =
+                previousResult.channel.conversationMessages
+              const newConversationMessages =
+                fetchMoreResult.channel.conversationMessages
+
+              const newChannelData = {
+                ...previousResult.channel,
+                conversationMessages: {
+                  messages: [
+                    ...newConversationMessages.messages,
+                    ...previousConversationMessages.messages,
+                  ],
+                  cursor: newConversationMessages.cursor,
+                  __typename: 'ConversationMessages',
                 },
-                message: {
-                  text: faker.lorem.paragraph(5),
-                  timestamp: new Date(),
-                },
-              },
-            ])
-          }, 2000 + Math.round(Math.random() * 3000))
-          return new Promise(resolve => {
-            promiseResolver = resolve
+              }
+              const newData = {
+                ...previousResult,
+                channel: newChannelData,
+              }
+              console.log(newData)
+              return newData
+            },
           })
         }}
         rowHeight={80}

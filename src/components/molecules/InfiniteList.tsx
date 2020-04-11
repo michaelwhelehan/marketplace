@@ -19,10 +19,11 @@ interface HeightProps {
 interface Props {
   rowHeight: number
   renderListItem: (listItem: any) => JSX.Element
-  loadMore: (lastListItem: any) => Promise<any[]>
-  initialData?: any[]
+  onLoadMore: (lastListItem: any) => Promise<any>
+  list: any[]
+  loading?: boolean
   rowCount?: number
-  threshold?: number
+  loadAmount?: number
   direction?: 'forward' | 'reverse'
   heightCalculation?: 'static' | 'dynamic'
 }
@@ -30,20 +31,19 @@ interface Props {
 const InfiniteList: FC<Props> = ({
   rowHeight,
   renderListItem,
-  loadMore,
-  initialData = [],
+  onLoadMore,
+  list,
+  loading = false,
   rowCount = 100,
-  threshold = 15,
+  loadAmount = 15,
   direction = 'forward',
   heightCalculation = 'static',
 }) => {
   const infiniteLoader = useRef<InfiniteLoader>(null)
-
-  const [loadedData, setLoadedData] = useState<any[]>(initialData)
   const [loadingTop, setLoadingTop] = useState<boolean>(false)
   const [totalRowCount, setTotalRowCount] = useState<number>(rowCount)
   const [scrollToIndex, setScrollToIndex] = useState<number>(
-    direction === 'forward' ? 0 : loadedData.length - 1,
+    direction === 'forward' ? 0 : list.length - 1,
   )
   const [ready, setReady] = useState<boolean>(false)
   const cache = useMemo(
@@ -52,13 +52,15 @@ const InfiniteList: FC<Props> = ({
         fixedWidth: true,
         defaultHeight: rowHeight,
       }),
-    [rowHeight, loadedData.length!],
+    [rowHeight, list.length!],
   )
+
+  console.log(cache, list.length)
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setReady(true)
-    }, 1000)
+    }, 5000)
 
     return () => {
       clearTimeout(timeoutId)
@@ -67,26 +69,22 @@ const InfiniteList: FC<Props> = ({
   }, [])
 
   function isRowLoaded({ index }) {
-    return !!loadedData[index]
+    return !!list[index]
   }
 
   async function loadMoreRowsBottom({ startIndex }) {
-    console.log(startIndex)
-    const data = await loadMore(loadedData[startIndex - 1])
-    const newLoadedData = [...loadedData, ...data]
-    setLoadedData(newLoadedData)
+    await onLoadMore(list[startIndex - 1])
   }
 
   async function loadMoreRowsTop({ startIndex }) {
-    if (ready && startIndex === 0 && !loadingTop) {
-      setLoadingTop(true)
-      setScrollToIndex(0)
-      const data = await loadMore(loadedData[0])
-      const newLoadedData = [...data, ...loadedData]
-      setLoadedData(newLoadedData)
-      setScrollToIndex(data.length)
-      setLoadingTop(false)
-    }
+    console.log(startIndex)
+    // if (ready && startIndex === 0 && !loadingTop) {
+    //   setLoadingTop(true)
+    //   setScrollToIndex(0)
+    //   await onLoadMore(list[0])
+    //   setScrollToIndex(loadAmount)
+    //   setLoadingTop(false)
+    // }
   }
 
   function rowRenderer({ key, index, parent, style }) {
@@ -99,16 +97,14 @@ const InfiniteList: FC<Props> = ({
           columnIndex={0}
           rowIndex={index}
         >
-          <div style={style}>
-            {renderListItem({ index, ...loadedData[index] })}
-          </div>
+          <div style={style}>{renderListItem({ index, ...list[index] })}</div>
         </CellMeasurer>
       )
     }
 
     return (
       <div key={key} style={style}>
-        {renderListItem({ index, ...loadedData[index] })}
+        {renderListItem({ index, ...list[index] })}
       </div>
     )
   }
@@ -132,7 +128,7 @@ const InfiniteList: FC<Props> = ({
         return Promise.resolve()
       }}
       rowCount={totalRowCount}
-      threshold={threshold}
+      threshold={loadAmount}
     >
       {({ onRowsRendered, registerChild }) => (
         <AutoSizer>
@@ -147,7 +143,7 @@ const InfiniteList: FC<Props> = ({
               ref={registerChild}
               width={width}
               height={height}
-              rowCount={loadedData.length}
+              rowCount={list.length}
               rowRenderer={rowRenderer}
               scrollToIndex={direction === 'forward' ? -1 : scrollToIndex}
               scrollToAlignment={direction === 'forward' ? 'auto' : 'start'}

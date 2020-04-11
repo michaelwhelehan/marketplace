@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState, useCallback } from 'react'
 import styled, { css } from 'styled-components'
 import { borderColorDark, white } from '../../styles/colors'
 
@@ -20,7 +20,26 @@ const StyledInput = styled.input<Props>`
 `
 
 const TextField: FC<Props> = ({ ...props }) => {
-  return <StyledInput {...props} />
+  const [value, setValue] = useState<string>('')
+
+  const handleChange = useCallback(e => {
+    setValue(e.target.value)
+  }, [])
+
+  const handleKeyPress = useCallback(e => {
+    if (e.keyCode === 13) {
+      console.log('value', e.target.value)
+    }
+  }, [])
+
+  return (
+    <StyledInput
+      value={value}
+      onChange={handleChange}
+      onKeyDown={handleKeyPress}
+      {...props}
+    />
+  )
 }
 
 export default TextField
