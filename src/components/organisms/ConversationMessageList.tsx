@@ -42,8 +42,6 @@ const ConversationMessageList: FC = () => {
     return null
   }
 
-  console.log(data)
-
   return (
     <StyledConversationMessageList>
       <InfiniteList
@@ -51,13 +49,13 @@ const ConversationMessageList: FC = () => {
         list={data.channel.conversationMessages.messages}
         loadAmount={5}
         renderListItem={listItem => <ConversationMessage {...listItem} />}
-        onLoadMore={async lastListItem => {
+        onLoadMore={async loadAmount => {
           console.log('LOADING MORE')
           await fetchMore({
             query: GET_CONVERSATION_MESSAGES,
             variables: {
               channelId: '1',
-              cursor: lastListItem.id || data.moreConversationMessages.cursor,
+              cursor: data.channel.conversationMessages.cursor,
             },
             updateQuery: (
               previousResult: {
@@ -87,12 +85,11 @@ const ConversationMessageList: FC = () => {
                 ...previousResult,
                 channel: newChannelData,
               }
-              console.log(newData)
               return newData
             },
           })
         }}
-        rowHeight={80}
+        rowHeight={1000}
         heightCalculation="dynamic"
         direction="reverse"
       />

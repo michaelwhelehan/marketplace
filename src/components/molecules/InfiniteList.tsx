@@ -19,7 +19,7 @@ interface HeightProps {
 interface Props {
   rowHeight: number
   renderListItem: (listItem: any) => JSX.Element
-  onLoadMore: (lastListItem: any) => Promise<any>
+  onLoadMore: (loadAmount: number) => Promise<any>
   list: any[]
   loading?: boolean
   rowCount?: number
@@ -60,7 +60,7 @@ const InfiniteList: FC<Props> = ({
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setReady(true)
-    }, 5000)
+    }, 1000)
 
     return () => {
       clearTimeout(timeoutId)
@@ -77,14 +77,13 @@ const InfiniteList: FC<Props> = ({
   }
 
   async function loadMoreRowsTop({ startIndex }) {
-    console.log(startIndex)
-    // if (ready && startIndex === 0 && !loadingTop) {
-    //   setLoadingTop(true)
-    //   setScrollToIndex(0)
-    //   await onLoadMore(list[0])
-    //   setScrollToIndex(loadAmount)
-    //   setLoadingTop(false)
-    // }
+    if (ready && startIndex === 0 && !loadingTop) {
+      setLoadingTop(true)
+      setScrollToIndex(0)
+      await onLoadMore(list[0])
+      setScrollToIndex(loadAmount)
+      setLoadingTop(false)
+    }
   }
 
   function rowRenderer({ key, index, parent, style }) {
@@ -97,7 +96,11 @@ const InfiniteList: FC<Props> = ({
           columnIndex={0}
           rowIndex={index}
         >
-          <div style={style}>{renderListItem({ index, ...list[index] })}</div>
+          {({ registerChild }) => (
+            <div ref={registerChild} style={style}>
+              {renderListItem({ index, ...list[index] })}
+            </div>
+          )}
         </CellMeasurer>
       )
     }

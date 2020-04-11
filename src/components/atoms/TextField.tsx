@@ -5,6 +5,7 @@ import { borderColorDark, white } from '../../styles/colors'
 interface Props {
   fullWidth?: boolean
   placeholder?: string
+  onEnter?: (value: string) => void
 }
 
 const StyledInput = styled.input<Props>`
@@ -19,18 +20,24 @@ const StyledInput = styled.input<Props>`
     `}
 `
 
-const TextField: FC<Props> = ({ ...props }) => {
+const TextField: FC<Props> = ({ onEnter, ...props }) => {
   const [value, setValue] = useState<string>('')
 
   const handleChange = useCallback(e => {
     setValue(e.target.value)
   }, [])
 
-  const handleKeyPress = useCallback(e => {
-    if (e.keyCode === 13) {
-      console.log('value', e.target.value)
-    }
-  }, [])
+  const handleKeyPress = useCallback(
+    e => {
+      if (e.keyCode === 13) {
+        if (onEnter) {
+          onEnter(value)
+        }
+        setValue('')
+      }
+    },
+    [onEnter, value],
+  )
 
   return (
     <StyledInput

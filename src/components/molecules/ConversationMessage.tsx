@@ -15,6 +15,9 @@ const MessageContainer = styled.div`
   padding: 20px;
   background-color: ${lightGrey};
   border-radius: 4px;
+`
+
+const MessageText = styled.p`
   line-height: 22px;
 `
 
@@ -32,7 +35,9 @@ interface Props {
 const ConversationMessage: FC<Props> = ({ index, member, message }) => {
   return (
     <MessageContainerOuter>
-      <MessageContainer>{message.text}</MessageContainer>
+      <MessageContainer>
+        <MessageText>{message.text}</MessageText>
+      </MessageContainer>
     </MessageContainerOuter>
   )
 }

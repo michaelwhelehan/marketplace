@@ -5,6 +5,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloProvider } from '@apollo/react-hooks'
 import faker from 'faker'
 import App from './App'
+import gql from 'graphql-tag'
 
 const newList = [
   {
@@ -216,6 +217,64 @@ const client = new ApolloClient({
           messages: list,
           __typename: 'ConversationMessages',
         }
+      },
+    },
+    Mutation: {
+      createConversationMessage: (
+        _,
+        { channelId, message },
+        { cache, getCacheKey },
+      ) => {
+        console.log(channelId, message)
+        const id = getCacheKey({ __typename: 'Channel', id: channelId })
+        const fragment = gql`
+          fragment channelData on Channel {
+            id
+            conversationMessageFeed {
+              cursor
+              messages {
+                id
+                member {
+                  name
+                  profilePictureUrl
+                  onlineStatus
+                }
+                message {
+                  text
+                  timestamp
+                }
+              }
+            }
+          }
+        `
+        const channel = cache.readFragment({ fragment, id })
+        const previousConversationMessages = channel.conversationMessageFeed
+        const data = {
+          ...channel,
+          conversationMessageFeed: {
+            ...previousConversationMessages,
+            messages: [
+              ...previousConversationMessages.messages,
+              {
+                id: faker.random.uuid(),
+                member: {
+                  name: 'Mike Wells',
+                  profilePictureUrl: '',
+                  onlineStatus: 'online',
+                  __typename: 'Member',
+                },
+                message: {
+                  text: message,
+                  timestamp: new Date(),
+                  __typename: 'Message',
+                },
+                __typename: 'ConversationMessage',
+              },
+            ],
+          },
+        }
+        cache.writeFragment({ id, fragment, data })
+        return null
       },
     },
   },

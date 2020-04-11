@@ -132,7 +132,7 @@ const InboxConversationList: FC = () => {
         list={listItems}
         loadAmount={2}
         renderListItem={listItem => <InboxConversationListCard {...listItem} />}
-        onLoadMore={lastListItem => {
+        onLoadMore={loadAmount => {
           let promiseResolver
           setTimeout(() => {
             const newListItems = [
