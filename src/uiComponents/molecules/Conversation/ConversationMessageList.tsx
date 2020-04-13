@@ -17,7 +17,7 @@ export interface ConversationMessageListProps {
 }
 
 type Fragments = {
-  fragments: { messageList: DocumentNode }
+  fragments: { messageFeed: DocumentNode }
 }
 
 const ConversationMessageList: FC<ConversationMessageListProps> & Fragments = ({
@@ -47,8 +47,8 @@ const ConversationMessageList: FC<ConversationMessageListProps> & Fragments = ({
 }
 
 ConversationMessageList.fragments = {
-  messageList: gql`
-    fragment MessageList on ConversationMessage {
+  messageFeed: gql`
+    fragment MessageFeed on ConversationFeed {
       cursor
       messages {
         ...Message

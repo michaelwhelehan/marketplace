@@ -54,7 +54,7 @@ const ConversationMessage: FC<Props> & Fragments = ({
 
 ConversationMessage.fragments = {
   message: gql`
-    fragment Message on ConversationMessage {
+    fragment Message on ConversationFeedMessage {
       member {
         name
         profilePictureUrl

@@ -5,22 +5,25 @@ import Conversation from '../../uiComponents/organisms/Conversation'
 import ConversationMessageList from '../../uiComponents/molecules/Conversation/ConversationMessageList'
 
 const CREATE_CONVERSATION_MESSAGE = gql`
-  mutation CreateConversationMessage($channelId: ID!, $message: String!) {
-    createConversationMessage(channelId: $channelId, message: $message) @client
+  mutation CreateConversationMessage($conversationId: ID!, $message: String!) {
+    createConversationMessage(
+      conversationId: $conversationId
+      message: $message
+    ) @client
   }
 `
 
 const GET_CONVERSATION_MESSAGES = gql`
-  query ConversationMessages($channelId: ID!, $cursor: String) {
-    channel(id: $channelId) @client {
+  query ConversationMessages($conversationId: ID!, $cursor: String) {
+    conversation(id: $conversationId) @client {
       id
-      conversationMessages(cursor: $cursor)
+      conversationFeed(cursor: $cursor)
         @connection(key: "conversationMessageFeed") {
-        ...MessageList
+        ...MessageFeed
       }
     }
   }
-  ${ConversationMessageList.fragments.messageList}
+  ${ConversationMessageList.fragments.messageFeed}
 `
 
 function sleep(ms) {
@@ -29,56 +32,56 @@ function sleep(ms) {
 
 const ConversationConnected: FC = () => {
   const { data, loading, fetchMore } = useQuery(GET_CONVERSATION_MESSAGES, {
-    variables: { channelId: '1', cursor: undefined },
+    variables: { conversationId: '1', cursor: undefined },
   })
   const [createConversationMessage] = useMutation(CREATE_CONVERSATION_MESSAGE)
   return (
     <Conversation
       messagesLoading={loading}
-      messageList={data?.channel?.conversationMessages?.messages}
+      messageList={data?.conversation?.conversationFeed?.messages}
       messagesLoadAmount={5}
       memberName="Michael W"
       onMessageCreated={message => {
         createConversationMessage({
-          variables: { channelId: '1', message },
+          variables: { conversationId: '1', message },
         })
       }}
       onLoadMoreMessages={async loadAmount => {
         console.log('LOADING MORE')
-        //await sleep(2000)
+        await sleep(Math.floor(Math.random() * 1000) + 500)
         await fetchMore({
           query: GET_CONVERSATION_MESSAGES,
           variables: {
-            channelId: '1',
-            cursor: data.channel.conversationMessages.cursor,
+            conversationId: '1',
+            cursor: data.conversation.conversationFeed.cursor,
           },
           updateQuery: (
             previousResult: {
-              channel: {
-                conversationMessages: { messages: any; cursor: string }
+              conversation: {
+                conversationFeed: { messages: any; cursor: string }
               }
             },
             { fetchMoreResult },
           ) => {
-            const previousConversationMessages =
-              previousResult.channel.conversationMessages
-            const newConversationMessages =
-              fetchMoreResult.channel.conversationMessages
+            const previousConversationFeed =
+              previousResult.conversation.conversationFeed
+            const newConversationFeed =
+              fetchMoreResult.conversation.conversationFeed
 
-            const newChannelData = {
-              ...previousResult.channel,
-              conversationMessages: {
+            const newConversationData = {
+              ...previousResult.conversation,
+              conversationFeed: {
                 messages: [
-                  ...newConversationMessages.messages,
-                  ...previousConversationMessages.messages,
+                  ...newConversationFeed.messages,
+                  ...previousConversationFeed.messages,
                 ],
-                cursor: newConversationMessages.cursor,
-                __typename: 'ConversationMessages',
+                cursor: newConversationFeed.cursor,
+                __typename: 'ConversationFeed',
               },
             }
             const newData = {
               ...previousResult,
-              channel: newChannelData,
+              conversation: newConversationData,
             }
             return newData
           },

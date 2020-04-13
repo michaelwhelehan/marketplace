@@ -6,6 +6,7 @@ import {
   CellMeasurer,
   CellMeasurerCache,
 } from 'react-virtualized'
+import { deepEquals } from '../../utils/compare'
 
 type CellSizeGetter = (params: { index: number }) => number
 
@@ -70,11 +71,11 @@ const InfiniteList: FC<Props> = ({
 
   useEffect(() => {
     if (prevList) {
-      const firstChanged =
-        JSON.stringify(list[0]) !== JSON.stringify(prevList[0])
-      const lastChanged =
-        JSON.stringify(list[list.length - 1]) !==
-        JSON.stringify(prevList[prevList.length - 1])
+      const firstChanged = !deepEquals(list[0], prevList[0])
+      const lastChanged = !deepEquals(
+        list[list.length - 1],
+        prevList[prevList.length - 1],
+      )
       if (firstChanged) {
         setScrollToIndex(loadAmount)
       } else if (lastChanged) {
