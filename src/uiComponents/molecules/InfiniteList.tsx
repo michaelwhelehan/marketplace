@@ -46,6 +46,7 @@ const InfiniteList: FC<Props> = ({
     direction === 'forward' ? 0 : list.length - 1,
   )
   const [ready, setReady] = useState<boolean>(false)
+  const prevList = usePreviousList(list)
   const cache = useMemo(
     () =>
       new CellMeasurerCache({
@@ -54,11 +55,12 @@ const InfiniteList: FC<Props> = ({
       }),
     [rowHeight, list.length!],
   )
+  console.log(loadAmount, list.length)
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setReady(true)
-    }, 1000)
+    }, 500)
 
     return () => {
       clearTimeout(timeoutId)
@@ -66,20 +68,34 @@ const InfiniteList: FC<Props> = ({
     }
   }, [])
 
+  useEffect(() => {
+    if (prevList) {
+      const firstChanged =
+        JSON.stringify(list[0]) !== JSON.stringify(prevList[0])
+      const lastChanged =
+        JSON.stringify(list[list.length - 1]) !==
+        JSON.stringify(prevList[prevList.length - 1])
+      if (firstChanged) {
+        setScrollToIndex(loadAmount)
+      } else if (lastChanged) {
+        setScrollToIndex(list.length - 1)
+      }
+    }
+  }, [list, prevList, loadAmount])
+
   function isRowLoaded({ index }) {
     return !!list[index]
   }
 
-  async function loadMoreRowsBottom({ startIndex }) {
-    await onLoadMore(list[startIndex - 1])
+  async function loadMoreRowsBottom() {
+    await onLoadMore(loadAmount)
   }
 
   async function loadMoreRowsTop({ startIndex }) {
     if (ready && startIndex === 0 && !loadingTop) {
       setLoadingTop(true)
-      setScrollToIndex(0)
-      await onLoadMore(list[0])
-      setScrollToIndex(loadAmount)
+      //setScrollToIndex(0)
+      await onLoadMore(loadAmount)
       setLoadingTop(false)
     }
   }
@@ -122,9 +138,9 @@ const InfiniteList: FC<Props> = ({
     <InfiniteLoader
       ref={infiniteLoader}
       isRowLoaded={isRowLoaded}
-      loadMoreRows={props => {
+      loadMoreRows={() => {
         if (direction === 'forward') {
-          return loadMoreRowsBottom(props)
+          return loadMoreRowsBottom()
         }
         return Promise.resolve()
       }}
@@ -155,6 +171,14 @@ const InfiniteList: FC<Props> = ({
       )}
     </InfiniteLoader>
   )
+}
+
+function usePreviousList(value: any): any[] {
+  const ref = useRef()
+  useEffect(() => {
+    ref.current = value
+  })
+  return ref.current
 }
 
 export default InfiniteList

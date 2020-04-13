@@ -23,6 +23,10 @@ const GET_CONVERSATION_MESSAGES = gql`
   ${ConversationMessageList.fragments.messageList}
 `
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 const ConversationConnected: FC = () => {
   const { data, loading, fetchMore } = useQuery(GET_CONVERSATION_MESSAGES, {
     variables: { channelId: '1', cursor: undefined },
@@ -41,6 +45,7 @@ const ConversationConnected: FC = () => {
       }}
       onLoadMoreMessages={async loadAmount => {
         console.log('LOADING MORE')
+        //await sleep(2000)
         await fetchMore({
           query: GET_CONVERSATION_MESSAGES,
           variables: {

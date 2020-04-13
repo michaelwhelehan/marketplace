@@ -7,6 +7,7 @@ import faker from 'faker'
 import App from './App'
 import gql from 'graphql-tag'
 import ConversationMessageList from './uiComponents/molecules/Conversation/ConversationMessageList'
+import { typeDef } from './graphql/conversation'
 
 const newList = [
   {
@@ -205,7 +206,10 @@ const client = new ApolloClient({
     },
     Channel: {
       conversationMessages: (channel, { cursor }) => {
-        if (cursor === '2cf2a616-56fd-4d54-9585-a48666549102') {
+        if (
+          cursor === '2cf2a616-56fd-4d54-9585-a48666549102' ||
+          cursor === '29ac8c86-028b-4c3c-9d6d-2f46489571fd'
+        ) {
           console.log('HEEERE')
           return {
             cursor: '29ac8c86-028b-4c3c-9d6d-2f46489571fd',
