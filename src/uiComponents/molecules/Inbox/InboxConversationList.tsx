@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 import styled from 'styled-components'
-import InboxConversationListCard from './InboxConversationListCard'
+import InboxConversationListCard from './InboxConversationCard'
 import InfiniteList from '../InfiniteList'
 import {
   MAIN_HEADER_HEIGHT,

@@ -3,7 +3,9 @@ import styled from 'styled-components'
 import ConversationMessageList, {
   ConversationMessageListProps,
 } from '../molecules/Conversation/ConversationMessageList'
-import ConversationTextField from '../molecules/Conversation/ConversationTextField'
+import ConversationTextField, {
+  ConversationTextFieldProps,
+} from '../molecules/Conversation/ConversationTextField'
 
 const ConversationContainer = styled.article`
   position: relative;
@@ -26,16 +28,25 @@ const ConversationTextFieldWrapper = styled.div`
   right: 0;
 `
 
-interface Props extends ConversationMessageListProps {}
+interface Props
+  extends ConversationMessageListProps,
+    ConversationTextFieldProps {}
 
-const Conversation: FC<Props> = ({ ...props }) => {
+const Conversation: FC<Props> = ({
+  onMessageCreated,
+  memberName,
+  ...props
+}) => {
   return (
     <ConversationContainer>
       <ConversationMessagesWrapper>
         <ConversationMessageList {...props} />
       </ConversationMessagesWrapper>
       <ConversationTextFieldWrapper>
-        <ConversationTextField memberName="Michael" />
+        <ConversationTextField
+          memberName={memberName}
+          onMessageCreated={onMessageCreated}
+        />
       </ConversationTextFieldWrapper>
     </ConversationContainer>
   )

@@ -23,6 +23,7 @@
     "faker": "^4.1.0",
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.3",
+    "graphql.macro": "^1.4.2",
     "polished": "^3.5.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
