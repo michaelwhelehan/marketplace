@@ -1,192 +1,47 @@
 import faker from 'faker'
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 import ConversationMessageList from '../uiComponents/molecules/Conversation/ConversationMessageList'
 
-const newList = [
-  {
-    id: '29ac8c86-028b-4c3c-9d6d-2f46489571fd',
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-      __typename: 'ConversationMember',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-      __typename: 'ConversationMessage',
-    },
-    __typename: 'ConversationFeedMessage',
-  },
-  {
-    id: faker.random.uuid(),
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-      __typename: 'ConversationMember',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-      __typename: 'ConversationMessage',
-    },
-    __typename: 'ConversationFeedMessage',
-  },
-  {
-    id: faker.random.uuid(),
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-      __typename: 'ConversationMember',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-      __typename: 'ConversationMessage',
-    },
-    __typename: 'ConversationFeedMessage',
-  },
-  {
-    id: faker.random.uuid(),
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-      __typename: 'ConversationMember',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-      __typename: 'ConversationMessage',
-    },
-    __typename: 'ConversationFeedMessage',
-  },
-  {
-    id: faker.random.uuid(),
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-      __typename: 'ConversationMember',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-      __typename: 'ConversationMessage',
-    },
-    __typename: 'ConversationFeedMessage',
-  },
-]
-
-const list = [
-  {
-    id: '2cf2a616-56fd-4d54-9585-a48666549102',
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-      __typename: 'ConversationMember',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-      __typename: 'ConversationMessage',
-    },
-    __typename: 'ConversationFeedMessage',
-  },
-  {
-    id: faker.random.uuid(),
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-      __typename: 'ConversationMember',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-      __typename: 'ConversationMessage',
-    },
-    __typename: 'ConversationFeedMessage',
-  },
-  {
-    id: faker.random.uuid(),
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-      __typename: 'ConversationMember',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-      __typename: 'ConversationMessage',
-    },
-    __typename: 'ConversationFeedMessage',
-  },
-  {
-    id: faker.random.uuid(),
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-      __typename: 'ConversationMember',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-      __typename: 'ConversationMessage',
-    },
-    __typename: 'ConversationFeedMessage',
-  },
-  {
-    id: faker.random.uuid(),
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-      __typename: 'ConversationMember',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-      __typename: 'ConversationMessage',
-    },
-    __typename: 'ConversationFeedMessage',
-  },
-  {
-    id: faker.random.uuid(),
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-      __typename: 'ConversationMember',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-      __typename: 'ConversationMessage',
-    },
-    __typename: 'ConversationFeedMessage',
-  },
-  {
-    id: faker.random.uuid(),
-    member: {
-      name: 'Mike Wells',
-      profilePictureUrl: '',
-      onlineStatus: 'online',
-      __typename: 'ConversationMember',
-    },
-    message: {
-      text: faker.lorem.paragraph(5),
-      timestamp: new Date(),
-      __typename: 'ConversationMessage',
-    },
-    __typename: 'ConversationFeedMessage',
-  },
-]
+function generateMessages(numMessages: number) {
+  const messages = []
+  for (let i = 0; i < numMessages; i++) {
+    const roll = Math.floor(Math.random() * Math.floor(3))
+    const message: any = {
+      id: faker.random.uuid(),
+      member: {
+        name: 'Mike Wells',
+        profilePictureUrl: '',
+        onlineStatus: 'online',
+        __typename: 'ConversationMember',
+      },
+      __typename: 'ConversationFeedMessage',
+    }
+    if (roll === 0) {
+      message.message = {
+        type: 'text',
+        text: faker.lorem.paragraph(5),
+        timestamp: new Date(),
+        __typename: 'ConversationMessageText',
+      }
+    } else if (roll === 1) {
+      message.message = {
+        type: 'image',
+        url: faker.image.imageUrl(),
+        timestamp: new Date(),
+        __typename: 'ConversationMessageImage',
+      }
+    } else if (roll === 2) {
+      message.message = {
+        type: 'video',
+        url: faker.image.imageUrl(),
+        timestamp: new Date(),
+        __typename: 'ConversationMessageVideo',
+      }
+    }
+    messages.push(message)
+  }
+  return messages
+}
 
 export const typeDefs = gql`
   scalar Date
@@ -217,9 +72,21 @@ export const typeDefs = gql`
     onlineStatus: String!
   }
 
-  type ConversationMessage {
-    text: String!
+  interface ConversationMessage {
+    type: String!
     timestamp: Date!
+  }
+
+  type ConversationMessageText implements ConversationMessage {
+    text: String!
+  }
+
+  type ConversationMessageImage implements ConversationMessage {
+    url: String!
+  }
+
+  type ConversationMessageVideo implements ConversationMessage {
+    url: String!
   }
 `
 
@@ -231,20 +98,9 @@ export const resolvers = {
   },
   Conversation: {
     conversationFeed: (conversation, { cursor }) => {
-      if (
-        cursor === '2cf2a616-56fd-4d54-9585-a48666549102' ||
-        cursor === '29ac8c86-028b-4c3c-9d6d-2f46489571fd'
-      ) {
-        console.log('HEEERE')
-        return {
-          cursor: '29ac8c86-028b-4c3c-9d6d-2f46489571fd',
-          messages: newList,
-          __typename: 'ConversationFeed',
-        }
-      }
       return {
         cursor: '2cf2a616-56fd-4d54-9585-a48666549102',
-        messages: list,
+        messages: generateMessages(10),
         __typename: 'ConversationFeed',
       }
     },
@@ -288,7 +144,7 @@ export const resolvers = {
               message: {
                 text: message,
                 timestamp: new Date(),
-                __typename: 'ConversationMessage',
+                __typename: 'ConversationMessageText',
               },
               __typename: 'ConversationFeedMessage',
             },

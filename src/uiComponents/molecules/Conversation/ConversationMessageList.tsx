@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import InfiniteList from '../InfiniteList'
 import ConversationMessage from './ConversationMessage'
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 import { DocumentNode } from 'graphql'
 
 const StyledConversationMessageList = styled.div`

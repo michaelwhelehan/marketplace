@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@apollo/react-hooks": "^3.1.4",
+    "@apollo/client": "^3.0.0-beta.43",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -17,13 +17,9 @@
     "@types/react-select": "^3.0.11",
     "@types/react-virtualized": "^9.21.8",
     "@types/styled-components": "^5.0.1",
-    "apollo-cache-inmemory": "^1.6.5",
-    "apollo-client": "^2.6.8",
     "dayjs": "^1.8.23",
     "faker": "^4.1.0",
     "graphql": "^15.0.0",
-    "graphql-tag": "^2.10.3",
-    "graphql.macro": "^1.4.2",
     "polished": "^3.5.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
@@ -42,7 +38,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "test:types": "tsc -p ./tsconfig.json --noEmit"
+    "test:types": "tsc -p ./tsconfig.json --noEmit",
+    "generate": "graphql-codegen --config codegen.yml"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -60,6 +57,11 @@
     ]
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.13.2",
+    "@graphql-codegen/introspection": "1.13.2",
+    "@graphql-codegen/typescript": "1.13.2",
+    "@graphql-codegen/typescript-operations": "1.13.2",
+    "@graphql-codegen/typescript-react-apollo": "1.13.2",
     "@types/webpack-env": "^1.15.1",
     "husky": "^4.2.3",
     "lint-staged": "^10.0.8",

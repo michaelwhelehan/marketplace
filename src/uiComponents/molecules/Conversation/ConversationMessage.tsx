@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { MemberType } from '../../../types/user'
 import styled from 'styled-components'
 import { lightGrey } from '../../../styles/colors'
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 import { DocumentNode } from 'graphql'
 
 const MessageContainerOuter = styled.div`
@@ -55,14 +55,24 @@ const ConversationMessage: FC<Props> & Fragments = ({
 ConversationMessage.fragments = {
   message: gql`
     fragment Message on ConversationFeedMessage {
+      id
       member {
         name
         profilePictureUrl
         onlineStatus
       }
       message {
-        text
+        type
         timestamp
+        ... on ConversationMessageText {
+          text
+        }
+        ... on ConversationMessageImage {
+          url
+        }
+        ... on ConversationMessageVideo {
+          url
+        }
       }
     }
   `,

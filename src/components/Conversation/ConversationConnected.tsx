@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
-import { useQuery, useMutation } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
+import { useQuery, useMutation, gql } from '@apollo/client'
 import Conversation from '../../uiComponents/organisms/Conversation'
 import ConversationMessageList from '../../uiComponents/molecules/Conversation/ConversationMessageList'
 
@@ -26,20 +25,17 @@ const GET_CONVERSATION_MESSAGES = gql`
   ${ConversationMessageList.fragments.messageFeed}
 `
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
-
 const ConversationConnected: FC = () => {
   const { data, loading, fetchMore } = useQuery(GET_CONVERSATION_MESSAGES, {
     variables: { conversationId: '1', cursor: undefined },
   })
+  console.log(data)
   const [createConversationMessage] = useMutation(CREATE_CONVERSATION_MESSAGE)
   return (
     <Conversation
       messagesLoading={loading}
       messageList={data?.conversation?.conversationFeed?.messages}
-      messagesLoadAmount={5}
+      messagesLoadAmount={10}
       memberName="Michael W"
       onMessageCreated={message => {
         createConversationMessage({
@@ -89,6 +85,10 @@ const ConversationConnected: FC = () => {
       }}
     />
   )
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 export default ConversationConnected

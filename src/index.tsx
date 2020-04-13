@@ -1,12 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ApolloClient } from 'apollo-client'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { ApolloProvider } from '@apollo/react-hooks'
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 import App from './App'
 import { typeDefs, resolvers } from './graphql/conversation'
 
-const cache = new InMemoryCache()
+const cache = new InMemoryCache({
+  possibleTypes: {
+    ConversationMessage: [
+      'ConversationMessageText',
+      'ConversationMessageImage',
+      'ConversationMessageVideo',
+    ],
+  },
+})
 const client = new ApolloClient({
   cache,
   typeDefs,
