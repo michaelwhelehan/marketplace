@@ -1,9 +1,12 @@
 import React, { FC, useState } from 'react'
 import styled from 'styled-components'
-import InboxConversationListCard from '../molecules/InboxConversationListCard'
-import InfiniteList from '../molecules/InfiniteList'
-import { MAIN_HEADER_HEIGHT, INBOX_HEADER_HEIGHT } from '../../constants/sizes'
-import profilePictureUrl from '../../assets/images/profile.png'
+import InboxConversationListCard from './InboxConversationListCard'
+import InfiniteList from '../InfiniteList'
+import {
+  MAIN_HEADER_HEIGHT,
+  INBOX_HEADER_HEIGHT,
+} from '../../../constants/sizes'
+import profilePictureUrl from '../../../assets/images/profile.png'
 
 const ConversationList = styled.section`
   height: calc(100vh - ${MAIN_HEADER_HEIGHT}px - ${INBOX_HEADER_HEIGHT}px);

@@ -1,7 +1,9 @@
 import React, { FC } from 'react'
-import { MemberType } from '../../types/user'
+import { MemberType } from '../../../types/user'
 import styled from 'styled-components'
-import { lightGrey } from '../../styles/colors'
+import { lightGrey } from '../../../styles/colors'
+import gql from 'graphql-tag'
+import { DocumentNode } from 'graphql'
 
 const MessageContainerOuter = styled.div`
   height: 100%;
@@ -32,7 +34,15 @@ interface Props {
   message: MessageType
 }
 
-const ConversationMessage: FC<Props> = ({ index, member, message }) => {
+type Fragments = {
+  fragments: { message: DocumentNode }
+}
+
+const ConversationMessage: FC<Props> & Fragments = ({
+  index,
+  member,
+  message,
+}) => {
   return (
     <MessageContainerOuter>
       <MessageContainer>
@@ -40,6 +50,22 @@ const ConversationMessage: FC<Props> = ({ index, member, message }) => {
       </MessageContainer>
     </MessageContainerOuter>
   )
+}
+
+ConversationMessage.fragments = {
+  message: gql`
+    fragment Message on ConversationMessage {
+      member {
+        name
+        profilePictureUrl
+        onlineStatus
+      }
+      message {
+        text
+        timestamp
+      }
+    }
+  `,
 }
 
 export default ConversationMessage

@@ -1,7 +1,9 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import ConversationMessageList from './ConversationMessageList'
-import ConversationTextField from '../molecules/ConversationTextField'
+import ConversationMessageList, {
+  ConversationMessageListProps,
+} from '../molecules/Conversation/ConversationMessageList'
+import ConversationTextField from '../molecules/Conversation/ConversationTextField'
 
 const ConversationContainer = styled.article`
   position: relative;
@@ -24,11 +26,13 @@ const ConversationTextFieldWrapper = styled.div`
   right: 0;
 `
 
-const Conversation: FC = () => {
+interface Props extends ConversationMessageListProps {}
+
+const Conversation: FC<Props> = ({ ...props }) => {
   return (
     <ConversationContainer>
       <ConversationMessagesWrapper>
-        <ConversationMessageList />
+        <ConversationMessageList {...props} />
       </ConversationMessagesWrapper>
       <ConversationTextFieldWrapper>
         <ConversationTextField memberName="Michael" />

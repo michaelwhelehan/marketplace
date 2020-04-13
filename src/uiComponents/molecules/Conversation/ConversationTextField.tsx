@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import TextField from '../atoms/TextField'
+import TextField from '../../atoms/TextField'
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
 

@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { borderColor, white } from '../../styles/colors'
 import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
-import Conversation from '../organisms/Conversation'
+import ConversationConnected from '../../components/Conversation/ConversationConnected'
 
 const INBOX_HEADER_HEIGHT = 75
 
@@ -37,7 +37,7 @@ const InboxConversation: FC = () => {
     <ConversationWrapper>
       <TitleContainer />
       <DiscussionContainer>
-        <Conversation />
+        <ConversationConnected />
       </DiscussionContainer>
       <DetailsContainer />
     </ConversationWrapper>

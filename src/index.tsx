@@ -6,6 +6,7 @@ import { ApolloProvider } from '@apollo/react-hooks'
 import faker from 'faker'
 import App from './App'
 import gql from 'graphql-tag'
+import ConversationMessageList from './uiComponents/molecules/Conversation/ConversationMessageList'
 
 const newList = [
   {
@@ -228,26 +229,19 @@ const client = new ApolloClient({
         console.log(channelId, message)
         const id = getCacheKey({ __typename: 'Channel', id: channelId })
         const fragment = gql`
-          fragment channelData on Channel {
+          ${ConversationMessageList.fragments.messageList}
+          fragment ChannelData on Channel {
             id
             conversationMessageFeed {
-              cursor
-              messages {
-                id
-                member {
-                  name
-                  profilePictureUrl
-                  onlineStatus
-                }
-                message {
-                  text
-                  timestamp
-                }
-              }
+              ...MessageList
             }
           }
         `
-        const channel = cache.readFragment({ fragment, id })
+        const channel = cache.readFragment({
+          fragment,
+          id,
+          fragmentName: 'ChannelData',
+        })
         const previousConversationMessages = channel.conversationMessageFeed
         const data = {
           ...channel,
@@ -273,7 +267,7 @@ const client = new ApolloClient({
             ],
           },
         }
-        cache.writeFragment({ id, fragment, data })
+        cache.writeFragment({ id, fragment, data, fragmentName: 'ChannelData' })
         return null
       },
     },

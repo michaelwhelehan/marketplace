@@ -10,7 +10,7 @@ import InboxConversation from './InboxConversation'
 import { HeadingL } from '../atoms/Headings'
 import { ParagraphM } from '../atoms/Paragraphs'
 import { INBOX_HEADER_HEIGHT } from '../../constants/sizes'
-import InboxConversationList from '../organisms/InboxConversationList'
+import InboxConversationList from '../molecules/Inbox/InboxConversationList'
 
 const StyledContainer = styled(BaseContainer)`
   border-left: 1px solid ${borderColor};

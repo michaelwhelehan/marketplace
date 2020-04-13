@@ -55,8 +55,6 @@ const InfiniteList: FC<Props> = ({
     [rowHeight, list.length!],
   )
 
-  console.log(cache, list.length)
-
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setReady(true)
