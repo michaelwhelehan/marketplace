@@ -23,15 +23,24 @@ const MessageText = styled.p`
   line-height: 22px;
 `
 
-type MessageType = {
-  text: string
+interface Message {
+  type: 'text' | 'image' | 'video'
   timestamp: Date
+}
+
+interface TextMessage extends Message {
+  text: string
+}
+
+interface MediaMessage extends Message {
+  url: string
 }
 
 interface Props {
   index: number
+  measure: () => void
   member: MemberType
-  message: MessageType
+  message: Message
 }
 
 type Fragments = {
@@ -40,13 +49,20 @@ type Fragments = {
 
 const ConversationMessage: FC<Props> & Fragments = ({
   index,
+  measure,
   member,
   message,
 }) => {
   return (
     <MessageContainerOuter>
       <MessageContainer>
-        <MessageText>{message.text}</MessageText>
+        <MessageText>
+          {message.type === 'text' ? (
+            `${(message as TextMessage).text}`
+          ) : (
+            <img src={(message as MediaMessage).url} onLoad={measure} alt="" />
+          )}
+        </MessageText>
       </MessageContainer>
     </MessageContainerOuter>
   )

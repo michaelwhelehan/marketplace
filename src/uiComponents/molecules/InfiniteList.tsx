@@ -56,7 +56,7 @@ const InfiniteList: FC<Props> = ({
       }),
     [rowHeight, list.length!],
   )
-  console.log(loadAmount, list.length)
+  console.log(cache)
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -111,9 +111,9 @@ const InfiniteList: FC<Props> = ({
           columnIndex={0}
           rowIndex={index}
         >
-          {({ registerChild }) => (
+          {({ registerChild, measure }) => (
             <div ref={registerChild} style={style}>
-              {renderListItem({ index, ...list[index] })}
+              {renderListItem({ index, measure, ...list[index] })}
             </div>
           )}
         </CellMeasurer>

@@ -2,10 +2,20 @@ import faker from 'faker'
 import { gql } from '@apollo/client'
 import ConversationMessageList from '../uiComponents/molecules/Conversation/ConversationMessageList'
 
+function weightedRandom(prob) {
+  let i,
+    sum = 0,
+    r = Math.random()
+  for (i in prob) {
+    sum += prob[i]
+    if (r <= sum) return i
+  }
+}
+
 function generateMessages(numMessages: number) {
   const messages = []
   for (let i = 0; i < numMessages; i++) {
-    const roll = Math.floor(Math.random() * Math.floor(3))
+    const roll = parseInt(weightedRandom({ 0: 0.8, 1: 0.1, 2: 0.1 }), 10)
     const message: any = {
       id: faker.random.uuid(),
       member: {
