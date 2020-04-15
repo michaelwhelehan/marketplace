@@ -110,7 +110,7 @@ export const resolvers = {
     conversationFeed: (conversation, { cursor }) => {
       return {
         cursor: '2cf2a616-56fd-4d54-9585-a48666549102',
-        messages: generateMessages(10),
+        messages: generateMessages(50),
         __typename: 'ConversationFeed',
       }
     },
@@ -121,53 +121,22 @@ export const resolvers = {
       { conversationId, message },
       { cache, getCacheKey },
     ) => {
-      const id = getCacheKey({ __typename: 'Conversation', id: conversationId })
-      const fragment = gql`
-        ${ConversationMessageList.fragments.messageFeed}
-        fragment ConversationData on Conversation {
-          id
-          conversationMessageFeed {
-            ...MessageFeed
-          }
-        }
-      `
-      const conversation = cache.readFragment({
-        fragment,
-        id,
-        fragmentName: 'ConversationData',
-      })
-      const previousConversationMessages = conversation.conversationMessageFeed
-      const data = {
-        ...conversation,
-        conversationMessageFeed: {
-          ...previousConversationMessages,
-          messages: [
-            ...previousConversationMessages.messages,
-            {
-              id: faker.random.uuid(),
-              member: {
-                name: 'Mike Wells',
-                profilePictureUrl: '',
-                onlineStatus: 'online',
-                __typename: 'ConversationMember',
-              },
-              message: {
-                text: message,
-                timestamp: new Date(),
-                __typename: 'ConversationMessageText',
-              },
-              __typename: 'ConversationFeedMessage',
-            },
-          ],
+      return {
+        __typename: 'ConversationFeedMessage',
+        id: faker.random.uuid(),
+        member: {
+          __typename: 'ConversationMember',
+          name: 'Mike Wells',
+          profilePictureUrl: '',
+          onlineStatus: 'online',
+        },
+        message: {
+          __typename: 'ConversationMessageText',
+          type: 'text',
+          text: message,
+          timestamp: new Date(),
         },
       }
-      cache.writeFragment({
-        id,
-        fragment,
-        data,
-        fragmentName: 'ConversationData',
-      })
-      return null
     },
   },
 }

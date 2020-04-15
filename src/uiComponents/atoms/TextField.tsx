@@ -1,14 +1,12 @@
-import React, { FC, useState, useCallback } from 'react'
+import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
 import { borderColorDark, white } from '../../styles/colors'
 
-interface Props {
+interface StyledProps {
   fullWidth?: boolean
-  placeholder?: string
-  onEnter?: (value: string) => void
 }
 
-const StyledInput = styled.input<Props>`
+const StyledInput = styled.input<StyledProps>`
   background-color: ${white};
   border: 2px solid ${borderColorDark};
   border-radius: 4px;
@@ -20,30 +18,20 @@ const StyledInput = styled.input<Props>`
     `}
 `
 
-const TextField: FC<Props> = ({ onEnter, ...props }) => {
-  const [value, setValue] = useState<string>('')
+interface Props extends StyledProps {
+  fullWidth?: boolean
+  placeholder?: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
+  value: string
+}
 
-  const handleChange = useCallback(e => {
-    setValue(e.target.value)
-  }, [])
-
-  const handleKeyPress = useCallback(
-    e => {
-      if (e.keyCode === 13) {
-        if (onEnter) {
-          onEnter(value)
-        }
-        setValue('')
-      }
-    },
-    [onEnter, value],
-  )
-
+const TextField: FC<Props> = ({ onChange, onKeyDown, value, ...props }) => {
   return (
     <StyledInput
       value={value}
-      onChange={handleChange}
-      onKeyDown={handleKeyPress}
+      onChange={onChange}
+      onKeyDown={onKeyDown}
       {...props}
     />
   )

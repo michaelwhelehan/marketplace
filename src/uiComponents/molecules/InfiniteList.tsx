@@ -24,6 +24,7 @@ interface Props {
   list: any[]
   loading?: boolean
   rowCount?: number
+  overscanRowCount?: number
   loadAmount?: number
   direction?: 'forward' | 'reverse'
   heightCalculation?: 'static' | 'dynamic'
@@ -36,6 +37,7 @@ const InfiniteList: FC<Props> = ({
   list,
   loading = false,
   rowCount = 100,
+  overscanRowCount = 10,
   loadAmount = 15,
   direction = 'forward',
   heightCalculation = 'static',
@@ -44,7 +46,7 @@ const InfiniteList: FC<Props> = ({
   const [loadingTop, setLoadingTop] = useState<boolean>(false)
   const [totalRowCount, setTotalRowCount] = useState<number>(rowCount)
   const [scrollToIndex, setScrollToIndex] = useState<number>(
-    direction === 'forward' ? 0 : list.length - 1,
+    direction === 'forward' ? -1 : list.length - 1,
   )
   const [ready, setReady] = useState<boolean>(false)
   const prevList = usePreviousList(list)
@@ -56,7 +58,6 @@ const InfiniteList: FC<Props> = ({
       }),
     [rowHeight, list.length!],
   )
-  console.log(cache)
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -111,9 +112,9 @@ const InfiniteList: FC<Props> = ({
           columnIndex={0}
           rowIndex={index}
         >
-          {({ registerChild, measure }) => (
+          {({ registerChild }) => (
             <div ref={registerChild} style={style}>
-              {renderListItem({ index, measure, ...list[index] })}
+              {renderListItem({ index, ...list[index] })}
             </div>
           )}
         </CellMeasurer>
@@ -157,6 +158,23 @@ const InfiniteList: FC<Props> = ({
                   loadMoreRowsTop(props)
                 }
                 onRowsRendered(props)
+              }}
+              overscanRowCount={overscanRowCount}
+              overscanIndicesGetter={({
+                cellCount,
+                overscanCellsCount,
+                scrollDirection,
+                startIndex,
+                stopIndex,
+              }) => {
+                // todo: Come up with a better way to handle this initially when direction === 'reverse'
+                return {
+                  overscanStartIndex: Math.max(0, startIndex - 20),
+                  overscanStopIndex: Math.min(
+                    cellCount - 1,
+                    stopIndex + overscanCellsCount,
+                  ),
+                }
               }}
               ref={registerChild}
               width={width}

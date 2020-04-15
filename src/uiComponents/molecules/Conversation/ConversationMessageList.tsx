@@ -38,7 +38,7 @@ const ConversationMessageList: FC<ConversationMessageListProps> & Fragments = ({
         loadAmount={messagesLoadAmount}
         renderListItem={listItem => <ConversationMessage {...listItem} />}
         onLoadMore={onLoadMoreMessages}
-        rowHeight={1000}
+        rowHeight={100}
         heightCalculation="dynamic"
         direction="reverse"
       />

@@ -8,7 +8,19 @@ const CREATE_CONVERSATION_MESSAGE = gql`
     createConversationMessage(
       conversationId: $conversationId
       message: $message
-    ) @client
+    ) @client {
+      id
+      member {
+        name
+        profilePictureUrl
+        onlineStatus
+      }
+      message {
+        type
+        text
+        timestamp
+      }
+    }
   }
 `
 
@@ -29,8 +41,32 @@ const ConversationConnected: FC = () => {
   const { data, loading, fetchMore } = useQuery(GET_CONVERSATION_MESSAGES, {
     variables: { conversationId: '1', cursor: undefined },
   })
-  console.log(data)
-  const [createConversationMessage] = useMutation(CREATE_CONVERSATION_MESSAGE)
+  const [createConversationMessage] = useMutation(CREATE_CONVERSATION_MESSAGE, {
+    update(cache, { data: { createConversationMessage } }) {
+      const { conversation } = cache.readQuery({
+        query: GET_CONVERSATION_MESSAGES,
+        variables: { conversationId: '1', cursor: undefined },
+      })
+      const previousConversationMessages = conversation.conversationFeed
+      const data = {
+        conversation: {
+          ...conversation,
+          conversationFeed: {
+            ...previousConversationMessages,
+            messages: [
+              ...previousConversationMessages.messages,
+              createConversationMessage,
+            ],
+          },
+        },
+      }
+      cache.writeQuery({
+        query: GET_CONVERSATION_MESSAGES,
+        variables: { conversationId: '1', cursor: undefined },
+        data,
+      })
+    },
+  })
   return (
     <Conversation
       messagesLoading={loading}

@@ -6,6 +6,7 @@ import { typeDefs, resolvers } from './graphql/conversation'
 
 const cache = new InMemoryCache({
   possibleTypes: {
+    ConversationFeed: [],
     ConversationMessage: [
       'ConversationMessageText',
       'ConversationMessageImage',
@@ -17,6 +18,7 @@ const client = new ApolloClient({
   cache,
   typeDefs,
   resolvers,
+  connectToDevTools: true,
 })
 
 const render = Component => {

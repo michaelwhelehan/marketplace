@@ -56,13 +56,11 @@ const ConversationMessage: FC<Props> & Fragments = ({
   return (
     <MessageContainerOuter>
       <MessageContainer>
-        <MessageText>
-          {message.type === 'text' ? (
-            `${(message as TextMessage).text}`
-          ) : (
-            <img src={(message as MediaMessage).url} onLoad={measure} alt="" />
-          )}
-        </MessageText>
+        {message.type === 'text' ? (
+          <MessageText>{(message as TextMessage).text}</MessageText>
+        ) : (
+          <img height={500} src={(message as MediaMessage).url} alt="" />
+        )}
       </MessageContainer>
     </MessageContainerOuter>
   )
