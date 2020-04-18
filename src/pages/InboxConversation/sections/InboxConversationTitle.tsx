@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import StatusIndicator from '../../../uiComponents/atoms/StatusIndicator'
 import { ParagraphS } from '../../../uiComponents/atoms/Paragraphs'
 import UserName from '../../../uiComponents/atoms/UserName'
-import { MemberType } from '../../../types/user'
+import { UserType } from '../../../types/user'
 import { fromNow } from '../../../utils/date'
 
 const Container = styled.article`
@@ -24,7 +24,7 @@ const LastSeen = styled.div`
 `
 
 interface Props {
-  member: MemberType
+  member: UserType
 }
 
 const InboxConversationTitle: FC<Props> = ({ member }) => {

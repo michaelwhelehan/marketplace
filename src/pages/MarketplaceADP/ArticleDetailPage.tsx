@@ -1,9 +1,17 @@
 import React, { FC } from 'react'
-
 import styled from 'styled-components'
+import faker from 'faker'
+import { TaskType } from '../../types/task'
+import ADPHeader from './sections/ADPHeader'
+import ADPInfo from './sections/ADPInfo'
+import profilePictureUrl from '../../assets/images/profile.png'
+import ADPDetails from './sections/ADPDetails'
+import ADPQuestions from './sections/ADPQuestions'
 
-const StyledDiv = styled.div`
+const Container = styled.div`
   height: calc(100vh - 64px - 56px - 2px);
+  overflow-y: auto;
+  overflow-x: hidden;
   background: #fff;
 
   &.slide-enter,
@@ -35,23 +43,33 @@ const StyledDiv = styled.div`
   }
 `
 
+const StyledHR = styled.hr`
+  margin: 20px;
+`
+
 const ArticleDetailPage: FC = () => {
+  const task: TaskType = {
+    creator: {
+      name: 'Mike Wells',
+      profilePictureUrl,
+      onlineStatus: 'online',
+      lastSeen: new Date(),
+    },
+    title: 'Need something done that I can afford',
+    budget: 50,
+    currency: { code: 'EUR', iso: '€' },
+    location: 'Remote',
+    dueDate: new Date(),
+    details: faker.lorem.paragraph(10),
+  }
   return (
-    <StyledDiv>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed metus
-      ac est ornare imperdiet id non massa. Sed accumsan ultrices justo, eu
-      imperdiet ligula pretium id. Suspendisse vehicula urna est, varius congue
-      ante posuere sit amet. Aliquam semper posuere elit vitae consequat. Donec
-      porta luctus bibendum. Nam volutpat, mi quis ultrices varius, velit enim
-      ullamcorper augue, malesuada aliquam neque erat sed massa. Sed imperdiet
-      quis sapien eu viverra. Sed a varius nibh. Maecenas euismod tincidunt
-      urna, nec venenatis nulla luctus ac. Cras nec ligula at quam ultricies
-      fermentum. Proin vulputate, lorem sit amet bibendum lobortis, lacus ante
-      tristique nisi, id fringilla velit lorem sit amet neque. Morbi sed
-      sagittis nisl. Nullam euismod lectus ante, ut auctor felis ultricies in.
-      Vestibulum varius scelerisque tortor, sit amet ultrices justo. Suspendisse
-      iaculis leo id vehicula varius.
-    </StyledDiv>
+    <Container>
+      <ADPHeader task={task} />
+      <ADPInfo task={task} />
+      <StyledHR />
+      <ADPDetails details={task.details} />
+      <ADPQuestions />
+    </Container>
   )
 }
 

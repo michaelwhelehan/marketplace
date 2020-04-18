@@ -1,6 +1,6 @@
 export type OnlineStatusType = 'online' | 'away' | 'busy' | 'offline'
 
-export type MemberType = {
+export type UserType = {
   name: string
   profilePictureUrl: string
   onlineStatus: OnlineStatusType

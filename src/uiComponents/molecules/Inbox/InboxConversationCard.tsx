@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import Avatar from '../../atoms/Avatar'
-import { OnlineStatusType, MemberType } from '../../../types/user'
+import { OnlineStatusType, UserType } from '../../../types/user'
 import { ParagraphS, ParagraphXXS } from '../../atoms/Paragraphs'
 import { black, borderColor, white } from '../../../styles/colors'
 import { fromNow } from '../../../utils/date'
@@ -52,7 +52,7 @@ type MessageType = {
 }
 
 interface Props {
-  member: MemberType
+  member: UserType
   message: MessageType
 }
 

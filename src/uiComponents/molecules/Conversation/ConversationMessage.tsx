@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { MemberType } from '../../../types/user'
+import { UserType } from '../../../types/user'
 import styled from 'styled-components'
 import { featherGrey, primaryFontColor } from '../../../styles/colors'
 import { gql } from '@apollo/client'
@@ -64,7 +64,7 @@ interface MediaMessage extends Message {
 interface Props {
   index: number
   measure: () => void
-  member: MemberType
+  member: UserType
   message: Message
 }
 

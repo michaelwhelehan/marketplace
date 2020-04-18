@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { MemberType } from '../../../types/user'
+import { UserType } from '../../../types/user'
 import UserCard from '../../../uiComponents/molecules/User/UserCard'
 import { ParagraphS } from '../../../uiComponents/atoms/Paragraphs'
 import { fwBold } from '../../../styles/typography'
@@ -36,7 +36,7 @@ const UserStat = styled(ParagraphS)`
 `
 
 interface Props {
-  member: MemberType
+  member: UserType
 }
 
 const InboxConversationDetails: FC<Props> = ({ member }) => {

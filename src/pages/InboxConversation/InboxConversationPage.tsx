@@ -5,7 +5,7 @@ import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
 import ConversationConnected from '../../components/Conversation/ConversationConnected'
 import profilePictureUrl from '../../assets/images/profile.png'
 import InboxConversationTitle from './sections/InboxConversationTitle'
-import { MemberType } from '../../types/user'
+import { UserType } from '../../types/user'
 import InboxConversationDetails from './sections/InboxConversationDetails'
 
 const INBOX_HEADER_HEIGHT = 75
@@ -37,7 +37,7 @@ const DetailsContainer = styled.article`
 `
 
 const InboxConversationPage: FC = () => {
-  const member: MemberType = {
+  const member: UserType = {
     name: 'Mike Wells',
     profilePictureUrl,
     onlineStatus: 'online',

@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { MemberType } from '../../../types/user'
+import { UserType } from '../../../types/user'
 import Avatar from '../../atoms/Avatar'
 import UserName from '../../atoms/UserName'
 import { ParagraphS } from '../../atoms/Paragraphs'
@@ -17,7 +17,7 @@ const RatingContainer = styled.div`
 `
 
 interface Props {
-  member: MemberType
+  member: UserType
 }
 
 const UserCard: FC<Props> = ({ member }) => {

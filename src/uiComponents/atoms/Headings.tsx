@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
 import {
-  fontFamilyPrimary,
+  fontFamilySecondary,
   fwBold,
   fsL,
   fsXXXS,
@@ -18,7 +18,7 @@ import {
 import { primaryFontColor } from '../../styles/colors'
 
 const baseCss = css`
-  ${fontFamilyPrimary};
+  ${fontFamilySecondary};
   color: ${primaryFontColor};
   letter-spacing: auto;
   ${fwBold};

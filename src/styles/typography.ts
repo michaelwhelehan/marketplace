@@ -1,13 +1,17 @@
 import { css } from 'styled-components'
 
-export const fontFamilyRaw = "'Roboto', sans-serif"
+export const fontFamilyPrimaryRaw = "'Roboto', sans-serif"
+export const fontFamilySecondaryRaw = "'Playfair Display', sans-serif"
 export const fontWeightNormalRaw = 'normal'
 export const fontWeightMediumBoldRaw = 500
 export const fontWeightBoldRaw = 600
 export const fontWeightHeavyRaw = 900
 
 export const fontFamilyPrimary = css`
-  font-family: ${fontFamilyRaw};
+  font-family: ${fontFamilyPrimaryRaw};
+`
+export const fontFamilySecondary = css`
+  font-family: ${fontFamilySecondaryRaw};
 `
 export const fwLight = css`
   font-weight: ${fontWeightNormalRaw};
