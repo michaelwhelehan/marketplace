@@ -1,9 +1,12 @@
 import React, { FC } from 'react'
 import { MemberType } from '../../../types/user'
 import styled from 'styled-components'
-import { lightGrey } from '../../../styles/colors'
+import { featherGrey, primaryFontColor } from '../../../styles/colors'
 import { gql } from '@apollo/client'
 import { DocumentNode } from 'graphql'
+import Avatar from '../../atoms/Avatar'
+import { fromNow } from '../../../utils/date'
+import { fwBold, fsXXS } from '../../../styles/typography'
 
 const MessageContainerOuter = styled.div`
   height: 100%;
@@ -14,9 +17,34 @@ const MessageContainerOuter = styled.div`
 
 const MessageContainer = styled.div`
   height: 100%;
-  padding: 20px;
-  background-color: ${lightGrey};
+  display: flex;
+`
+
+const MessageMemberAvatar = styled.div`
+  width: 60px;
+  padding-right: 10px;
+`
+
+const MessageContent = styled.div`
+  flex: 1;
+  background-color: ${featherGrey};
+  padding: 10px;
   border-radius: 4px;
+`
+
+const MessageMember = styled.div`
+  display: flex;
+  padding-bottom: 10px;
+`
+
+const MessageMemberName = styled.span`
+  ${fwBold};
+`
+
+const MessageTimestamp = styled.span`
+  padding-left: 10px;
+  font-size: ${fsXXS}px;
+  color: ${primaryFontColor};
 `
 
 const MessageText = styled.p`
@@ -56,11 +84,29 @@ const ConversationMessage: FC<Props> & Fragments = ({
   return (
     <MessageContainerOuter>
       <MessageContainer>
-        {message.type === 'text' ? (
-          <MessageText>{(message as TextMessage).text}</MessageText>
-        ) : (
-          <img height={500} src={(message as MediaMessage).url} alt="" />
-        )}
+        <MessageMemberAvatar>
+          <Avatar
+            src={member.profilePictureUrl}
+            size={50}
+            onlineStatus="online"
+          />
+        </MessageMemberAvatar>
+        <MessageContent>
+          <MessageMember>
+            <MessageMemberName>{member.name}</MessageMemberName>
+            <MessageTimestamp>{fromNow(message.timestamp)}</MessageTimestamp>
+          </MessageMember>
+          {message.type === 'text' ? (
+            <MessageText>{(message as TextMessage).text}</MessageText>
+          ) : (
+            <img
+              width="100%"
+              height={450}
+              src={(message as MediaMessage).url}
+              alt=""
+            />
+          )}
+        </MessageContent>
       </MessageContainer>
     </MessageContainerOuter>
   )

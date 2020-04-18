@@ -1,6 +1,6 @@
 import faker from 'faker'
 import { gql } from '@apollo/client'
-import ConversationMessageList from '../uiComponents/molecules/Conversation/ConversationMessageList'
+import profilePictureUrl from '../assets/images/profile.png'
 
 function weightedRandom(prob) {
   let i,
@@ -20,7 +20,7 @@ function generateMessages(numMessages: number) {
       id: faker.random.uuid(),
       member: {
         name: 'Mike Wells',
-        profilePictureUrl: '',
+        profilePictureUrl,
         onlineStatus: 'online',
         __typename: 'ConversationMember',
       },
@@ -127,7 +127,7 @@ export const resolvers = {
         member: {
           __typename: 'ConversationMember',
           name: 'Mike Wells',
-          profilePictureUrl: '',
+          profilePictureUrl,
           onlineStatus: 'online',
         },
         message: {

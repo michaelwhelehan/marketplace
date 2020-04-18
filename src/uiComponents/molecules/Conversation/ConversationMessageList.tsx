@@ -14,6 +14,7 @@ export interface ConversationMessageListProps {
   messageList: any[]
   messagesLoadAmount: number
   onLoadMoreMessages: (loadAmount: number) => Promise<any>
+  position: 'topDown' | 'bottomUp'
 }
 
 type Fragments = {
@@ -25,6 +26,7 @@ const ConversationMessageList: FC<ConversationMessageListProps> & Fragments = ({
   messageList,
   messagesLoadAmount,
   onLoadMoreMessages,
+  position,
 }) => {
   if (!messageList || !messageList.length) {
     return null
@@ -40,7 +42,7 @@ const ConversationMessageList: FC<ConversationMessageListProps> & Fragments = ({
         onLoadMore={onLoadMoreMessages}
         rowHeight={100}
         heightCalculation="dynamic"
-        direction="reverse"
+        direction={position === 'topDown' ? 'forward' : 'reverse'}
       />
     </StyledConversationMessageList>
   )

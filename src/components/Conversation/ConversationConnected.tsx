@@ -37,7 +37,11 @@ const GET_CONVERSATION_MESSAGES = gql`
   ${ConversationMessageList.fragments.messageFeed}
 `
 
-const ConversationConnected: FC = () => {
+interface Props {
+  position: 'topDown' | 'bottomUp'
+}
+
+const ConversationConnected: FC<Props> = ({ position }) => {
   const { data, loading, fetchMore } = useQuery(GET_CONVERSATION_MESSAGES, {
     variables: { conversationId: '1', cursor: undefined },
   })
@@ -48,15 +52,22 @@ const ConversationConnected: FC = () => {
         variables: { conversationId: '1', cursor: undefined },
       })
       const previousConversationMessages = conversation.conversationFeed
+      const messages =
+        position === 'topDown'
+          ? [
+              createConversationMessage,
+              ...previousConversationMessages.messages,
+            ]
+          : [
+              ...previousConversationMessages.messages,
+              createConversationMessage,
+            ]
       const data = {
         conversation: {
           ...conversation,
           conversationFeed: {
             ...previousConversationMessages,
-            messages: [
-              ...previousConversationMessages.messages,
-              createConversationMessage,
-            ],
+            messages,
           },
         },
       }
@@ -69,6 +80,7 @@ const ConversationConnected: FC = () => {
   })
   return (
     <Conversation
+      position={position}
       messagesLoading={loading}
       messageList={data?.conversation?.conversationFeed?.messages}
       messagesLoadAmount={10}

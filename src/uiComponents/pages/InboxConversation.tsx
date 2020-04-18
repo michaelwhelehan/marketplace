@@ -37,7 +37,7 @@ const InboxConversation: FC = () => {
     <ConversationWrapper>
       <TitleContainer />
       <DiscussionContainer>
-        <ConversationConnected />
+        <ConversationConnected position="bottomUp" />
       </DiscussionContainer>
       <DetailsContainer />
     </ConversationWrapper>

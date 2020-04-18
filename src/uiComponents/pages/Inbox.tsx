@@ -25,7 +25,7 @@ const FilterContainer = styled.div`
   border-bottom: 1px solid ${borderColor};
 `
 
-const LeftSideContainer = styled.article`
+const SideContainer = styled.article`
   flex-basis: 300px;
   border-right: 1px solid ${borderColor};
   background-color: ${white};
@@ -59,12 +59,12 @@ const Inbox: FC = () => {
 
   return (
     <StyledContainer>
-      <LeftSideContainer>
+      <SideContainer>
         <FilterContainer>
           <FilterSelect placeholder="All Conversations" />
         </FilterContainer>
         <InboxConversationList />
-      </LeftSideContainer>
+      </SideContainer>
       <MainContainer>
         <Switch>
           <Route path={`${match.path}/:conversationId`}>

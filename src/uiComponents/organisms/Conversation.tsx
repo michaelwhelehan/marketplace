@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import ConversationMessageList, {
   ConversationMessageListProps,
 } from '../molecules/Conversation/ConversationMessageList'
@@ -14,23 +14,43 @@ const ConversationContainer = styled.article`
   padding-bottom: 20px;
 `
 
-const ConversationMessagesWrapper = styled.div`
+const ConversationMessagesWrapper = styled.div<{
+  position: 'topDown' | 'bottomUp'
+}>`
+  ${({ position }) =>
+    position === 'topDown' &&
+    css`
+      margin-top: 70px;
+    `}
   height: calc(100% - 60px);
 `
 
-const ConversationTextFieldWrapper = styled.div`
+const ConversationTextFieldWrapper = styled.div<{
+  position: 'topDown' | 'bottomUp'
+}>`
   position: absolute;
-  bottom: 20px;
   width: 100%;
   padding-left: 20px;
   padding-right: 20px;
   left: 0;
   right: 0;
+  ${({ position }) =>
+    position === 'topDown' &&
+    css`
+      top: -50px;
+    `}
+  ${({ position }) =>
+    position === 'bottomUp' &&
+    css`
+      bottom: 20px;
+    `}
 `
 
 interface Props
   extends ConversationMessageListProps,
-    ConversationTextFieldProps {}
+    ConversationTextFieldProps {
+  position: 'topDown' | 'bottomUp'
+}
 
 const Conversation: FC<Props> = ({
   onMessageCreated,
@@ -39,10 +59,10 @@ const Conversation: FC<Props> = ({
 }) => {
   return (
     <ConversationContainer>
-      <ConversationMessagesWrapper>
+      <ConversationMessagesWrapper position={props.position}>
         <ConversationMessageList {...props} />
       </ConversationMessagesWrapper>
-      <ConversationTextFieldWrapper>
+      <ConversationTextFieldWrapper position={props.position}>
         <ConversationTextField
           memberName={memberName}
           onMessageCreated={onMessageCreated}

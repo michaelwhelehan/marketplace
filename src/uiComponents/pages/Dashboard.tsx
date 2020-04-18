@@ -73,7 +73,8 @@ const Dashboard: FC = () => {
             {navigationItems.map(navItem => (
               <NavigationItem key={navItem.title}>
                 <Link to={navItem.link}>
-                  <Icon name={navItem.icon} marginRight /> {navItem.title}
+                  <Icon size={20} name={navItem.icon} spacingEnd />{' '}
+                  {navItem.title}
                 </Link>
               </NavigationItem>
             ))}

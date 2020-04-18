@@ -5,10 +5,7 @@ import Avatar from '../../atoms/Avatar'
 import { OnlineStatusType, MemberType } from '../../../types/user'
 import { ParagraphS, ParagraphXXS } from '../../atoms/Paragraphs'
 import { black, borderColor, white } from '../../../styles/colors'
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
-
-dayjs.extend(relativeTime)
+import { fromNow } from '../../../utils/date'
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -28,7 +25,7 @@ const StyledCard = styled.div`
 const UserName = styled(ParagraphS)`
   color: ${black};
   font-weight: bold;
-  margin-bottom: 5px;
+  padding-bottom: 5px;
 `
 
 const Message = styled(ParagraphS)`
@@ -49,7 +46,7 @@ const BodyContainer = styled.div`
 
 const TimestampContainer = styled.div`
   flex: none;
-  margin-bottom: 30px;
+  padding-bottom: 30px;
 `
 
 type MessageType = {
@@ -82,9 +79,7 @@ const InboxConversationListCard: FC<Props> = ({ member, message }) => {
           </Message>
         </BodyContainer>
         <TimestampContainer>
-          <ParagraphXXS>
-            {dayjs().from(message.lastMessageTimestamp)}
-          </ParagraphXXS>
+          <ParagraphXXS>{fromNow(message.lastMessageTimestamp)}</ParagraphXXS>
         </TimestampContainer>
       </StyledCard>
     </StyledLink>
