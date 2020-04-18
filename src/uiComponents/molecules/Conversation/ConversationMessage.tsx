@@ -7,6 +7,7 @@ import { DocumentNode } from 'graphql'
 import Avatar from '../../atoms/Avatar'
 import { fromNow } from '../../../utils/date'
 import { fwBold, fsXXS } from '../../../styles/typography'
+import UserName from '../../atoms/UserName'
 
 const MessageContainerOuter = styled.div`
   height: 100%;
@@ -35,10 +36,6 @@ const MessageContent = styled.div`
 const MessageMember = styled.div`
   display: flex;
   padding-bottom: 10px;
-`
-
-const MessageMemberName = styled.span`
-  ${fwBold};
 `
 
 const MessageTimestamp = styled.span`
@@ -93,7 +90,7 @@ const ConversationMessage: FC<Props> & Fragments = ({
         </MessageMemberAvatar>
         <MessageContent>
           <MessageMember>
-            <MessageMemberName>{member.name}</MessageMemberName>
+            <UserName as="span">{member.name}</UserName>
             <MessageTimestamp>{fromNow(message.timestamp)}</MessageTimestamp>
           </MessageMember>
           {message.type === 'text' ? (

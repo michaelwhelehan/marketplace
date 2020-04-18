@@ -5,4 +5,7 @@ export type MemberType = {
   profilePictureUrl: string
   onlineStatus: OnlineStatusType
   lastSeen: Date
+  jobTitle?: string
+  rating?: number
+  numRatings?: number
 }

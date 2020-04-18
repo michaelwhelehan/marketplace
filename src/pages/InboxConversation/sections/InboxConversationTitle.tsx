@@ -2,10 +2,9 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import StatusIndicator from '../../../uiComponents/atoms/StatusIndicator'
 import { ParagraphS } from '../../../uiComponents/atoms/Paragraphs'
-import { fwBold } from '../../../styles/typography'
+import UserName from '../../../uiComponents/atoms/UserName'
 import { MemberType } from '../../../types/user'
 import { fromNow } from '../../../utils/date'
-import { black } from '../../../styles/colors'
 
 const Container = styled.article`
   height: 100%;
@@ -18,12 +17,6 @@ const Container = styled.article`
 const Member = styled.div`
   display: flex;
   align-items: center;
-`
-
-const MemberName = styled(ParagraphS)`
-  ${fwBold};
-  color: ${black};
-  margin-left: 5px;
 `
 
 const LastSeen = styled.div`
@@ -39,7 +32,9 @@ const InboxConversationTitle: FC<Props> = ({ member }) => {
     <Container>
       <Member>
         <StatusIndicator onlineStatus={member.onlineStatus} />
-        <MemberName>{member.name}</MemberName>
+        <UserName as="span" style={{ marginLeft: '5px' }}>
+          {member.name}
+        </UserName>
       </Member>
       <LastSeen>
         <ParagraphS>Last seen {fromNow(member.lastSeen)}</ParagraphS>

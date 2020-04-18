@@ -6,6 +6,7 @@ import { OnlineStatusType, MemberType } from '../../../types/user'
 import { ParagraphS, ParagraphXXS } from '../../atoms/Paragraphs'
 import { black, borderColor, white } from '../../../styles/colors'
 import { fromNow } from '../../../utils/date'
+import UserName from '../../atoms/UserName'
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -22,13 +23,8 @@ const StyledCard = styled.div`
   align-items: center;
 `
 
-const UserName = styled(ParagraphS)`
-  color: ${black};
-  font-weight: bold;
-  padding-bottom: 5px;
-`
-
 const Message = styled(ParagraphS)`
+  margin-top: 5px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

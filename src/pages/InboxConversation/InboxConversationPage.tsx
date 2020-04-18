@@ -42,6 +42,9 @@ const InboxConversationPage: FC = () => {
     profilePictureUrl,
     onlineStatus: 'online',
     lastSeen: new Date(),
+    jobTitle: 'Software Developer',
+    rating: 4.8,
+    numRatings: 10,
   }
 
   return (
