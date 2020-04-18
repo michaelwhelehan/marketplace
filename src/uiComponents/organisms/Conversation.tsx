@@ -6,6 +6,7 @@ import ConversationMessageList, {
 import ConversationTextField, {
   ConversationTextFieldProps,
 } from '../molecules/Conversation/ConversationTextField'
+import { ConversationPositionType } from '../../types/conversation'
 
 const ConversationContainer = styled.article`
   position: relative;
@@ -49,7 +50,7 @@ const ConversationTextFieldWrapper = styled.div<{
 interface Props
   extends ConversationMessageListProps,
     ConversationTextFieldProps {
-  position: 'topDown' | 'bottomUp'
+  position: ConversationPositionType
 }
 
 const Conversation: FC<Props> = ({

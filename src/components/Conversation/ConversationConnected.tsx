@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import Conversation from '../../uiComponents/organisms/Conversation'
 import ConversationMessageList from '../../uiComponents/molecules/Conversation/ConversationMessageList'
+import { ConversationPositionType } from '../../types/conversation'
 
 const CREATE_CONVERSATION_MESSAGE = gql`
   mutation CreateConversationMessage($conversationId: ID!, $message: String!) {
@@ -38,7 +39,7 @@ const GET_CONVERSATION_MESSAGES = gql`
 `
 
 interface Props {
-  position: 'topDown' | 'bottomUp'
+  position: ConversationPositionType
 }
 
 const ConversationConnected: FC<Props> = ({ position }) => {

@@ -4,6 +4,7 @@ import InfiniteList from '../InfiniteList'
 import ConversationMessage from './ConversationMessage'
 import { gql } from '@apollo/client'
 import { DocumentNode } from 'graphql'
+import { ConversationPositionType } from '../../../types/conversation'
 
 const StyledConversationMessageList = styled.div`
   height: 100%;
@@ -14,7 +15,7 @@ export interface ConversationMessageListProps {
   messageList: any[]
   messagesLoadAmount: number
   onLoadMoreMessages: (loadAmount: number) => Promise<any>
-  position: 'topDown' | 'bottomUp'
+  position: ConversationPositionType
 }
 
 type Fragments = {
