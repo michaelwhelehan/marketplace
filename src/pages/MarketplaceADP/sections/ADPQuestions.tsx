@@ -1,23 +1,19 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import { black } from '../../../styles/colors'
-import { ParagraphS } from '../../../uiComponents/atoms/Paragraphs'
-import { fwBold } from '../../../styles/typography'
 import ConversationConnected from '../../../components/Conversation/ConversationConnected'
+import { HeadingS } from '../../../uiComponents/atoms/Headings'
 
-const Container = styled.article`
-  padding: 20px;
-`
+const Container = styled.article``
 
-const Title = styled(ParagraphS)`
+const Title = styled(HeadingS)`
   color: ${black};
-  ${fwBold};
-  text-transform: uppercase;
+  padding: 0 20px 0 20px;
 `
 
 const ConversationContainer = styled.div`
   margin-top: 10px;
-  height: 300px;
+  height: 400px;
 `
 
 const ADPQuestions: FC = () => {

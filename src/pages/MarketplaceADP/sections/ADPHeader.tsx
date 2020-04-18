@@ -15,6 +15,9 @@ const Container = styled.article`
   position: sticky;
   top: 0;
   background-color: ${white};
+  z-index: 999;
+
+  // todo: apply this when scrolling box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1);
 `
 
 const StyledHeading = styled(HeadingM)`
@@ -22,7 +25,7 @@ const StyledHeading = styled(HeadingM)`
 `
 
 const StyledButton = styled(Button)`
-  flex-basis: 180px;
+  flex-basis: 200px;
 `
 
 interface Props {
@@ -33,7 +36,7 @@ const ADPHeader: FC<Props> = ({ task }) => {
   return (
     <Container>
       <StyledHeading>{task.title}</StyledHeading>
-      <StyledButton>
+      <StyledButton large>
         Make offer on {task.currency.iso}
         {task.budget}
       </StyledButton>

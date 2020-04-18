@@ -1,9 +1,11 @@
 import styled, { css } from 'styled-components'
 import { darken } from 'polished'
 import { primaryColor, white } from '../../styles/colors'
+import { fsS, fsM } from '../../styles/typography'
 
 interface StyledButtonProps {
   fullWidth?: boolean
+  large?: boolean
 }
 
 const StyledButton = styled.button<StyledButtonProps>`
@@ -13,7 +15,8 @@ const StyledButton = styled.button<StyledButtonProps>`
   color: ${white};
   font-weight: bold;
   border: ${primaryColor};
-  padding: 10px 20px;
+  font-size: ${({ large }) => (large ? `${fsS}px` : `${fsM}px`)};
+  padding: ${({ large }) => (large ? '15px 30px' : '10px 20px')};
   ${({ fullWidth }) =>
     fullWidth &&
     css`

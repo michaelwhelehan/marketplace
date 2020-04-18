@@ -2,16 +2,14 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { black } from '../../../styles/colors'
 import { ParagraphS } from '../../../uiComponents/atoms/Paragraphs'
-import { fwBold } from '../../../styles/typography'
+import { HeadingS } from '../../../uiComponents/atoms/Headings'
 
 const Container = styled.article`
   padding: 20px;
 `
 
-const Title = styled(ParagraphS)`
+const Title = styled(HeadingS)`
   color: ${black};
-  ${fwBold};
-  text-transform: uppercase;
 `
 
 const StyledParagraphS = styled(ParagraphS)`

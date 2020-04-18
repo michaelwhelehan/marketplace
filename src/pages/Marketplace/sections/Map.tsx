@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react'
 import styled from 'styled-components'
 import ReactMapGL from 'react-map-gl'
-import MapMarker from '../atoms/MapMarker'
+import MapMarker from '../../../uiComponents/atoms/MapMarker'
 
 const TOKEN =
   'pk.eyJ1IjoibXdoZWxlaGFuIiwiYSI6ImNrODBpdm5vcTBndnczc211MGxmdzl6azYifQ.Q_qr9Jta1_VKX2YwlLAtng'

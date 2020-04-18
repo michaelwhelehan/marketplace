@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react'
 import styled from 'styled-components'
 import InboxConversationListCard from './InboxConversationCard'
-import InfiniteList from '../InfiniteList'
+import InfiniteList from '../../../uiComponents/molecules/InfiniteList'
 import {
   MAIN_HEADER_HEIGHT,
   INBOX_HEADER_HEIGHT,

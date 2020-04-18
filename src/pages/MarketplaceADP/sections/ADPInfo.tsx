@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import { TaskType } from '../../../types/task'
 import { black, primaryColor, primaryFontColor } from '../../../styles/colors'
 import Avatar from '../../../uiComponents/atoms/Avatar'
-import { ParagraphS } from '../../../uiComponents/atoms/Paragraphs'
 import { fwBold, fsS, fsXXL } from '../../../styles/typography'
 import { Link } from 'react-router-dom'
 import Icon from '../../../uiComponents/atoms/Icon'
 import { formatDate } from '../../../utils/date'
+import { HeadingS } from '../../../uiComponents/atoms/Headings'
 
 const Container = styled.article`
   padding: 20px;
@@ -38,11 +38,7 @@ const InfoValue = styled.div`
   justify-content: center;
 `
 
-const InfoValueTitle = styled(ParagraphS)`
-  color: ${black};
-  ${fwBold};
-  text-transform: uppercase;
-`
+const InfoValueTitle = styled(HeadingS)``
 
 const StyledLink = styled(Link)`
   margin-top: 5px;
@@ -69,7 +65,7 @@ const InfoBudget = styled.div`
 `
 
 const InfoBudgetValue = styled.div`
-  margin-top: 20px;
+  margin-top: 10px;
   ${fwBold};
   color: ${primaryColor};
   font-size: ${fsXXL}px;

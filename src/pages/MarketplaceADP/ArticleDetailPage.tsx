@@ -44,7 +44,7 @@ const Container = styled.div`
 `
 
 const StyledHR = styled.hr`
-  margin: 20px;
+  margin: 10px 20px;
 `
 
 const ArticleDetailPage: FC = () => {
