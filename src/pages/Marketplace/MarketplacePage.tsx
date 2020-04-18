@@ -1,13 +1,13 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import FilterHeader from '../uiComponents/molecules/FilterHeader'
-import BaseContainer from '../uiComponents/atoms/Container'
-import Map from '../uiComponents/organisms/Map'
-import SideList from '../uiComponents/organisms/SideList'
+import FilterHeader from '../../uiComponents/molecules/FilterHeader'
+import BaseContainer from '../../uiComponents/atoms/Container'
+import Map from '../../uiComponents/organisms/Map'
+import SideList from '../../uiComponents/organisms/SideList'
 import { useRouteMatch, Switch, Route, useLocation } from 'react-router-dom'
-import ArticleDetailPage from './MarketplaceADP'
+import ArticleDetailPage from '../MarketplaceADP/ArticleDetailPage'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import { MAIN_HEADER_HEIGHT, FILTER_HEADER_HEIGHT } from '../constants/sizes'
+import { MAIN_HEADER_HEIGHT, FILTER_HEADER_HEIGHT } from '../../constants/sizes'
 
 const StyledContainer = styled(BaseContainer)`
   border-left: 1px solid #eee;
@@ -29,7 +29,7 @@ const MainContainer = styled.article`
   }
 `
 
-const Marketplace: FC = () => {
+const MarketplacePage: FC = () => {
   const match = useRouteMatch()
   const location = useLocation()
   return (
@@ -58,4 +58,4 @@ const Marketplace: FC = () => {
   )
 }
 
-export default Marketplace
+export default MarketplacePage

@@ -1,16 +1,16 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import BaseContainer from '../uiComponents/atoms/Container'
-import Button from '../uiComponents/atoms/Button'
+import BaseContainer from '../../uiComponents/atoms/Container'
+import Button from '../../uiComponents/atoms/Button'
 import {
   borderColor,
   offWhite,
   white,
   primaryFontColor,
-} from '../styles/colors'
+} from '../../styles/colors'
 import { Link } from 'react-router-dom'
-import Icon from '../uiComponents/atoms/Icon'
-import { MAIN_HEADER_HEIGHT } from '../constants/sizes'
+import Icon from '../../uiComponents/atoms/Icon'
+import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
 
 const StyledContainer = styled(BaseContainer)`
   border-left: 1px solid ${borderColor};
@@ -63,7 +63,7 @@ const navigationItems: NavigationItemType[] = [
   { icon: 'MdExitToApp', title: 'Logout', link: '' },
 ]
 
-const Dashboard: FC = () => {
+const DashboardPage: FC = () => {
   return (
     <>
       <StyledContainer>
@@ -86,4 +86,4 @@ const Dashboard: FC = () => {
   )
 }
 
-export default Dashboard
+export default DashboardPage

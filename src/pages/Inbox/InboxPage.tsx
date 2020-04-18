@@ -1,16 +1,16 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import BaseContainer from '../uiComponents/atoms/Container'
-import { borderColor, white, primaryFontColor } from '../styles/colors'
+import BaseContainer from '../../uiComponents/atoms/Container'
+import { borderColor, white, primaryFontColor } from '../../styles/colors'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
-import Icon from '../uiComponents/atoms/Icon'
-import { MAIN_HEADER_HEIGHT } from '../constants/sizes'
-import FilterSelect from '../uiComponents/atoms/FilterSelect'
-import InboxConversation from './InboxConversation'
-import { HeadingL } from '../uiComponents/atoms/Headings'
-import { ParagraphM } from '../uiComponents/atoms/Paragraphs'
-import { INBOX_HEADER_HEIGHT } from '../constants/sizes'
-import InboxConversationList from '../uiComponents/molecules/Inbox/InboxConversationList'
+import Icon from '../../uiComponents/atoms/Icon'
+import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
+import FilterSelect from '../../uiComponents/atoms/FilterSelect'
+import InboxConversation from '../InboxConversation/InboxConversationPage'
+import { HeadingL } from '../../uiComponents/atoms/Headings'
+import { ParagraphM } from '../../uiComponents/atoms/Paragraphs'
+import { INBOX_HEADER_HEIGHT } from '../../constants/sizes'
+import InboxConversationList from '../../uiComponents/molecules/Inbox/InboxConversationList'
 
 const StyledContainer = styled(BaseContainer)`
   border-left: 1px solid ${borderColor};
@@ -54,7 +54,7 @@ const InboxHint: FC = () => (
   </SelectConversation>
 )
 
-const Inbox: FC = () => {
+const InboxPage: FC = () => {
   const match = useRouteMatch()
 
   return (
@@ -79,4 +79,4 @@ const Inbox: FC = () => {
   )
 }
 
-export default Inbox
+export default InboxPage
