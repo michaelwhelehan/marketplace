@@ -29,6 +29,7 @@ const CardInner = styled.div`
   border-radius: 6px;
   height: 100%;
   background: white;
+  position: relative;
 `
 
 const CardMain = styled.div`
@@ -39,7 +40,17 @@ const CardMain = styled.div`
 
 const CardFooter = styled.div`
   border-top: 1px solid ${borderColor};
-  padding: 10px;
+  padding: 7px 10px 5px 10px;
+`
+
+const CardRibbon = styled.div`
+  position: absolute;
+  background-color: ${primaryColor};
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
 `
 
 const CardTitle = styled(HeadingS)`
@@ -130,6 +141,7 @@ const SideListCard: FC<Props> = ({ task }) => {
           <CardStatus as="span">Open</CardStatus>
           <CardOffers as="span">- 2 offers</CardOffers>
         </CardFooter>
+        <CardRibbon />
       </CardInner>
     </CardOuter>
   )

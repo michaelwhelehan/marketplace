@@ -25,7 +25,7 @@ const StyledHeading = styled(HeadingM)`
 `
 
 const StyledButton = styled(Button)`
-  flex-basis: 200px;
+  flex-basis: 210px;
 `
 
 interface Props {
