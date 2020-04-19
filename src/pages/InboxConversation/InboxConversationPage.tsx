@@ -53,7 +53,7 @@ const InboxConversationPage: FC = () => {
         <InboxConversationTitle member={member} />
       </TitleContainer>
       <DiscussionContainer>
-        <ConversationConnected position="bottomUp" />
+        <ConversationConnected position="bottomUp" scrollType="infinite" />
       </DiscussionContainer>
       <DetailsContainer>
         <InboxConversationDetails member={member} />

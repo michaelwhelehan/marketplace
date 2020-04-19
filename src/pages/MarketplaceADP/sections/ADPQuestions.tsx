@@ -21,7 +21,7 @@ const ADPQuestions: FC = () => {
     <Container>
       <Title>Questions (10)</Title>
       <ConversationContainer>
-        <ConversationConnected position="topDown" />
+        <ConversationConnected position="topDown" scrollType="windowed" />
       </ConversationContainer>
     </Container>
   )

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useRef } from 'react'
 import styled from 'styled-components'
 import faker from 'faker'
 import { TaskType } from '../../types/task'
@@ -7,6 +7,7 @@ import ADPInfo from './sections/ADPInfo'
 import profilePictureUrl from '../../assets/images/profile.png'
 import ADPDetails from './sections/ADPDetails'
 import ADPQuestions from './sections/ADPQuestions'
+import { ScrollElementContextProvider } from '../../contexts/ScrollElementContext'
 
 const Container = styled.div`
   height: calc(100vh - 64px - 56px - 2px);
@@ -62,13 +63,18 @@ const ArticleDetailPage: FC = () => {
     dueDate: new Date(),
     details: faker.lorem.paragraph(10),
   }
+  const scrollElement = useRef(null)
+  console.log('>>>', scrollElement)
+
   return (
-    <Container>
+    <Container ref={scrollElement}>
       <ADPHeader task={task} />
       <ADPInfo task={task} />
       <StyledHR />
       <ADPDetails details={task.details} />
-      <ADPQuestions />
+      <ScrollElementContextProvider scrollElement={scrollElement}>
+        <ADPQuestions />
+      </ScrollElementContextProvider>
     </Container>
   )
 }

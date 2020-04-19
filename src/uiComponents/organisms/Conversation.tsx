@@ -16,7 +16,7 @@ const ConversationContainer = styled.article`
 `
 
 const ConversationMessagesWrapper = styled.div<{
-  position: 'topDown' | 'bottomUp'
+  position: ConversationPositionType
 }>`
   ${({ position }) =>
     position === 'topDown' &&
@@ -27,7 +27,7 @@ const ConversationMessagesWrapper = styled.div<{
 `
 
 const ConversationTextFieldWrapper = styled.div<{
-  position: 'topDown' | 'bottomUp'
+  position: ConversationPositionType
 }>`
   position: absolute;
   width: 100%;
@@ -49,9 +49,7 @@ const ConversationTextFieldWrapper = styled.div<{
 
 interface Props
   extends ConversationMessageListProps,
-    ConversationTextFieldProps {
-  position: ConversationPositionType
-}
+    ConversationTextFieldProps {}
 
 const Conversation: FC<Props> = ({
   onMessageCreated,

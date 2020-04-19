@@ -4,7 +4,12 @@ import InfiniteList from '../InfiniteList'
 import ConversationMessage from './ConversationMessage'
 import { gql } from '@apollo/client'
 import { DocumentNode } from 'graphql'
-import { ConversationPositionType } from '../../../types/conversation'
+import {
+  ConversationPositionType,
+  ConversationScrollType,
+} from '../../../types/conversation'
+import WindowedList from '../WindowedList'
+import { useScrollElement } from '../../../contexts/ScrollElementContext'
 
 const StyledConversationMessageList = styled.div`
   height: 100%;
@@ -16,6 +21,7 @@ export interface ConversationMessageListProps {
   messagesLoadAmount: number
   onLoadMoreMessages: (loadAmount: number) => Promise<any>
   position: ConversationPositionType
+  scrollType: ConversationScrollType
 }
 
 type Fragments = {
@@ -28,9 +34,27 @@ const ConversationMessageList: FC<ConversationMessageListProps> & Fragments = ({
   messagesLoadAmount,
   onLoadMoreMessages,
   position,
+  scrollType,
 }) => {
+  const scrollElementRef = useScrollElement()
+
   if (!messageList || !messageList.length) {
     return null
+  }
+
+  if (scrollType === 'windowed') {
+    return (
+      <WindowedList
+        loading={messagesLoading}
+        list={messageList}
+        loadAmount={messagesLoadAmount}
+        renderListItem={listItem => <ConversationMessage {...listItem} />}
+        onLoadMore={onLoadMoreMessages}
+        rowHeight={100}
+        heightCalculation="dynamic"
+        scrollElement={scrollElementRef.current ?? window}
+      />
+    )
   }
 
   return (

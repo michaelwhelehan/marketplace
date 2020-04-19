@@ -2,7 +2,10 @@ import React, { FC } from 'react'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import Conversation from '../../uiComponents/organisms/Conversation'
 import ConversationMessageList from '../../uiComponents/molecules/Conversation/ConversationMessageList'
-import { ConversationPositionType } from '../../types/conversation'
+import {
+  ConversationPositionType,
+  ConversationScrollType,
+} from '../../types/conversation'
 
 const CREATE_CONVERSATION_MESSAGE = gql`
   mutation CreateConversationMessage($conversationId: ID!, $message: String!) {
@@ -40,9 +43,10 @@ const GET_CONVERSATION_MESSAGES = gql`
 
 interface Props {
   position: ConversationPositionType
+  scrollType: ConversationScrollType
 }
 
-const ConversationConnected: FC<Props> = ({ position }) => {
+const ConversationConnected: FC<Props> = ({ position, scrollType }) => {
   const { data, loading, fetchMore } = useQuery(GET_CONVERSATION_MESSAGES, {
     variables: { conversationId: '1', cursor: undefined },
   })
@@ -82,6 +86,7 @@ const ConversationConnected: FC<Props> = ({ position }) => {
   return (
     <Conversation
       position={position}
+      scrollType={scrollType}
       messagesLoading={loading}
       messageList={data?.conversation?.conversationFeed?.messages}
       messagesLoadAmount={10}
