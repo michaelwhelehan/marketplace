@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import Header, { LinkType } from '../../uiComponents/molecules/Header'
+import Header, { LinkType } from '../../uiComponents/organisms/Header'
 import profilePictureUrl from '../../assets/images/profile.png'
 
 const Layout: FC = ({ children }) => {
@@ -14,7 +14,7 @@ const Layout: FC = ({ children }) => {
     },
     {
       name: 'Messages',
-      href: '',
+      href: '/dashboard/inbox',
     },
   ]
   return (

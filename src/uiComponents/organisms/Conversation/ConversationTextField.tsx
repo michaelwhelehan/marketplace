@@ -23,6 +23,7 @@ const ConversationTextField: FC<ConversationTextFieldProps> = ({
 
   return (
     <TextField
+      autoFocus
       placeholder={`Write a message to ${memberName}`}
       fullWidth
       value={value}

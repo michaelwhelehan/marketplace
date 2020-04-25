@@ -2,12 +2,12 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import Avatar from '../../../uiComponents/atoms/Avatar'
-import { OnlineStatusType, UserType } from '../../../types/user'
+import { UserType } from '../../../types/user'
 import {
   ParagraphS,
   ParagraphXXS,
 } from '../../../uiComponents/atoms/Paragraphs'
-import { black, borderColor, white } from '../../../styles/colors'
+import { borderColor, white } from '../../../styles/colors'
 import { fromNow } from '../../../utils/date'
 import UserName from '../../../uiComponents/atoms/UserName'
 

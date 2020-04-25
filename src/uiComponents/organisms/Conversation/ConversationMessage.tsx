@@ -6,7 +6,7 @@ import { gql } from '@apollo/client'
 import { DocumentNode } from 'graphql'
 import Avatar from '../../atoms/Avatar'
 import { fromNow } from '../../../utils/date'
-import { fwBold, fsXXS } from '../../../styles/typography'
+import { fsXXS } from '../../../styles/typography'
 import UserName from '../../atoms/UserName'
 
 const MessageContainerOuter = styled.div`

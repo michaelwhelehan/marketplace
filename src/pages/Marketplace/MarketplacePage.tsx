@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import FilterHeader from '../../uiComponents/molecules/FilterHeader'
+import FilterHeader from '../../uiComponents/organisms/FilterHeader'
 import BaseContainer from '../../uiComponents/atoms/Container'
 import Map from './sections/Map'
 import SideList from './sections/SideList'

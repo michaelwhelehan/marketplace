@@ -11,7 +11,7 @@ const SearchContainer = styled.div`
 
 const StyledIcon = styled(Icon)`
   position: absolute;
-  top: 6px;
+  top: 7px;
   left: 10px;
 `
 

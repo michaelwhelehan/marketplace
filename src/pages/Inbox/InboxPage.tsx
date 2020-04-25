@@ -61,7 +61,10 @@ const InboxPage: FC = () => {
     <StyledContainer>
       <SideContainer>
         <FilterContainer>
-          <FilterSelect placeholder="All Conversations" />
+          <FilterSelect
+            placeholder="All Conversations"
+            options={[{ label: 'All Conversations', value: 'all' }]}
+          />
         </FilterContainer>
         <InboxConversationList />
       </SideContainer>

@@ -1,4 +1,4 @@
-import React, { FC, useRef, useEffect } from 'react'
+import React, { FC, useRef } from 'react'
 import styled from 'styled-components'
 import ADPHeader from './sections/ADPHeader'
 import ADPInfo from './sections/ADPInfo'

@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import { TaskType } from '../../../types/task'
-import { black, primaryColor, primaryFontColor } from '../../../styles/colors'
+import { primaryColor, primaryFontColor } from '../../../styles/colors'
 import Avatar from '../../../uiComponents/atoms/Avatar'
 import { fwBold, fsS, fsXXL } from '../../../styles/typography'
 import { Link } from 'react-router-dom'

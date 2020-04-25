@@ -1,9 +1,15 @@
 import React, { FC } from 'react'
-import Select from 'react-select'
+import Select, { OptionTypeBase } from 'react-select'
 import { primaryFontColor, white } from '../../styles/colors'
+
+interface OptionType extends OptionTypeBase {
+  value: string | number
+  label: string
+}
 
 interface Props {
   placeholder?: string
+  options: OptionType[]
 }
 
 const filterStyles = {
@@ -19,12 +25,7 @@ const filterStyles = {
   placeholder: styles => ({ ...styles, color: primaryFontColor }),
 }
 
-const SelectField: FC<Props> = ({ placeholder }) => {
-  const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-  ]
+const SelectField: FC<Props> = ({ placeholder, options }) => {
   return (
     <Select placeholder={placeholder} options={options} styles={filterStyles} />
   )

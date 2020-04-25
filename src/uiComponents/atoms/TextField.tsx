@@ -30,6 +30,7 @@ export interface TextFieldProps extends StyledProps {
   fullWidth?: boolean
   paddingStart?: number
   placeholder?: string
+  autoFocus?: boolean
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
   value: string

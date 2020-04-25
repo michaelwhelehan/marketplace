@@ -4,8 +4,8 @@ import BaseContainer from '../atoms/Container'
 import Button from '../atoms/Button'
 import { borderColor, white } from '../../styles/colors'
 import { FILTER_HEADER_HEIGHT } from '../../constants/sizes'
-import SearchField from './SearchField'
-import FilterDropdown from '../atoms/FilterDropdown'
+import SearchField from '../molecules/SearchField'
+import FilterDropdown from '../molecules/FilterDropdown'
 
 const StyledHeader = styled.header`
   height: ${FILTER_HEADER_HEIGHT}px;
