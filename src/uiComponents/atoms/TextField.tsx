@@ -12,7 +12,7 @@ const StyledInput = styled.input<StyledProps>`
   background-color: ${white};
   border: 2px solid ${borderColorDark};
   border-radius: 4px;
-  padding: 10px;
+  padding: 8px;
   font-size: ${fsS}px;
   ${({ paddingStart }) =>
     paddingStart &&

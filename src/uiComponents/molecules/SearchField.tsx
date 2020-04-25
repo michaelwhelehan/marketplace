@@ -5,7 +5,7 @@ import Icon from '../atoms/Icon'
 import { primaryFontColor } from '../../styles/colors'
 
 const SearchContainer = styled.div`
-  width: 300px;
+  width: 250px;
   position: relative;
 `
 
@@ -20,8 +20,8 @@ interface Props extends TextFieldProps {}
 const SearchField: FC<Props> = props => {
   return (
     <SearchContainer>
-      <StyledIcon name="MdSearch" size={30} color={primaryFontColor} />
-      <TextField paddingStart={45} fullWidth {...props} />
+      <StyledIcon name="MdSearch" size={25} color={primaryFontColor} />
+      <TextField paddingStart={40} fullWidth {...props} />
     </SearchContainer>
   )
 }

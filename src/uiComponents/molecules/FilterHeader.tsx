@@ -5,6 +5,7 @@ import Button from '../atoms/Button'
 import { borderColor, white } from '../../styles/colors'
 import { FILTER_HEADER_HEIGHT } from '../../constants/sizes'
 import SearchField from './SearchField'
+import FilterDropdown from '../atoms/FilterDropdown'
 
 const StyledHeader = styled.header`
   height: ${FILTER_HEADER_HEIGHT}px;
@@ -18,16 +19,23 @@ const StyledContainer = styled(BaseContainer)`
   justify-content: space-between;
 `
 
-const FilterStart = styled.div``
+const FilterStart = styled.div`
+  display: flex;
+`
 
 const FilterEnd = styled.div``
+
+const StyledButton = styled(Button)`
+  margin-right: 20px;
+`
 
 const FilterHeader: FC = () => {
   return (
     <StyledHeader>
       <StyledContainer>
         <FilterStart>
-          <Button>Create Task</Button>
+          <StyledButton>Create Task</StyledButton>
+          <FilterDropdown name="Filters" />
         </FilterStart>
         <FilterEnd>
           <SearchField
