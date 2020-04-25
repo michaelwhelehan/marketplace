@@ -1,10 +1,10 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { UserType } from '../../../types/user'
-import Avatar from '../../atoms/Avatar'
-import UserName from '../../atoms/UserName'
-import { ParagraphS } from '../../atoms/Paragraphs'
-import Rating from '../../atoms/Rating'
+import { UserType } from '../../types/user'
+import Avatar from '../atoms/Avatar'
+import UserName from '../atoms/UserName'
+import { ParagraphS } from '../atoms/Paragraphs'
+import Rating from '../atoms/Rating'
 
 const Container = styled.div`
   display: flex;

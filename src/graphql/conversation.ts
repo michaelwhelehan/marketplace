@@ -12,45 +12,51 @@ function weightedRandom(prob) {
   }
 }
 
-function generateMessages(numMessages: number) {
-  const messages = []
-  for (let i = 0; i < numMessages; i++) {
-    const roll = parseInt(weightedRandom({ 0: 0.8, 1: 0.1, 2: 0.1 }), 10)
-    const message: any = {
-      id: faker.random.uuid(),
-      member: {
-        name: 'Mike Wells',
-        profilePictureUrl,
-        onlineStatus: 'online',
-        __typename: 'ConversationMember',
-      },
-      __typename: 'ConversationFeedMessage',
-    }
-    if (roll === 0) {
-      message.message = {
-        type: 'text',
-        text: faker.lorem.paragraph(5),
-        timestamp: new Date(),
-        __typename: 'ConversationMessageText',
-      }
-    } else if (roll === 1) {
-      message.message = {
-        type: 'image',
-        url: faker.image.imageUrl(),
-        timestamp: new Date(),
-        __typename: 'ConversationMessageImage',
-      }
-    } else if (roll === 2) {
-      message.message = {
-        type: 'video',
-        url: faker.image.imageUrl(),
-        timestamp: new Date(),
-        __typename: 'ConversationMessageVideo',
-      }
-    }
-    messages.push(message)
+function generateItem() {
+  const roll = parseInt(weightedRandom({ 0: 0.8, 1: 0.1, 2: 0.1 }), 10)
+  const listItem: any = {
+    id: faker.random.uuid(),
+    member: {
+      name: faker.name.findName(),
+      profilePictureUrl,
+      onlineStatus: 'online',
+      __typename: 'ConversationMember',
+    },
+    __typename: 'ConversationFeedMessage',
   }
-  return messages
+  if (roll === 0) {
+    listItem.message = {
+      type: 'text',
+      text: faker.lorem.paragraph(5),
+      timestamp: faker.date.past(),
+      __typename: 'ConversationMessageText',
+    }
+  } else if (roll === 1) {
+    listItem.message = {
+      type: 'image',
+      url: faker.image.imageUrl(),
+      timestamp: faker.date.past(),
+      __typename: 'ConversationMessageImage',
+    }
+  } else if (roll === 2) {
+    listItem.message = {
+      type: 'video',
+      url: faker.image.imageUrl(),
+      timestamp: faker.date.past(),
+      __typename: 'ConversationMessageVideo',
+    }
+  }
+
+  return listItem
+}
+
+function generateItems(numToGenerate: number) {
+  const list = []
+  for (let i = 0; i < numToGenerate; i++) {
+    const listItem = generateItem()
+    list.push(listItem)
+  }
+  return list
 }
 
 export const typeDefs = gql`
@@ -76,7 +82,7 @@ export const typeDefs = gql`
     message: ConversationMessage!
   }
 
-  type ConversationMember {
+  type User {
     name: String!
     profilePictureUrl: String!
     onlineStatus: String!
@@ -110,7 +116,7 @@ export const resolvers = {
     conversationFeed: (conversation, { cursor }) => {
       return {
         cursor: '2cf2a616-56fd-4d54-9585-a48666549102',
-        messages: generateMessages(50),
+        messages: generateItems(50),
         __typename: 'ConversationFeed',
       }
     },
@@ -125,7 +131,7 @@ export const resolvers = {
         __typename: 'ConversationFeedMessage',
         id: faker.random.uuid(),
         member: {
-          __typename: 'ConversationMember',
+          __typename: 'User',
           name: 'Mike Wells',
           profilePictureUrl,
           onlineStatus: 'online',

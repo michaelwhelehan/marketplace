@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { OnlineStatusType } from '../../types/user'
 import StatusIndicator from './StatusIndicator'
+import { borderColorDark } from '../../styles/colors'
 
 interface Props {
   src: string
@@ -16,6 +17,7 @@ const StyledAvatar = styled.figure`
 
 const StyledImage = styled.img<Props>`
   border-radius: 50%;
+  border: 1px solid ${borderColorDark};
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
 `

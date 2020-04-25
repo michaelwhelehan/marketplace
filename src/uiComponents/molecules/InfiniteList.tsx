@@ -7,6 +7,7 @@ import {
   CellMeasurerCache,
 } from 'react-virtualized'
 import { deepEquals } from '../../utils/compare'
+import usePrevious from '../../hooks/usePrevious'
 
 type CellSizeGetter = (params: { index: number }) => number
 
@@ -49,7 +50,7 @@ const InfiniteList: FC<Props> = ({
     direction === 'forward' ? -1 : list.length - 1,
   )
   const [ready, setReady] = useState<boolean>(false)
-  const prevList = usePreviousList(list)
+  const prevList = usePrevious(list)
   const cache = useMemo(
     () =>
       new CellMeasurerCache({
@@ -190,14 +191,6 @@ const InfiniteList: FC<Props> = ({
       )}
     </InfiniteLoader>
   )
-}
-
-function usePreviousList(value: any): any[] {
-  const ref = useRef()
-  useEffect(() => {
-    ref.current = value
-  })
-  return ref.current
 }
 
 export default InfiniteList

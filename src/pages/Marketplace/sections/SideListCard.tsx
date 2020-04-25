@@ -57,6 +57,8 @@ const CardTitle = styled(HeadingS)`
   color: ${black};
   height: 42px;
   flex-basis: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `
 
 const CardStatus = styled(ParagraphXS)`
@@ -107,7 +109,7 @@ interface Props {
 
 const SideListCard: FC<Props> = ({ task }) => {
   return (
-    <CardOuter to="/lol" as={Link}>
+    <CardOuter to={`/${task.slug}`} as={Link}>
       <CardInner>
         <CardMain>
           <CardStart>
@@ -124,7 +126,7 @@ const SideListCard: FC<Props> = ({ task }) => {
                   <Icon name="MdEventNote" size={20} color={primaryFontColor} />
                 </InfoIcon>
                 <InfoValue>
-                  {formatDate(task.dueDate, 'dddd, D MMMM YYYY')}
+                  {formatDate(task.dueDate, 'ddd, D MMMM YYYY')}
                 </InfoValue>
               </InfoRow>
             </InfoDetails>

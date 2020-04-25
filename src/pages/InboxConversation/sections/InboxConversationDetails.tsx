@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import { UserType } from '../../../types/user'
-import UserCard from '../../../uiComponents/molecules/User/UserCard'
+import UserCard from '../../../uiComponents/molecules/UserCard'
 import { ParagraphS } from '../../../uiComponents/atoms/Paragraphs'
 import { fwBold } from '../../../styles/typography'
 import { black } from '../../../styles/colors'

@@ -2,11 +2,19 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 import App from './App'
-import { typeDefs, resolvers } from './graphql/conversation'
+import {
+  typeDefs as conversationTypeDefs,
+  resolvers as conversationResolvers,
+} from './graphql/conversation'
+import {
+  typeDefs as taskTypeDefs,
+  resolvers as taskResolvers,
+} from './graphql/tasks'
 
 const cache = new InMemoryCache({
   possibleTypes: {
     ConversationFeed: [],
+    TaskFeed: [],
     ConversationMessage: [
       'ConversationMessageText',
       'ConversationMessageImage',
@@ -16,8 +24,8 @@ const cache = new InMemoryCache({
 })
 const client = new ApolloClient({
   cache,
-  typeDefs,
-  resolvers,
+  typeDefs: [conversationTypeDefs, taskTypeDefs],
+  resolvers: [conversationResolvers, taskResolvers],
   connectToDevTools: true,
 })
 

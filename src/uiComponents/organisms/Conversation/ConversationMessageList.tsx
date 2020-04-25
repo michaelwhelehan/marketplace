@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import InfiniteList from '../InfiniteList'
+import InfiniteList from '../../molecules/InfiniteList'
 import ConversationMessage from './ConversationMessage'
 import { gql } from '@apollo/client'
 import { DocumentNode } from 'graphql'
@@ -8,7 +8,7 @@ import {
   ConversationPositionType,
   ConversationScrollType,
 } from '../../../types/conversation'
-import WindowedList from '../WindowedList'
+import WindowedList from '../../molecules/WindowedList'
 import { useScrollElement } from '../../../contexts/ScrollElementContext'
 
 const StyledConversationMessageList = styled.div`

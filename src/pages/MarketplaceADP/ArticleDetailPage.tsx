@@ -1,13 +1,12 @@
-import React, { FC, useRef } from 'react'
+import React, { FC, useRef, useEffect } from 'react'
 import styled from 'styled-components'
-import faker from 'faker'
-import { TaskType } from '../../types/task'
 import ADPHeader from './sections/ADPHeader'
 import ADPInfo from './sections/ADPInfo'
-import profilePictureUrl from '../../assets/images/profile.png'
 import ADPDetails from './sections/ADPDetails'
 import ADPQuestions from './sections/ADPQuestions'
 import { ScrollElementContextProvider } from '../../contexts/ScrollElementContext'
+import { useParams } from 'react-router-dom'
+import { gql, useQuery } from '@apollo/client'
 
 const Container = styled.div`
   height: calc(100vh - 64px - 56px - 2px);
@@ -48,30 +47,46 @@ const StyledHR = styled.hr`
   margin: 10px 20px;
 `
 
-const ArticleDetailPage: FC = () => {
-  const task: TaskType = {
-    creator: {
-      name: 'Mike Wells',
-      profilePictureUrl,
-      onlineStatus: 'online',
-      lastSeen: new Date(),
-    },
-    title: 'Need something done that I can afford',
-    budget: 50,
-    currency: { code: 'EUR', iso: '€' },
-    location: 'Remote',
-    dueDate: new Date(),
-    details: faker.lorem.paragraph(10),
+export const GET_TASK = gql`
+  query Task($slug: String!) {
+    task(slug: $slug) @client {
+      id
+      creator {
+        profilePictureUrl
+        name
+      }
+      title
+      slug
+      budget
+      currency {
+        code
+        iso
+      }
+      location
+      dueDate
+      details
+      numOffers
+    }
   }
+`
+
+const ArticleDetailPage: FC = () => {
+  const { taskSlug } = useParams()
+  const { data, loading } = useQuery(GET_TASK, {
+    variables: { slug: taskSlug },
+  })
   const scrollElement = useRef(null)
-  console.log('>>>', scrollElement)
+
+  if (loading) {
+    return <Container>Loading...</Container>
+  }
 
   return (
     <Container ref={scrollElement}>
-      <ADPHeader task={task} />
-      <ADPInfo task={task} />
+      <ADPHeader task={data.task} />
+      <ADPInfo task={data.task} />
       <StyledHR />
-      <ADPDetails details={task.details} />
+      <ADPDetails details={data.task.details} />
       <ScrollElementContextProvider scrollElement={scrollElement}>
         <ADPQuestions />
       </ScrollElementContextProvider>

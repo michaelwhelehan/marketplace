@@ -19,7 +19,7 @@ const filterStyles = {
   placeholder: styles => ({ ...styles, color: primaryFontColor }),
 }
 
-const FilterSelect: FC<Props> = ({ placeholder }) => {
+const SelectField: FC<Props> = ({ placeholder }) => {
   const options = [
     { value: 'chocolate', label: 'Chocolate' },
     { value: 'strawberry', label: 'Strawberry' },
@@ -30,4 +30,4 @@ const FilterSelect: FC<Props> = ({ placeholder }) => {
   )
 }
 
-export default FilterSelect
+export default SelectField

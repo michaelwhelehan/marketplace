@@ -1,9 +1,10 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import BaseContainer from '../atoms/Container'
-import FilterCustomSelect from '../atoms/FilterCustomSelect'
+import Button from '../atoms/Button'
 import { borderColor, white } from '../../styles/colors'
 import { FILTER_HEADER_HEIGHT } from '../../constants/sizes'
+import TextField from '../atoms/TextField'
 
 const StyledHeader = styled.header`
   height: ${FILTER_HEADER_HEIGHT}px;
@@ -14,25 +15,27 @@ const StyledHeader = styled.header`
 const StyledContainer = styled(BaseContainer)`
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `
 
-const FilterSelectContainer = styled.div`
-  margin-right: 20px;
-`
+const FilterStart = styled.div``
+
+const FilterEnd = styled.div``
 
 const FilterHeader: FC = () => {
   return (
     <StyledHeader>
       <StyledContainer>
-        <FilterSelectContainer>
-          <FilterCustomSelect name="Hamburg & remote" />
-        </FilterSelectContainer>
-        <FilterSelectContainer>
-          <FilterCustomSelect name="Any price" />
-        </FilterSelectContainer>
-        <FilterSelectContainer>
-          <FilterCustomSelect name="Task type" />
-        </FilterSelectContainer>
+        <FilterStart>
+          <Button>Create Task</Button>
+        </FilterStart>
+        <FilterEnd>
+          <TextField
+            placeholder="Search for a task"
+            value=""
+            onChange={() => console.log()}
+          />
+        </FilterEnd>
       </StyledContainer>
     </StyledHeader>
   )

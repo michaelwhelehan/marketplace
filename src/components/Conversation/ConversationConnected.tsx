@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { useQuery, useMutation, gql } from '@apollo/client'
-import Conversation from '../../uiComponents/organisms/Conversation'
-import ConversationMessageList from '../../uiComponents/molecules/Conversation/ConversationMessageList'
+import Conversation from '../../uiComponents/organisms/Conversation/Conversation'
+import ConversationMessageList from '../../uiComponents/organisms/Conversation/ConversationMessageList'
 import {
   ConversationPositionType,
   ConversationScrollType,
@@ -83,6 +83,7 @@ const ConversationConnected: FC<Props> = ({ position, scrollType }) => {
       })
     },
   })
+
   return (
     <Conversation
       position={position}

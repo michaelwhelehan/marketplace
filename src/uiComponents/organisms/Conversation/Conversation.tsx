@@ -2,11 +2,11 @@ import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
 import ConversationMessageList, {
   ConversationMessageListProps,
-} from '../molecules/Conversation/ConversationMessageList'
+} from './ConversationMessageList'
 import ConversationTextField, {
   ConversationTextFieldProps,
-} from '../molecules/Conversation/ConversationTextField'
-import { ConversationPositionType } from '../../types/conversation'
+} from './ConversationTextField'
+import { ConversationPositionType } from '../../../types/conversation'
 
 const ConversationContainer = styled.article`
   position: relative;
