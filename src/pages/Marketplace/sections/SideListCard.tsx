@@ -57,7 +57,6 @@ const CardTitle = styled(HeadingS)`
   color: ${black};
   height: 42px;
   flex-basis: 200px;
-  text-overflow: ellipsis;
   overflow: hidden;
 `
 

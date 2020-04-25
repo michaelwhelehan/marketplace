@@ -2,11 +2,11 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import logo from '../../assets/images/logo.svg'
 import BaseContainer from '../atoms/Container'
-import { white, borderColor } from '../../styles/colors'
+import { white, borderColor, primaryFontColor } from '../../styles/colors'
 import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
-import profilePictureUrl from '../../assets/images/profile.png'
 import Avatar from '../atoms/Avatar'
 import { Link } from 'react-router-dom'
+import { fwBold } from '../../styles/typography'
 
 const StyledHeader = styled.header`
   height: ${MAIN_HEADER_HEIGHT}px;
@@ -34,7 +34,34 @@ const StyledLogo = styled.img`
   margin-left: -35px;
 `
 
-const Header: FC = () => {
+const HeaderLinks = styled.ul`
+  display: flex;
+  margin-right: 20px;
+`
+
+const HeaderLink = styled.li`
+  &:not(:last-child) {
+    margin-right: 10px;
+  }
+
+  a {
+    color: ${primaryFontColor};
+    ${fwBold};
+    text-decoration: none;
+  }
+`
+
+export type LinkType = {
+  name: string
+  href: string
+}
+
+interface Props {
+  links: LinkType[]
+  avatarUrl?: string
+}
+
+const Header: FC<Props> = ({ links, avatarUrl }) => {
   return (
     <StyledHeader>
       <StyledContainer>
@@ -44,9 +71,18 @@ const Header: FC = () => {
           </StyledLink>
         </HeaderStart>
         <HeaderEnd>
-          <StyledLink to="/dashboard">
-            <Avatar src={profilePictureUrl} size={50} />
-          </StyledLink>
+          <HeaderLinks>
+            {links.map(link => (
+              <HeaderLink>
+                <Link to={link.href}>{link.name}</Link>
+              </HeaderLink>
+            ))}
+          </HeaderLinks>
+          {avatarUrl ? (
+            <StyledLink to="/dashboard">
+              <Avatar src={avatarUrl} size={50} />
+            </StyledLink>
+          ) : null}
         </HeaderEnd>
       </StyledContainer>
     </StyledHeader>

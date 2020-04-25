@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import Layout from './uiComponents/organisms/Layout'
+import Layout from './components/Layout/Layout'
 import Marketplace from './pages/Marketplace/MarketplacePage'
 import Dashboard from './pages/Dashboard/DashboardPage'
 import Inbox from './pages/Inbox/InboxPage'
