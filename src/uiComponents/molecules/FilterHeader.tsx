@@ -4,7 +4,7 @@ import BaseContainer from '../atoms/Container'
 import Button from '../atoms/Button'
 import { borderColor, white } from '../../styles/colors'
 import { FILTER_HEADER_HEIGHT } from '../../constants/sizes'
-import TextField from '../atoms/TextField'
+import SearchField from './SearchField'
 
 const StyledHeader = styled.header`
   height: ${FILTER_HEADER_HEIGHT}px;
@@ -30,7 +30,7 @@ const FilterHeader: FC = () => {
           <Button>Create Task</Button>
         </FilterStart>
         <FilterEnd>
-          <TextField
+          <SearchField
             placeholder="Search for a task"
             value=""
             onChange={() => console.log()}

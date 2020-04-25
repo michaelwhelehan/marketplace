@@ -7,9 +7,17 @@ interface Props {
   size?: number
   spacingStart?: boolean | number
   spacingEnd?: boolean | number
+  className?: string
 }
 
-const Icon: FC<Props> = ({ name, color, size, spacingStart, spacingEnd }) => {
+const Icon: FC<Props> = ({
+  name,
+  color,
+  size,
+  spacingStart,
+  spacingEnd,
+  className,
+}) => {
   const ReactIcon = require('react-icons/md')[name]
   if (spacingStart === true) {
     spacingStart = 10
@@ -25,6 +33,7 @@ const Icon: FC<Props> = ({ name, color, size, spacingStart, spacingEnd }) => {
           marginLeft: spacingStart ? `${spacingStart}px` : '0',
           marginRight: spacingEnd ? `${spacingEnd}px` : '0',
         }}
+        className={className}
       />
     </IconContext.Provider>
   )

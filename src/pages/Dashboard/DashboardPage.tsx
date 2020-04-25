@@ -13,8 +13,6 @@ import Icon from '../../uiComponents/atoms/Icon'
 import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
 
 const StyledContainer = styled(BaseContainer)`
-  border-left: 1px solid ${borderColor};
-  border-right: 1px solid ${borderColor};
   min-height: calc(100vh - ${MAIN_HEADER_HEIGHT}px);
   display: flex;
 `
@@ -22,6 +20,7 @@ const StyledContainer = styled(BaseContainer)`
 const SideListContainer = styled.article`
   flex-basis: 200px;
   padding: 20px;
+  border-left: 1px solid ${borderColor};
   border-right: 1px solid ${borderColor};
   background-color: ${white};
 `
