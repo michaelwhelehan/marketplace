@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { UserType } from '../../../types/user'
 import styled from 'styled-components'
-import { featherGrey, primaryFontColor } from '../../../styles/colors'
+import { primaryFontColor } from '../../../styles/colors'
 import { gql } from '@apollo/client'
 import { DocumentNode } from 'graphql'
 import Avatar from '../../atoms/Avatar'
