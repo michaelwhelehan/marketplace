@@ -12,9 +12,9 @@ import { Message, TextMessage, MediaMessage } from '../../../types/conversation'
 
 const MessageContainerOuter = styled.div`
   height: 100%;
-  padding-top: 10px;
+  padding-top: 15px;
   padding-right: 20px;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
 `
 
 const MessageContainer = styled.div`
@@ -29,14 +29,11 @@ const MessageMemberAvatar = styled.div`
 
 const MessageContent = styled.div`
   flex: 1;
-  background-color: ${featherGrey};
-  padding: 10px;
-  border-radius: 4px;
 `
 
 const MessageMember = styled.div`
   display: flex;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 `
 
 const MessageTimestamp = styled.span`
