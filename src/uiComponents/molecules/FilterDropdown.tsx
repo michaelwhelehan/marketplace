@@ -1,10 +1,11 @@
-import React, { FC, useState } from 'react'
+import React, { FC, MouseEvent } from 'react'
 import styled from 'styled-components'
 import { MdTune } from 'react-icons/md'
 import Button from '../atoms/Button'
-import { primaryColor, white, borderColorDark } from '../../styles/colors'
+import { primaryColor } from '../../styles/colors'
 import { ParagraphS } from '../atoms/Paragraphs'
 import { fwBold } from '../../styles/typography'
+import DropDown from '../atoms/DropDown'
 
 const FilterDropdownContainer = styled.div`
   position: relative;
@@ -25,49 +26,6 @@ const FilterDropdownWrapper = styled.div`
   cursor: pointer;
 `
 
-const StyledFilterDropdown = styled.div`
-  position: absolute;
-  top: 45px;
-  left: 0;
-  z-index: 998;
-  border: 1px solid ${borderColorDark};
-  border-radius: 4px;
-  width: 350px;
-  height: 400px;
-  background: ${white};
-  padding: 20px;
-
-  &:before,
-  :after {
-    bottom: 100%;
-    left: 24px;
-    border: solid transparent;
-    content: ' ';
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-  }
-
-  &:before {
-    border-color: transparent transparent ${borderColorDark};
-    border-width: 9px;
-    margin-left: -9px;
-  }
-
-  &:after {
-    border-color: transparent transparent ${white};
-    border-width: 8px;
-    margin-left: -8px;
-  }
-`
-
-const StyledFilterDropdownWrapper = styled.div`
-  position: relative;
-  height: 100%;
-  width: 100%;
-`
-
 const StyledCancel = styled(ParagraphS)`
   ${fwBold};
   position: absolute;
@@ -84,25 +42,30 @@ const StyledButton = styled(Button)`
 
 interface Props {
   name: string
+  dropdownOpen: boolean
+  onToggle: (event: MouseEvent, open?: boolean) => void
 }
 
-const FilterDropdown: FC<Props> = ({ name }) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false)
+const FilterDropdown: FC<Props> = ({ name, dropdownOpen, onToggle }) => {
   return (
     <FilterDropdownContainer>
-      <FilterDropdownWrapper onClick={() => setDropdownOpen(!dropdownOpen)}>
+      <FilterDropdownWrapper onClick={onToggle}>
         <StyledMdTune />
         {name}
       </FilterDropdownWrapper>
       {dropdownOpen && (
-        <StyledFilterDropdown>
-          <StyledFilterDropdownWrapper>
-            <StyledCancel onClick={() => setDropdownOpen(false)}>
-              Cancel
-            </StyledCancel>
-            <StyledButton>Apply</StyledButton>
-          </StyledFilterDropdownWrapper>
-        </StyledFilterDropdown>
+        <DropDown
+          renderFooter={() => (
+            <>
+              <StyledCancel onClick={e => onToggle(e, false)}>
+                Cancel
+              </StyledCancel>
+              <StyledButton>Apply</StyledButton>
+            </>
+          )}
+        >
+          Filters
+        </DropDown>
       )}
     </FilterDropdownContainer>
   )

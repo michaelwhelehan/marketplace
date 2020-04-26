@@ -12,13 +12,13 @@ function weightedRandom(prob) {
   }
 }
 
-function generateItem() {
+function generateConversationItem() {
   const roll = parseInt(weightedRandom({ 0: 0.8, 1: 0.1, 2: 0.1 }), 10)
   const listItem: any = {
     id: faker.random.uuid(),
     member: {
       name: faker.name.findName(),
-      profilePictureUrl,
+      profilePictureUrl: faker.image.avatar(),
       onlineStatus: 'online',
       __typename: 'ConversationMember',
     },
@@ -50,10 +50,40 @@ function generateItem() {
   return listItem
 }
 
-function generateItems(numToGenerate: number) {
+function generateConversationItems(numToGenerate: number) {
   const list = []
   for (let i = 0; i < numToGenerate; i++) {
-    const listItem = generateItem()
+    const listItem = generateConversationItem()
+    list.push(listItem)
+  }
+  return list
+}
+
+function generateConversationListItem() {
+  const listItem: any = {
+    id: faker.random.uuid(),
+    member: {
+      name: faker.name.findName(),
+      profilePictureUrl: faker.image.avatar(),
+      onlineStatus: 'online',
+      __typename: 'User',
+    },
+    lastMessage: {
+      lastMessageFromMe: Math.random() >= 0.5,
+      lastMessageText: faker.hacker.phrase(),
+      lastMessageTimestamp: faker.date.past(),
+      __typename: 'ConversationLastMessage',
+    },
+    __typename: 'Conversation',
+  }
+
+  return listItem
+}
+
+function generateConversationListItems(numToGenerate: number) {
+  const list = []
+  for (let i = 0; i < numToGenerate; i++) {
+    const listItem = generateConversationListItem()
     list.push(listItem)
   }
   return list
@@ -66,8 +96,15 @@ export const typeDefs = gql`
     conversation(id: ID!): Conversation
   }
 
+  type ConversationList {
+    cursor: String!
+    conversations: [Conversation]!
+  }
+
   type Conversation {
     id: ID!
+    member: User!
+    lastMessage: ConversationLastMessage!
     conversationFeed: ConversationFeed!
   }
 
@@ -86,6 +123,12 @@ export const typeDefs = gql`
     name: String!
     profilePictureUrl: String!
     onlineStatus: String!
+  }
+
+  type ConversationLastMessage {
+    lastMessageFromMe: Boolean!
+    lastMessageText: String!
+    lastMessageTimestamp: Date!
   }
 
   interface ConversationMessage {
@@ -111,12 +154,19 @@ export const resolvers = {
     conversation: (root, { id }) => {
       return { id: '1', __typename: 'Conversation' }
     },
+    conversationList: (root, { cursor }) => {
+      return {
+        cursor: '2cf2a616-56fd-4d54-9585-a48666549102',
+        conversations: generateConversationListItems(20),
+        __typename: 'ConversationList',
+      }
+    },
   },
   Conversation: {
     conversationFeed: (conversation, { cursor }) => {
       return {
         cursor: '2cf2a616-56fd-4d54-9585-a48666549102',
-        messages: generateItems(50),
+        messages: generateConversationItems(50),
         __typename: 'ConversationFeed',
       }
     },

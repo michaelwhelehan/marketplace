@@ -73,7 +73,6 @@ const MarketplacePage: FC = () => {
             tasks={data?.taskFeed?.tasks}
             tasksLoadAmount={10}
             onLoadMoreTasks={async loadAmount => {
-              console.log('LOADING MORE')
               await sleep(Math.floor(Math.random() * 1000) + 500)
               await fetchMore({
                 query: GET_TASKS,

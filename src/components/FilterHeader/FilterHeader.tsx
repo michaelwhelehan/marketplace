@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import styled from 'styled-components'
 import BaseContainer from '../../uiComponents/atoms/Container'
 import Button from '../../uiComponents/atoms/Button'
@@ -30,18 +30,26 @@ const StyledButton = styled(Button)`
 `
 
 const FilterHeader: FC = () => {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filtersOpen, setFiltersOpen] = useState(false)
   return (
     <StyledHeader>
       <StyledContainer>
         <FilterStart>
           <StyledButton>Create Task</StyledButton>
-          <FilterDropdown name="Filters" />
+          <FilterDropdown
+            name="Filters"
+            dropdownOpen={filtersOpen}
+            onToggle={(_, open) =>
+              setFiltersOpen(prev => open ?? (open || !prev))
+            }
+          />
         </FilterStart>
         <FilterEnd>
           <SearchField
             placeholder="Search for a task"
-            value=""
-            onChange={() => console.log()}
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
           />
         </FilterEnd>
       </StyledContainer>

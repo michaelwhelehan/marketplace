@@ -43,20 +43,20 @@ const TimestampContainer = styled.div`
   padding-bottom: 30px;
 `
 
-type MessageType = {
-  lastMessage: string
+type LastMessageType = {
+  lastMessageText: string
   lastMessageFromMe: boolean
   lastMessageTimestamp: Date
 }
 
 interface Props {
   member: UserType
-  message: MessageType
+  lastMessage: LastMessageType
 }
 
-const InboxConversationListCard: FC<Props> = ({ member, message }) => {
+const InboxConversationListCard: FC<Props> = ({ member, lastMessage }) => {
   return (
-    <StyledCard to="/dashboard/inbox/lol" as={Link}>
+    <StyledCard to="/dashboard/inbox/1" as={Link}>
       <PictureContainer>
         <Avatar
           src={member.profilePictureUrl}
@@ -67,12 +67,12 @@ const InboxConversationListCard: FC<Props> = ({ member, message }) => {
       <BodyContainer>
         <UserName>{member.name}</UserName>
         <Message>
-          {message.lastMessageFromMe && 'Me: '}
-          {message.lastMessage}
+          {lastMessage.lastMessageFromMe && 'Me: '}
+          {lastMessage.lastMessageText}
         </Message>
       </BodyContainer>
       <TimestampContainer>
-        <ParagraphXXS>{fromNow(message.lastMessageTimestamp)}</ParagraphXXS>
+        <ParagraphXXS>{fromNow(lastMessage.lastMessageTimestamp)}</ParagraphXXS>
       </TimestampContainer>
     </StyledCard>
   )

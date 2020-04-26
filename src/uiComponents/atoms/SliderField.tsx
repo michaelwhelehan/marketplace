@@ -55,7 +55,6 @@ const Track = (props, state) => (
     index={state.index}
     multiple={Array.isArray(state.value)}
   >
-    {console.log(props)}
     {state.index === 1 && (
       <StyledTrackValue>
         {Array.isArray(state.value) ? <>{state.value[0]}</> : state.value}

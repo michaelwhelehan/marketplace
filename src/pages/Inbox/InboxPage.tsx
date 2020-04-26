@@ -11,6 +11,7 @@ import { HeadingL } from '../../uiComponents/atoms/Headings'
 import { ParagraphM } from '../../uiComponents/atoms/Paragraphs'
 import { INBOX_HEADER_HEIGHT } from '../../constants/sizes'
 import InboxConversationList from './sections/InboxConversationList'
+import { gql, useQuery } from '@apollo/client'
 
 const StyledContainer = styled(BaseContainer)`
   border-left: 1px solid ${borderColor};
@@ -44,6 +45,27 @@ const SelectConversation = styled.div`
   height: 100%;
 `
 
+const GET_CONVERSATION_LIST = gql`
+  query ConversationList($cursor: String) {
+    conversationList(cursor: $cursor) @client {
+      cursor
+      conversations {
+        id
+        member {
+          profilePictureUrl
+          name
+          onlineStatus
+        }
+        lastMessage {
+          lastMessageFromMe
+          lastMessageTimestamp
+          lastMessageText
+        }
+      }
+    }
+  }
+`
+
 const InboxHint: FC = () => (
   <SelectConversation>
     <Icon name="MdChat" size={40} color={primaryFontColor} />
@@ -56,6 +78,9 @@ const InboxHint: FC = () => (
 
 const InboxPage: FC = () => {
   const match = useRouteMatch()
+  const { data, loading, fetchMore } = useQuery(GET_CONVERSATION_LIST, {
+    variables: { cursor: undefined },
+  })
 
   return (
     <StyledContainer>
@@ -66,7 +91,48 @@ const InboxPage: FC = () => {
             options={[{ label: 'All Conversations', value: 'all' }]}
           />
         </FilterContainer>
-        <InboxConversationList />
+        {!data ? (
+          <>Loading...</>
+        ) : (
+          <InboxConversationList
+            conversationList={data?.conversationList?.conversations}
+            conversationListLoading={loading}
+            onLoadMoreConversations={async loadAmount => {
+              await sleep(Math.floor(Math.random() * 1000) + 500)
+              await fetchMore({
+                query: GET_CONVERSATION_LIST,
+                variables: {
+                  cursor: data.conversationList.cursor,
+                },
+                updateQuery: (
+                  previousResult: {
+                    conversationList: { conversations: any; cursor: string }
+                  },
+                  { fetchMoreResult },
+                ) => {
+                  const previousConversationList =
+                    previousResult.conversationList
+                  const newConversationList = fetchMoreResult.conversationList
+
+                  const newConversationListData = {
+                    ...previousResult.conversationList,
+                    conversations: [
+                      ...previousConversationList.conversations,
+                      ...newConversationList.conversations,
+                    ],
+                    cursor: newConversationList.cursor,
+                    __typename: 'ConversationList',
+                  }
+                  const newData = {
+                    ...previousResult,
+                    conversationList: newConversationListData,
+                  }
+                  return newData
+                },
+              })
+            }}
+          />
+        )}
       </SideContainer>
       <MainContainer>
         <Switch>
@@ -80,6 +146,10 @@ const InboxPage: FC = () => {
       </MainContainer>
     </StyledContainer>
   )
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 export default InboxPage

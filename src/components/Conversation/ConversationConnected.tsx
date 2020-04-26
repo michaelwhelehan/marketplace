@@ -98,7 +98,6 @@ const ConversationConnected: FC<Props> = ({ position, scrollType }) => {
         })
       }}
       onLoadMoreMessages={async loadAmount => {
-        console.log('LOADING MORE')
         await sleep(Math.floor(Math.random() * 1000) + 500)
         await fetchMore({
           query: GET_CONVERSATION_MESSAGES,

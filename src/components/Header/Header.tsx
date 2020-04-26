@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState, MouseEvent } from 'react'
 import styled from 'styled-components'
 import logo from '../../assets/images/logo.svg'
 import BaseContainer from '../../uiComponents/atoms/Container'
@@ -8,10 +8,17 @@ import Avatar from '../../uiComponents/atoms/Avatar'
 import { Link } from 'react-router-dom'
 import { fwBold } from '../../styles/typography'
 import profilePictureUrl from '../../assets/images/profile.png'
+import DropDown from '../../uiComponents/atoms/DropDown'
+
+type LinkIdType = 'tasks' | 'notifications' | 'messages'
 
 type LinkType = {
+  id: LinkIdType
   name: string
-  href: string
+  href?: string
+  onClick?: (e: MouseEvent) => void
+  hasDropDown?: boolean
+  renderDropDown?: () => JSX.Element
 }
 
 const StyledHeader = styled.header`
@@ -42,6 +49,7 @@ const HeaderLinks = styled.ul`
 `
 
 const HeaderLink = styled.li`
+  position: relative;
   &:not(:last-child) {
     margin-right: 10px;
   }
@@ -54,16 +62,27 @@ const HeaderLink = styled.li`
 `
 
 const Header: FC = () => {
+  const [dropdownOpen, setDropdownOpen] = useState<LinkIdType | null>(null)
   const links: LinkType[] = [
     {
+      id: 'tasks',
       name: 'My Tasks',
       href: '/dashboard/tasks',
     },
     {
+      id: 'notifications',
       name: 'Notifications',
-      href: '/dashboard/notifications',
+      onClick: e => {
+        e.preventDefault()
+        setDropdownOpen(prev =>
+          prev === 'notifications' ? null : 'notifications',
+        )
+      },
+      hasDropDown: true,
+      renderDropDown: () => <>Notifications</>,
     },
     {
+      id: 'messages',
       name: 'Messages',
       href: '/dashboard/inbox',
     },
@@ -86,8 +105,13 @@ const Header: FC = () => {
         <HeaderEnd>
           <HeaderLinks>
             {links.map(link => (
-              <HeaderLink key={link.href}>
-                <Link to={link.href}>{link.name}</Link>
+              <HeaderLink key={link.name}>
+                <Link onClick={link.onClick} to={link.href}>
+                  {link.name}
+                </Link>
+                {link.hasDropDown && dropdownOpen === link.id ? (
+                  <DropDown position="end">{link.renderDropDown()}</DropDown>
+                ) : null}
               </HeaderLink>
             ))}
           </HeaderLinks>
