@@ -6,13 +6,14 @@ import {
   MAIN_HEADER_HEIGHT,
   INBOX_HEADER_HEIGHT,
 } from '../../../constants/sizes'
+import { ConversationType } from '../../../types/conversation'
 
 const ConversationList = styled.section`
   height: calc(100vh - ${MAIN_HEADER_HEIGHT}px - ${INBOX_HEADER_HEIGHT}px);
 `
 
 interface Props {
-  conversationList: any[]
+  conversationList: ConversationType[]
   conversationListLoading: boolean
   onLoadMoreConversations: (loadAmount: number) => Promise<any>
 }

@@ -7,6 +7,15 @@ import ADPQuestions from './sections/ADPQuestions'
 import { ScrollElementContextProvider } from '../../contexts/ScrollElementContext'
 import { useParams } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
+import { TaskType } from '../../types/task'
+
+interface TaskData {
+  task: TaskType
+}
+
+interface TaskVars {
+  slug: string
+}
 
 const Container = styled.div`
   height: calc(100vh - 64px - 56px - 2px);
@@ -72,7 +81,7 @@ export const GET_TASK = gql`
 
 const ArticleDetailPage: FC = () => {
   const { taskSlug } = useParams()
-  const { data, loading } = useQuery(GET_TASK, {
+  const { data, loading } = useQuery<TaskData, TaskVars>(GET_TASK, {
     variables: { slug: taskSlug },
   })
   const scrollElement = useRef(null)

@@ -9,6 +9,19 @@ import ArticleDetailPage from '../MarketplaceADP/ArticleDetailPage'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { MAIN_HEADER_HEIGHT, FILTER_HEADER_HEIGHT } from '../../constants/sizes'
 import { useQuery, gql } from '@apollo/client'
+import { TaskType } from '../../types/task'
+
+interface TaskData {
+  taskFeed: {
+    cursor: string
+    tasks: TaskType[]
+  }
+}
+
+interface TaskVars {
+  cursor: string
+  loadAmount: number
+}
 
 const StyledContainer = styled(BaseContainer)`
   border-left: 1px solid #eee;
@@ -59,7 +72,7 @@ const GET_TASKS = gql`
 const MarketplacePage: FC = () => {
   const match = useRouteMatch()
   const location = useLocation()
-  const { data, loading, fetchMore } = useQuery(GET_TASKS, {
+  const { data, loading, fetchMore } = useQuery<TaskData, TaskVars>(GET_TASKS, {
     variables: { cursor: undefined, loadAmount: undefined },
   })
 
@@ -108,7 +121,7 @@ const MarketplacePage: FC = () => {
         <MainContainer>
           <TransitionGroup>
             <CSSTransition
-              key={location.pathname === '/' ? location.key : '1'}
+              key={location.pathname === '/' ? location.key : undefined}
               classNames="slide"
               timeout={1000}
             >

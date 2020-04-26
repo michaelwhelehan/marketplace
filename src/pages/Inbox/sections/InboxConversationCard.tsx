@@ -10,6 +10,7 @@ import {
 import { borderColor, white } from '../../../styles/colors'
 import { fromNow } from '../../../utils/date'
 import UserName from '../../../uiComponents/atoms/UserName'
+import { LastMessageType } from '../../../types/conversation'
 
 const StyledCard = styled.div`
   border-bottom: 1px solid ${borderColor};
@@ -42,12 +43,6 @@ const TimestampContainer = styled.div`
   flex: none;
   padding-bottom: 30px;
 `
-
-type LastMessageType = {
-  lastMessageText: string
-  lastMessageFromMe: boolean
-  lastMessageTimestamp: Date
-}
 
 interface Props {
   member: UserType

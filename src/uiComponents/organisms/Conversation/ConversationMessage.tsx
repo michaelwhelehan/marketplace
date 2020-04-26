@@ -8,6 +8,7 @@ import Avatar from '../../atoms/Avatar'
 import { fromNow } from '../../../utils/date'
 import { fsXXS } from '../../../styles/typography'
 import UserName from '../../atoms/UserName'
+import { Message, TextMessage, MediaMessage } from '../../../types/conversation'
 
 const MessageContainerOuter = styled.div`
   height: 100%;
@@ -48,19 +49,6 @@ const MessageText = styled.p`
   line-height: 22px;
 `
 
-interface Message {
-  type: 'text' | 'image' | 'video'
-  timestamp: Date
-}
-
-interface TextMessage extends Message {
-  text: string
-}
-
-interface MediaMessage extends Message {
-  url: string
-}
-
 interface Props {
   index: number
   measure: () => void
@@ -72,12 +60,7 @@ type Fragments = {
   fragments: { message: DocumentNode }
 }
 
-const ConversationMessage: FC<Props> & Fragments = ({
-  index,
-  measure,
-  member,
-  message,
-}) => {
+const ConversationMessage: FC<Props> & Fragments = ({ member, message }) => {
   return (
     <MessageContainerOuter>
       <MessageContainer>

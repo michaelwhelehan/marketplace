@@ -30,8 +30,8 @@ const StyledButton = styled(Button)`
 `
 
 const FilterHeader: FC = () => {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [filtersOpen, setFiltersOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState<string>('')
+  const [filtersOpen, setFiltersOpen] = useState<boolean>(false)
   return (
     <StyledHeader>
       <StyledContainer>

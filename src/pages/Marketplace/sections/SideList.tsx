@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import SideListCard from './SideListCard'
 import InfiniteList from '../../../uiComponents/molecules/InfiniteList'
+import { TaskType } from '../../../types/task'
 
 const StyledSideList = styled.div`
   background: #f5f5f5;
@@ -11,7 +12,7 @@ const StyledSideList = styled.div`
 const ROW_HEIGHT = 170
 
 interface Props {
-  tasks: any[]
+  tasks: TaskType[]
   tasksLoadAmount: number
   tasksLoading: boolean
   onLoadMoreTasks: (loadAmount: number) => Promise<any>

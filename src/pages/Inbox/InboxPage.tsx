@@ -12,6 +12,19 @@ import { ParagraphM } from '../../uiComponents/atoms/Paragraphs'
 import { INBOX_HEADER_HEIGHT } from '../../constants/sizes'
 import InboxConversationList from './sections/InboxConversationList'
 import { gql, useQuery } from '@apollo/client'
+import { ConversationType } from '../../types/conversation'
+
+interface ConversationListData {
+  conversationList: {
+    cursor: string
+    conversations: ConversationType[]
+  }
+}
+
+interface ConversationListVars {
+  cursor: string
+  loadAmount: number
+}
 
 const StyledContainer = styled(BaseContainer)`
   border-left: 1px solid ${borderColor};
@@ -78,7 +91,10 @@ const InboxHint: FC = () => (
 
 const InboxPage: FC = () => {
   const match = useRouteMatch()
-  const { data, loading, fetchMore } = useQuery(GET_CONVERSATION_LIST, {
+  const { data, loading, fetchMore } = useQuery<
+    ConversationListData,
+    ConversationListVars
+  >(GET_CONVERSATION_LIST, {
     variables: { cursor: undefined, loadAmount: undefined },
   })
 

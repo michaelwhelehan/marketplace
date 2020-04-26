@@ -7,6 +7,7 @@ import { DocumentNode } from 'graphql'
 import {
   ConversationPositionType,
   ConversationScrollType,
+  ConversationMessageType,
 } from '../../../types/conversation'
 import WindowedList from '../../molecules/WindowedList'
 import { useScrollElement } from '../../../contexts/ScrollElementContext'
@@ -17,7 +18,7 @@ const StyledConversationMessageList = styled.div`
 
 export interface ConversationMessageListProps {
   messagesLoading: boolean
-  messageList: any[]
+  messageList: ConversationMessageType[]
   messagesLoadAmount: number
   onLoadMoreMessages: (loadAmount: number) => Promise<any>
   position: ConversationPositionType

@@ -5,7 +5,24 @@ import ConversationMessageList from '../../uiComponents/organisms/Conversation/C
 import {
   ConversationPositionType,
   ConversationScrollType,
+  ConversationMessageType,
 } from '../../types/conversation'
+
+interface ConversationData {
+  conversation: {
+    id: string
+    conversationFeed: {
+      cursor: string
+      messages: ConversationMessageType[]
+    }
+  }
+}
+
+interface ConversationVars {
+  conversationId: string
+  cursor: string
+  loadAmount: number
+}
 
 const CREATE_CONVERSATION_MESSAGE = gql`
   mutation CreateConversationMessage($conversationId: ID!, $message: String!) {
@@ -51,7 +68,10 @@ interface Props {
 }
 
 const ConversationConnected: FC<Props> = ({ position, scrollType }) => {
-  const { data, loading, fetchMore } = useQuery(GET_CONVERSATION_MESSAGES, {
+  const { data, loading, fetchMore } = useQuery<
+    ConversationData,
+    ConversationVars
+  >(GET_CONVERSATION_MESSAGES, {
     variables: {
       conversationId: '1',
       cursor: undefined,
