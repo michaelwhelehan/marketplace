@@ -1,6 +1,6 @@
 import faker from 'faker'
 import { gql } from '@apollo/client'
-import tasks from './tasks.json'
+import tasks from './tasks.fixture.json'
 
 function generateItem() {
   const title = faker.hacker

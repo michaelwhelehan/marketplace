@@ -24,10 +24,6 @@ const Container = styled.div`
 
   &.slide-enter {
     transform: translateX(100%);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
   }
 
   &.slide-enter.slide-enter-active {
@@ -81,19 +77,21 @@ const ArticleDetailPage: FC = () => {
   })
   const scrollElement = useRef(null)
 
-  if (loading) {
-    return <Container>Loading...</Container>
-  }
-
   return (
     <Container ref={scrollElement}>
-      <ADPHeader task={data.task} />
-      <ADPInfo task={data.task} />
-      <StyledHR />
-      <ADPDetails details={data.task.details} />
-      <ScrollElementContextProvider scrollElement={scrollElement}>
-        <ADPQuestions />
-      </ScrollElementContextProvider>
+      {loading ? (
+        <>Loading...</>
+      ) : (
+        <>
+          <ADPHeader task={data.task} />
+          <ADPInfo task={data.task} />
+          <StyledHR />
+          <ADPDetails details={data.task.details} />
+          <ScrollElementContextProvider scrollElement={scrollElement}>
+            <ADPQuestions />
+          </ScrollElementContextProvider>
+        </>
+      )}
     </Container>
   )
 }

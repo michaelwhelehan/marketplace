@@ -13,7 +13,6 @@ const Title = styled(HeadingS)`
 
 const ConversationContainer = styled.div`
   margin-top: 10px;
-  height: 400px;
 `
 
 const ADPQuestions: FC = () => {
