@@ -121,7 +121,7 @@ const MarketplacePage: FC = () => {
         <MainContainer>
           <TransitionGroup>
             <CSSTransition
-              key={location.pathname === '/' ? location.key : undefined}
+              key={location.pathname === '/' ? location.key : ''}
               classNames="slide"
               timeout={1000}
             >
