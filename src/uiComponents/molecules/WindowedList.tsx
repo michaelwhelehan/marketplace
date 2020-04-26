@@ -46,9 +46,9 @@ const WindowedList: FC<Props> = ({
     [rowHeight, list.length!],
   )
 
-  async function loadMoreRows() {
-    await onLoadMore(loadAmount)
-  }
+  // async function loadMoreRows() {
+  //   await onLoadMore(loadAmount)
+  // }
 
   function rowRenderer({ key, index, isScrolling, parent, style }) {
     if (heightCalculation === 'dynamic') {

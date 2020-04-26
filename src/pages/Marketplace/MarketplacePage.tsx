@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import FilterHeader from '../../uiComponents/organisms/FilterHeader'
+import FilterHeader from '../../components/FilterHeader/FilterHeader'
 import BaseContainer from '../../uiComponents/atoms/Container'
 import Map from './sections/Map'
 import SideList from './sections/SideList'
@@ -38,6 +38,7 @@ const GET_TASKS = gql`
         id
         creator {
           profilePictureUrl
+          name
         }
         title
         slug

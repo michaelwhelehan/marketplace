@@ -16,14 +16,18 @@ const Container = styled.div`
 
   &.slide-enter,
   &.slide-exit {
-    transition: transform 500ms ease-out;
     position: absolute;
+    transition: transform 500ms ease-out;
     width: 100%;
     z-index: 999;
   }
 
   &.slide-enter {
     transform: translateX(100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
   }
 
   &.slide-enter.slide-enter-active {

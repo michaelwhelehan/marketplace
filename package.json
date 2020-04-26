@@ -30,6 +30,7 @@
     "react-select": "^3.0.8",
     "react-slider": "^1.0.4",
     "react-transition-group": "^4.3.0",
+    "react-viewport-utils": "^1.12.1",
     "react-virtualized": "^9.21.2",
     "styled-components": "^5.0.1",
     "typescript": "^3.8.3"

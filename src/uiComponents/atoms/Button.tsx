@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 import { darken } from 'polished'
 import { primaryColor, white } from '../../styles/colors'
-import { fsS, fsM, fsXS } from '../../styles/typography'
+import { fsS, fsXS } from '../../styles/typography'
 
 interface StyledButtonProps {
   fullWidth?: boolean

@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { TaskType } from '../../../types/task'
 import { borderColor, black, white } from '../../../styles/colors'
 import { HeadingM } from '../../../uiComponents/atoms/Headings'
 import Button from '../../../uiComponents/atoms/Button'
 
-const Container = styled.article`
+const Container = styled.section<{ scrolling?: boolean }>`
   height: 80px;
   padding: 20px;
   display: flex;
@@ -15,9 +15,13 @@ const Container = styled.article`
   position: sticky;
   top: 0;
   background-color: ${white};
-  z-index: 999;
+  z-index: 997;
 
-  // todo: apply this when scrolling box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1);
+  ${({ scrolling }) =>
+    scrolling &&
+    css`
+      box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1);
+    `}
 `
 
 const StyledHeading = styled(HeadingM)`
@@ -25,7 +29,7 @@ const StyledHeading = styled(HeadingM)`
 `
 
 const StyledButton = styled(Button)`
-  flex-basis: 210px;
+  flex-basis: 250px;
 `
 
 interface Props {

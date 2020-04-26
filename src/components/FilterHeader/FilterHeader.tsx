@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import BaseContainer from '../atoms/Container'
-import Button from '../atoms/Button'
+import BaseContainer from '../../uiComponents/atoms/Container'
+import Button from '../../uiComponents/atoms/Button'
 import { borderColor, white } from '../../styles/colors'
 import { FILTER_HEADER_HEIGHT } from '../../constants/sizes'
-import SearchField from '../molecules/SearchField'
-import FilterDropdown from '../molecules/FilterDropdown'
+import SearchField from '../../uiComponents/molecules/SearchField'
+import FilterDropdown from '../../uiComponents/molecules/FilterDropdown'
 
 const StyledHeader = styled.header`
   height: ${FILTER_HEADER_HEIGHT}px;
