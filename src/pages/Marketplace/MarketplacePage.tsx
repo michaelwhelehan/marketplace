@@ -31,8 +31,8 @@ const MainContainer = styled.article`
 `
 
 const GET_TASKS = gql`
-  query Tasks($cursor: String) {
-    taskFeed(cursor: $cursor) @client {
+  query Tasks($cursor: String, $loadAmount: Integer) {
+    taskFeed(cursor: $cursor, loadAmount: $loadAmount) @client {
       cursor
       tasks {
         id
@@ -60,7 +60,7 @@ const MarketplacePage: FC = () => {
   const match = useRouteMatch()
   const location = useLocation()
   const { data, loading, fetchMore } = useQuery(GET_TASKS, {
-    variables: { cursor: undefined },
+    variables: { cursor: undefined, loadAmount: undefined },
   })
 
   return (
@@ -78,6 +78,7 @@ const MarketplacePage: FC = () => {
                 query: GET_TASKS,
                 variables: {
                   cursor: data.taskFeed.cursor,
+                  loadAmount,
                 },
                 updateQuery: (
                   previousResult: {

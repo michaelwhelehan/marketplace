@@ -72,11 +72,21 @@ export const typeDefs = gql`
 
 export const resolvers = {
   Query: {
-    taskFeed: (root, { cursor }) => {
-      return {
-        cursor: '2cf2a616-56fd-4d54-9585-a48666549102',
-        tasks,
-        __typename: 'TaskFeed',
+    taskFeed: (root, { cursor, loadAmount }) => {
+      if (!cursor) {
+        return {
+          cursor: '2cf2a616-56fd-4d54-9585-a48666549102',
+          tasks,
+          __typename: 'TaskFeed',
+        }
+      }
+
+      if (cursor && loadAmount) {
+        return {
+          cursor: '2cf2a616-56fd-4d54-9585-a48666549102',
+          tasks: generateItems(loadAmount),
+          __typename: 'TaskFeed',
+        }
       }
     },
     task: (root, { slug }) => {

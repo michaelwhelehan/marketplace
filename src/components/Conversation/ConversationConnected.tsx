@@ -29,10 +29,14 @@ const CREATE_CONVERSATION_MESSAGE = gql`
 `
 
 const GET_CONVERSATION_MESSAGES = gql`
-  query ConversationMessages($conversationId: ID!, $cursor: String) {
+  query ConversationMessages(
+    $conversationId: ID!
+    $cursor: String
+    $loadAmount: Integer
+  ) {
     conversation(id: $conversationId) @client {
       id
-      conversationFeed(cursor: $cursor)
+      conversationFeed(cursor: $cursor, loadAmount: $loadAmount)
         @connection(key: "conversationMessageFeed") {
         ...MessageFeed
       }
@@ -48,7 +52,11 @@ interface Props {
 
 const ConversationConnected: FC<Props> = ({ position, scrollType }) => {
   const { data, loading, fetchMore } = useQuery(GET_CONVERSATION_MESSAGES, {
-    variables: { conversationId: '1', cursor: undefined },
+    variables: {
+      conversationId: '1',
+      cursor: undefined,
+      loadAmount: undefined,
+    },
   })
   const [createConversationMessage] = useMutation(CREATE_CONVERSATION_MESSAGE, {
     update(cache, { data: { createConversationMessage } }) {
@@ -104,6 +112,7 @@ const ConversationConnected: FC<Props> = ({ position, scrollType }) => {
           variables: {
             conversationId: '1',
             cursor: data.conversation.conversationFeed.cursor,
+            loadAmount,
           },
           updateQuery: (
             previousResult: {

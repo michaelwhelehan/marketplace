@@ -46,8 +46,8 @@ const SelectConversation = styled.div`
 `
 
 const GET_CONVERSATION_LIST = gql`
-  query ConversationList($cursor: String) {
-    conversationList(cursor: $cursor) @client {
+  query ConversationList($cursor: String, $loadAmount: Integer) {
+    conversationList(cursor: $cursor, loadAmount: $loadAmount) @client {
       cursor
       conversations {
         id
@@ -79,7 +79,7 @@ const InboxHint: FC = () => (
 const InboxPage: FC = () => {
   const match = useRouteMatch()
   const { data, loading, fetchMore } = useQuery(GET_CONVERSATION_LIST, {
-    variables: { cursor: undefined },
+    variables: { cursor: undefined, loadAmount: undefined },
   })
 
   return (
@@ -103,6 +103,7 @@ const InboxPage: FC = () => {
                 query: GET_CONVERSATION_LIST,
                 variables: {
                   cursor: data.conversationList.cursor,
+                  loadAmount,
                 },
                 updateQuery: (
                   previousResult: {

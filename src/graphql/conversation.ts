@@ -154,20 +154,40 @@ export const resolvers = {
     conversation: (root, { id }) => {
       return { id: '1', __typename: 'Conversation' }
     },
-    conversationList: (root, { cursor }) => {
-      return {
-        cursor: '2cf2a616-56fd-4d54-9585-a48666549102',
-        conversations: generateConversationListItems(20),
-        __typename: 'ConversationList',
+    conversationList: (root, { cursor, loadAmount }) => {
+      if (!cursor) {
+        return {
+          cursor: '2cf2a616-56fd-4d54-9585-a48666549102',
+          conversations: generateConversationListItems(20),
+          __typename: 'ConversationList',
+        }
+      }
+
+      if (cursor && loadAmount) {
+        return {
+          cursor: '2cf2a616-56fd-4d54-9585-a48666549102',
+          conversations: generateConversationListItems(loadAmount),
+          __typename: 'ConversationList',
+        }
       }
     },
   },
   Conversation: {
-    conversationFeed: (conversation, { cursor }) => {
-      return {
-        cursor: '2cf2a616-56fd-4d54-9585-a48666549102',
-        messages: generateConversationItems(50),
-        __typename: 'ConversationFeed',
+    conversationFeed: (conversation, { cursor, loadAmount }) => {
+      if (!cursor) {
+        return {
+          cursor: '2cf2a616-56fd-4d54-9585-a48666549102',
+          messages: generateConversationItems(50),
+          __typename: 'ConversationFeed',
+        }
+      }
+
+      if (cursor && loadAmount) {
+        return {
+          cursor: '2cf2a616-56fd-4d54-9585-a48666549102',
+          messages: generateConversationItems(loadAmount),
+          __typename: 'ConversationFeed',
+        }
       }
     },
   },
