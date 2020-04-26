@@ -41,6 +41,7 @@ const MessageMember = styled.div`
 
 const MessageTimestamp = styled.span`
   padding-left: 10px;
+  padding-top: 2px;
   font-size: ${fsXXS}px;
   color: ${primaryFontColor};
 `

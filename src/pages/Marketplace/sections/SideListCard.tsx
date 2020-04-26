@@ -94,7 +94,9 @@ const Budget = styled(ParagraphL)`
   margin-bottom: 10px;
 `
 
-const CardStart = styled.div``
+const CardStart = styled.div`
+  padding-right: 10px;
+`
 
 const CardEnd = styled.div`
   display: flex;

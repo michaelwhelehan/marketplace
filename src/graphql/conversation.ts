@@ -17,7 +17,7 @@ function generateConversationItem() {
   const listItem: any = {
     id: faker.random.uuid(),
     member: {
-      name: faker.name.findName(),
+      name: `${faker.name.firstName()} ${faker.name.lastName().charAt(0)}.`,
       profilePictureUrl: faker.image.avatar(),
       onlineStatus: 'online',
       __typename: 'ConversationMember',
@@ -63,7 +63,7 @@ function generateConversationListItem() {
   const listItem: any = {
     id: faker.random.uuid(),
     member: {
-      name: faker.name.findName(),
+      name: `${faker.name.firstName()} ${faker.name.lastName().charAt(0)}.`,
       profilePictureUrl: faker.image.avatar(),
       onlineStatus: 'online',
       __typename: 'User',
