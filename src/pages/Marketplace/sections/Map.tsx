@@ -19,8 +19,8 @@ const StyledDiv = styled.div`
 
 const Map: FC = () => {
   const [viewport, setViewport] = useState<ViewPortType>({
-    latitude: 53.558572,
-    longitude: 9.9278215,
+    latitude: -34.022967,
+    longitude: 18.450437,
     zoom: 10,
   })
 
