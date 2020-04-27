@@ -99,6 +99,7 @@ const Header: FC = () => {
               height="100%"
               width="200px"
               src={`${logo}#svgView(viewBox(70,20,100,60))`}
+              importance="high"
             />
           </StyledLink>
         </HeaderStart>

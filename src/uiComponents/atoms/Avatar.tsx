@@ -31,7 +31,7 @@ const StyledStatusIndicator = styled(StatusIndicator)`
 const Avatar: FC<Props> = ({ src, size, onlineStatus }) => {
   return (
     <StyledAvatar>
-      <StyledImage src={src} size={size} />
+      <StyledImage src={src} size={size} loading="lazy" importance="low" />
       {onlineStatus ? (
         <StyledStatusIndicator onlineStatus={onlineStatus} />
       ) : null}
