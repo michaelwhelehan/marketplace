@@ -78,8 +78,8 @@ const ConversationMessage: FC<Props> & Fragments = ({ member, message }) => {
             <MessageText>{(message as TextMessage).text}</MessageText>
           ) : (
             <img
-              width="100%"
-              height={450}
+              width={640}
+              height={480}
               src={(message as MediaMessage).url}
               alt=""
             />
