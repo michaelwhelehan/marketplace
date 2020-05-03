@@ -18,7 +18,7 @@ const StyledContainer = styled(BaseContainer)`
 `
 
 const SideListContainer = styled.article`
-  flex-basis: 200px;
+  flex-basis: 210px;
   padding: 20px;
   border-left: 1px solid ${borderColor};
   border-right: 1px solid ${borderColor};
@@ -58,6 +58,8 @@ const navigationItems: NavigationItemType[] = [
   { icon: 'MdEmail', title: 'Messages', link: '/dashboard/inbox' },
   { icon: 'MdWork', title: 'Tasks', link: '' },
   { icon: 'MdPerson', title: 'Profile', link: '' },
+  { icon: 'MdSettings', title: 'Settings', link: '' },
+  { icon: 'MdSchedule', title: 'Payment History', link: '' },
   { icon: 'MdMonetizationOn', title: 'Payment Methods', link: '' },
   { icon: 'MdExitToApp', title: 'Logout', link: '' },
 ]

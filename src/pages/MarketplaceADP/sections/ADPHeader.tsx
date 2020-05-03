@@ -15,7 +15,7 @@ const Container = styled.section<{ scrolling?: boolean }>`
   position: sticky;
   top: 0;
   background-color: ${white};
-  z-index: 997;
+  z-index: 97;
 
   ${({ scrolling }) =>
     scrolling &&

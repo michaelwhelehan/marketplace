@@ -5,7 +5,7 @@ import { borderColor, white, primaryFontColor } from '../../styles/colors'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import Icon from '../../uiComponents/atoms/Icon'
 import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
-import FilterSelect from '../../uiComponents/atoms/SelectField'
+import SelectField from '../../uiComponents/atoms/SelectField'
 import InboxConversation from '../InboxConversation/InboxConversationPage'
 import { HeadingL } from '../../uiComponents/atoms/Headings'
 import { ParagraphM } from '../../uiComponents/atoms/Paragraphs'
@@ -58,6 +58,19 @@ const SelectConversation = styled.div`
   height: 100%;
 `
 
+const filterStyles = {
+  control: styles => ({
+    ...styles,
+    border: 'none',
+    cursor: 'pointer',
+    width: '180px',
+    padding: 0,
+  }),
+  indicatorSeparator: styles => ({ ...styles, backgroundColor: white }),
+  dropdownIndicator: styles => ({ ...styles, color: primaryFontColor }),
+  placeholder: styles => ({ ...styles, color: primaryFontColor }),
+}
+
 const GET_CONVERSATION_LIST = gql`
   query ConversationList($cursor: String, $loadAmount: Integer) {
     conversationList(cursor: $cursor, loadAmount: $loadAmount) @client {
@@ -102,9 +115,10 @@ const InboxPage: FC = () => {
     <StyledContainer>
       <SideContainer>
         <FilterContainer>
-          <FilterSelect
+          <SelectField
             placeholder="All Conversations"
             options={[{ label: 'All Conversations', value: 'all' }]}
+            styles={filterStyles}
           />
         </FilterContainer>
         {!data ? (

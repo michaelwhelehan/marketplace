@@ -1,19 +1,24 @@
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
 import { borderColorDark, white } from '../../styles/colors'
-import { fsS } from '../../styles/typography'
+import { fsS, fontFamilyPrimary } from '../../styles/typography'
 
 interface StyledProps {
   fullWidth?: boolean
   paddingStart?: number
 }
 
-const StyledInput = styled.input<StyledProps>`
+export const TextFieldStyles = css`
   background-color: ${white};
   border: 2px solid ${borderColorDark};
   border-radius: 4px;
   padding: 8px;
+  ${fontFamilyPrimary};
   font-size: ${fsS}px;
+`
+
+const StyledTextField = styled.input<StyledProps>`
+  ${TextFieldStyles};
   ${({ paddingStart }) =>
     paddingStart &&
     css`
@@ -26,30 +31,32 @@ const StyledInput = styled.input<StyledProps>`
     `}
 `
 
-export interface TextFieldProps extends StyledProps {
-  fullWidth?: boolean
-  paddingStart?: number
+export interface TextProps extends StyledProps {
   placeholder?: string
   autoFocus?: boolean
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
-  value: string
+  value?: string
+  defaultValue?: string
+  name?: string
+  ref?: any
 }
 
-const TextField: FC<TextFieldProps> = ({
-  onChange,
-  onKeyDown,
-  value,
-  ...props
-}) => {
-  return (
-    <StyledInput
-      value={value}
-      onChange={onChange}
-      onKeyDown={onKeyDown}
-      {...props}
-    />
-  )
+export interface TextFieldProps extends TextProps {
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 }
+
+const TextField: FC<TextFieldProps> = React.forwardRef<any, TextFieldProps>(
+  ({ onChange, onKeyDown, value, ...props }, ref) => {
+    return (
+      <StyledTextField
+        ref={ref}
+        value={value}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        {...props}
+      />
+    )
+  },
+)
 
 export default TextField

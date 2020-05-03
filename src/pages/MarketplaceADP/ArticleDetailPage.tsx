@@ -28,7 +28,7 @@ const Container = styled.div`
     position: absolute;
     transition: transform 500ms ease-out;
     width: 100%;
-    z-index: 999;
+    z-index: 99;
   }
 
   &.slide-enter {

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, MouseEvent } from 'react'
 import { IconContext } from 'react-icons'
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
   size?: number
   spacingStart?: boolean | number
   spacingEnd?: boolean | number
-  className?: string
+  onClick?: (event: MouseEvent) => void
 }
 
 const Icon: FC<Props> = ({
@@ -16,7 +16,8 @@ const Icon: FC<Props> = ({
   size,
   spacingStart,
   spacingEnd,
-  className,
+  onClick,
+  ...props
 }) => {
   const ReactIcon = require('react-icons/md')[name]
   if (spacingStart === true) {
@@ -33,7 +34,8 @@ const Icon: FC<Props> = ({
           marginLeft: spacingStart ? `${spacingStart}px` : '0',
           marginRight: spacingEnd ? `${spacingEnd}px` : '0',
         }}
-        className={className}
+        onClick={onClick}
+        {...props}
       />
     </IconContext.Provider>
   )

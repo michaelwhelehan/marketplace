@@ -4,7 +4,10 @@ import { white, borderColorDark } from '../../styles/colors'
 
 type PositionType = 'start' | 'end'
 
-const StyledDropdown = styled.div<{ position: PositionType }>`
+const StyledDropdown = styled.div<{
+  position: PositionType
+  autoHeight: boolean
+}>`
   position: absolute;
   top: 40px;
   ${({ position }) => {
@@ -19,9 +22,10 @@ const StyledDropdown = styled.div<{ position: PositionType }>`
   }}
   z-index: 998;
   border: 1px solid ${borderColorDark};
+  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
   width: 350px;
-  height: 400px;
+  height: ${({ autoHeight }) => (autoHeight ? 'auto' : '400px')};
   background: ${white};
   padding: 20px;
 
@@ -86,15 +90,17 @@ const StyledDropdownWrapper = styled.div`
 interface Props {
   renderFooter?: () => JSX.Element
   position?: PositionType
+  autoHeight?: boolean
 }
 
 const DropDown: FC<Props> = ({
   children,
   renderFooter,
+  autoHeight,
   position = 'start',
 }) => {
   return (
-    <StyledDropdown position={position}>
+    <StyledDropdown position={position} autoHeight={autoHeight}>
       <StyledDropdownWrapper>
         {children}
         {renderFooter ? <footer>{renderFooter()}</footer> : null}
