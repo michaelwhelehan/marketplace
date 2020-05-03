@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { useFieldArray } from 'react-hook-form'
 import Icon from '../../uiComponents/atoms/Icon'
 import { primaryColor } from '../../styles/colors'
+import TextFieldIcon from '../../uiComponents/molecules/TextFieldIcon'
 
 interface Props {
   register: any
@@ -70,7 +71,8 @@ const Step3: FC<Props> & TitleType = ({ register, control }) => {
             ref={register()}
           />
         </InnerSectionContainer>
-        <TextField
+        <TextFieldIcon
+          customIcon="R"
           name="amount"
           ref={register()}
           fullWidth
@@ -107,6 +109,6 @@ const Step3: FC<Props> & TitleType = ({ register, control }) => {
   )
 }
 
-Step3.title = 'Suggest how much'
+Step3.title = 'Budget & Screening'
 
 export default Step3

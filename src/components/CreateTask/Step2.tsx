@@ -1,5 +1,4 @@
 import React, { FC } from 'react'
-import TextField from '../../uiComponents/atoms/TextField'
 import FormField from '../../uiComponents/molecules/FormField'
 import DateField from '../../uiComponents/atoms/DateField'
 import { Controller } from 'react-hook-form'
@@ -8,6 +7,7 @@ import styled from 'styled-components'
 import { ParagraphXS } from '../../uiComponents/atoms/Paragraphs'
 import { borderColorDark, primaryFontColor } from '../../styles/colors'
 import Icon from '../../uiComponents/atoms/Icon'
+import TextFieldIcon from '../../uiComponents/molecules/TextFieldIcon'
 
 const SplitSection = styled.div`
   display: grid;
@@ -95,7 +95,8 @@ const Step2: FC<Props> & TitleType = ({ watch, register, control }) => {
       </FormField>
       {watchWhere === 'in-person' && (
         <FormField spacingTop>
-          <TextField
+          <TextFieldIcon
+            iconName="MdRoom"
             name="location"
             placeholder="Enter a suburb"
             ref={register()}

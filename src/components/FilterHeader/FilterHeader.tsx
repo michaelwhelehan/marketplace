@@ -4,8 +4,10 @@ import BaseContainer from '../../uiComponents/atoms/Container'
 import Button from '../../uiComponents/atoms/Button'
 import { borderColor, white } from '../../styles/colors'
 import { FILTER_HEADER_HEIGHT } from '../../constants/sizes'
-import SearchField from '../../uiComponents/molecules/SearchField'
+import TextFieldIcon from '../../uiComponents/molecules/TextFieldIcon'
 import FilterDropdown from '../../uiComponents/molecules/FilterDropdown'
+import { useQuery } from '@apollo/client'
+import { GET_CREATE_TASK_VISIBLE } from '../Layout/Layout'
 
 const StyledHeader = styled.header`
   height: ${FILTER_HEADER_HEIGHT}px;
@@ -23,7 +25,9 @@ const FilterStart = styled.div`
   display: flex;
 `
 
-const FilterEnd = styled.div``
+const FilterEnd = styled.div`
+  width: 280px;
+`
 
 const StyledButton = styled(Button)`
   margin-right: 20px;
@@ -32,11 +36,22 @@ const StyledButton = styled(Button)`
 const FilterHeader: FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [filtersOpen, setFiltersOpen] = useState<boolean>(false)
+  const { client } = useQuery(GET_CREATE_TASK_VISIBLE)
+
   return (
     <StyledHeader>
       <StyledContainer>
         <FilterStart>
-          <StyledButton>Create Task</StyledButton>
+          <StyledButton
+            onClick={() =>
+              client.writeQuery({
+                query: GET_CREATE_TASK_VISIBLE,
+                data: { createTaskVisible: true },
+              })
+            }
+          >
+            Create Task
+          </StyledButton>
           <FilterDropdown
             name="Filters"
             dropdownOpen={filtersOpen}
@@ -46,10 +61,12 @@ const FilterHeader: FC = () => {
           />
         </FilterStart>
         <FilterEnd>
-          <SearchField
+          <TextFieldIcon
+            iconName="MdSearch"
             placeholder="Search for a task"
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
+            fullWidth
           />
         </FilterEnd>
       </StyledContainer>

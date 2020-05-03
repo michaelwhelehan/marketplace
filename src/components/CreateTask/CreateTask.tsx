@@ -18,7 +18,9 @@ const FooterContainer = styled.div`
 
 type StepType = 'step1' | 'step2' | 'step3'
 
-interface CreateTaskProps {}
+interface CreateTaskProps {
+  onClose: (event: MouseEvent) => void
+}
 
 interface CreateTaskFooterProps {
   onPreviousClick?: (event: MouseEvent) => void
@@ -41,8 +43,8 @@ const CreateTaskFooter: FC<CreateTaskFooterProps> = ({
   </FooterContainer>
 )
 
-const CreateTask: FC<CreateTaskProps> = () => {
-  const [currentStep, setStep] = useState<StepType>('step3')
+const CreateTask: FC<CreateTaskProps> = ({ onClose }) => {
+  const [currentStep, setStep] = useState<StepType>('step1')
   const { register, watch, control, handleSubmit } = useForm({
     defaultValues: {
       where: 'in-person',
@@ -80,19 +82,16 @@ const CreateTask: FC<CreateTaskProps> = () => {
     [currentStep, handleStep1Submit, handleStep2Submit, handleStep3Submit],
   )
 
-  const handlePrevious = useCallback(
-    data => {
-      switch (currentStep) {
-        case 'step2':
-          setStep('step1')
-          break
-        case 'step3':
-          setStep('step2')
-          break
-      }
-    },
-    [currentStep],
-  )
+  const handlePrevious = useCallback(() => {
+    switch (currentStep) {
+      case 'step2':
+        setStep('step1')
+        break
+      case 'step3':
+        setStep('step2')
+        break
+    }
+  }, [currentStep])
 
   const Step = useMemo(() => {
     switch (currentStep) {
@@ -109,7 +108,7 @@ const CreateTask: FC<CreateTaskProps> = () => {
     <Modal
       title={Step.title}
       overflowContent={currentStep === 'step3'}
-      onClose={() => console.log('close')}
+      onClose={onClose}
       renderFooter={() => (
         <CreateTaskFooter
           onPreviousClick={currentStep !== 'step1' && handlePrevious}
