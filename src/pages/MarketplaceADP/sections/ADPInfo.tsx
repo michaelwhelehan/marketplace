@@ -7,7 +7,7 @@ import { fwBold, fsS, fsXXL } from '../../../styles/typography'
 import { Link } from 'react-router-dom'
 import Icon from '../../../uiComponents/atoms/Icon'
 import { formatDate } from '../../../utils/date'
-import { HeadingS } from '../../../uiComponents/atoms/Headings'
+import { ParagraphXS } from '../../../uiComponents/atoms/Paragraphs'
 
 const Container = styled.article`
   padding: 20px;
@@ -38,7 +38,10 @@ const InfoValue = styled.div`
   justify-content: center;
 `
 
-const InfoValueTitle = styled(HeadingS)``
+const InfoValueTitle = styled(ParagraphXS)`
+  ${fwBold};
+  text-transform: uppercase;
+`
 
 const StyledLink = styled(Link)`
   margin-top: 5px;
