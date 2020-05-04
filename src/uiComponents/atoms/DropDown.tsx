@@ -22,7 +22,7 @@ const StyledDropdown = styled.div<{
   }}
   z-index: 998;
   border: 1px solid ${borderColorDark};
-  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   width: 350px;
   height: ${({ autoHeight }) => (autoHeight ? 'auto' : '400px')};

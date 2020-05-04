@@ -13,6 +13,9 @@ const StyledHeader = styled.header`
   height: ${FILTER_HEADER_HEIGHT}px;
   border-bottom: 1px solid ${borderColor};
   background-color: ${white};
+  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 997;
 `
 
 const StyledContainer = styled(BaseContainer)`
