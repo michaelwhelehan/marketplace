@@ -25,7 +25,7 @@ const StyledDropdown = styled.div<{
   box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   width: 350px;
-  height: ${({ autoHeight }) => (autoHeight ? 'auto' : '400px')};
+  height: ${({ autoHeight }) => (autoHeight ? 'auto' : '440px')};
   background: ${white};
   padding: 20px;
 

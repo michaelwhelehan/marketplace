@@ -5,7 +5,7 @@ import Button from '../../uiComponents/atoms/Button'
 import { borderColor, white } from '../../styles/colors'
 import { FILTER_HEADER_HEIGHT } from '../../constants/sizes'
 import TextFieldIcon from '../../uiComponents/molecules/TextFieldIcon'
-import FilterDropdown from '../../uiComponents/molecules/FilterDropdown'
+import FilterDropdown from './FilterDropdown'
 import { useQuery } from '@apollo/client'
 import { GET_CREATE_TASK_VISIBLE } from '../Layout/Layout'
 

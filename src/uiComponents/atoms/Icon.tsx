@@ -19,7 +19,17 @@ const Icon: FC<Props> = ({
   onClick,
   ...props
 }) => {
-  const ReactIcon = require('react-icons/md')[name]
+  let ReactIcon
+  if (name.startsWith('Md')) {
+    ReactIcon = require('react-icons/md')[name]
+  } else if (name.startsWith('Fa')) {
+    ReactIcon = require('react-icons/fa')[name]
+  }
+
+  if (!ReactIcon) {
+    throw new Error('Unknown icon')
+  }
+
   if (spacingStart === true) {
     spacingStart = 10
   }

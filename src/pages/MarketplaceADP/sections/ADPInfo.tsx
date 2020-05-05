@@ -1,13 +1,14 @@
 import React, { FC } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { TaskType } from '../../../types/task'
 import { primaryColor, primaryFontColor } from '../../../styles/colors'
 import Avatar from '../../../uiComponents/atoms/Avatar'
-import { fwBold, fsS, fsXXL } from '../../../styles/typography'
+import { fwBold, fsS, fsXXL, fsXXS } from '../../../styles/typography'
 import { Link } from 'react-router-dom'
 import Icon from '../../../uiComponents/atoms/Icon'
 import { formatDate } from '../../../utils/date'
 import { ParagraphXS } from '../../../uiComponents/atoms/Paragraphs'
+import { lighten } from 'polished'
 
 const Container = styled.article`
   padding: 20px;
@@ -15,7 +16,13 @@ const Container = styled.article`
   justify-content: space-between;
 `
 
-const InfoDetails = styled.div``
+const InfoStart = styled.div``
+
+const InfoEnd = styled.div`
+  display: flex;
+`
+
+const InfoContainer = styled.div``
 
 const InfoRow = styled.div`
   display: flex;
@@ -52,6 +59,15 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `
 
+const ReportLink = styled(Link)`
+  margin-top: 20px;
+  font-size: ${fsXXS}px;
+  line-height: 1.25;
+  ${fwBold};
+  color: ${primaryFontColor};
+  text-decoration: none;
+`
+
 const InfoValueValue = styled.p`
   margin-top: 5px;
   font-size: ${fsS}px;
@@ -60,11 +76,24 @@ const InfoValueValue = styled.p`
   color: ${primaryFontColor};
 `
 
-const InfoBudget = styled.div`
+const InfoSection = styled.div`
   padding: 0 20px 0 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  &:not(:first-child) {
+    margin-top: 20px;
+  }
+`
+
+const InfoShare = styled.div`
+  margin-top: 10px;
+  display: flex;
+
+  svg {
+    cursor: pointer;
+  }
 `
 
 const InfoBudgetValue = styled.div`
@@ -74,6 +103,30 @@ const InfoBudgetValue = styled.div`
   font-size: ${fsXXL}px;
 `
 
+const StatusBar = styled.div`
+  display: flex;
+`
+
+const StatusIndicator = styled.div<{ active?: boolean }>`
+  border-radius: 16px;
+  ${fwBold};
+  font-size: ${fsXXS}px;
+  padding: 10px;
+  text-transform: uppercase;
+  color ${primaryFontColor};
+
+  ${({ active }) =>
+    active &&
+    css`
+      color: ${primaryColor};
+      background-color: ${lighten(0.4, primaryColor)};
+    `}
+
+  &:not(:last-child) {
+    margin-right: 5px;
+  }
+`
+
 interface Props {
   task: TaskType
 }
@@ -81,7 +134,7 @@ interface Props {
 const ADPInfo: FC<Props> = ({ task }) => {
   return (
     <Container>
-      <InfoDetails>
+      <InfoStart>
         <InfoRow>
           <InfoIcon>
             <Avatar src={task.creator.profilePictureUrl} size={40} />
@@ -111,14 +164,52 @@ const ADPInfo: FC<Props> = ({ task }) => {
             </InfoValueValue>
           </InfoValue>
         </InfoRow>
-      </InfoDetails>
-      <InfoBudget>
-        <InfoValueTitle>Task Budget</InfoValueTitle>
-        <InfoBudgetValue>
-          {task.currency.iso}
-          {task.budget}
-        </InfoBudgetValue>
-      </InfoBudget>
+      </InfoStart>
+      <InfoEnd>
+        <InfoContainer>
+          <StatusBar>
+            <StatusIndicator active>Open</StatusIndicator>
+            <StatusIndicator>Assigned</StatusIndicator>
+            <StatusIndicator>Completed</StatusIndicator>
+          </StatusBar>
+        </InfoContainer>
+        <InfoContainer>
+          <InfoSection>
+            <InfoValueTitle>Task Budget</InfoValueTitle>
+            <InfoBudgetValue>
+              {task.currency.iso}
+              {task.budget}
+            </InfoBudgetValue>
+          </InfoSection>
+          <InfoSection>
+            <InfoValueTitle>Share</InfoValueTitle>
+            <InfoShare>
+              <Icon
+                name="FaFacebook"
+                size={20}
+                color={primaryFontColor}
+                spacingEnd
+              />
+              <Icon
+                name="FaTwitter"
+                size={20}
+                color={primaryFontColor}
+                spacingEnd
+              />
+              <Icon
+                name="FaLinkedin"
+                size={20}
+                color={primaryFontColor}
+                spacingEnd
+              />
+              <Icon name="MdCode" size={20} color={primaryFontColor} />
+            </InfoShare>
+            <ReportLink to="">
+              <Icon name="MdFlag" size={10} /> Report this task
+            </ReportLink>
+          </InfoSection>
+        </InfoContainer>
+      </InfoEnd>
     </Container>
   )
 }

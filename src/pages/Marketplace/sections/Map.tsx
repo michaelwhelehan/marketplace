@@ -33,7 +33,12 @@ const Map: FC = () => {
         {...viewport}
         onViewportChange={setViewport}
       >
-        <MapMarker />
+        <MapMarker latitude={-34.022967} longitude={18.450437} />
+        <MapMarker latitude={-33.941599} longitude={18.472} />
+        <MapMarker latitude={-33.971625} longitude={18.584878} />
+        <MapMarker latitude={-34.097379} longitude={18.486344} />
+        <MapMarker latitude={-33.973333} longitude={18.482224} />
+        <MapMarker latitude={-34.015745} longitude={18.50351} />
       </ReactMapGL>
     </StyledDiv>
   )

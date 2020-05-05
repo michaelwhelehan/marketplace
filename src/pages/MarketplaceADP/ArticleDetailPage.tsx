@@ -8,6 +8,7 @@ import { ScrollElementContextProvider } from '../../contexts/ScrollElementContex
 import { useParams } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
 import { TaskType } from '../../types/task'
+import ADPAttachments from './sections/ADPAttachments'
 
 interface TaskData {
   task: TaskType
@@ -96,6 +97,7 @@ const ArticleDetailPage: FC = () => {
           <ADPInfo task={data.task} />
           <StyledHR />
           <ADPDetails details={data.task.details} />
+          <ADPAttachments />
           <ScrollElementContextProvider scrollElement={scrollElement}>
             <ADPQuestions />
           </ScrollElementContextProvider>

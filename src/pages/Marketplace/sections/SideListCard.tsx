@@ -23,8 +23,9 @@ const CardOuter = styled.div`
   height: 100%;
 `
 
-const CardInner = styled.div`
-  border: 1px solid #bebebe;
+const CardInner = styled.div<{ active?: boolean }>`
+  border: ${({ active }) =>
+    active ? `2px solid ${primaryColor}` : `1px solid ${borderColor}`};
   box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.25);
   border-radius: 6px;
   height: 100%;
@@ -46,7 +47,7 @@ const CardFooter = styled.div`
 const CardRibbon = styled.div`
   position: absolute;
   background-color: ${primaryColor};
-  bottom: 0;
+  bottom: -1px;
   left: 0;
   width: 100%;
   height: 3px;
@@ -111,7 +112,7 @@ interface Props {
 const SideListCard: FC<Props> = ({ task }) => {
   return (
     <CardOuter to={`/${task.slug}`} as={Link}>
-      <CardInner>
+      <CardInner active={window.location.href.indexOf(task.slug) !== -1}>
         <CardMain>
           <CardStart>
             <CardTitle>{task.title}</CardTitle>

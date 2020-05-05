@@ -7,7 +7,8 @@ import { black, primaryColor } from '../../styles/colors'
 import Icon from '../atoms/Icon'
 
 const FormFieldWrapper = styled.div<{
-  spacingTop: boolean
+  spacingTop?: boolean
+  spacingBottom?: boolean
 }>`
   display: flex;
   flex-direction: column;
@@ -16,6 +17,12 @@ const FormFieldWrapper = styled.div<{
     spacingTop &&
     css`
       margin-top: 20px;
+    `}
+
+  ${({ spacingBottom }) =>
+    spacingBottom &&
+    css`
+      margin-bottom: 40px;
     `}
 `
 
@@ -60,6 +67,7 @@ interface Props {
   helpText?: string
   required?: boolean
   spacingTop?: boolean
+  spacingBottom?: boolean
   renderHelpPopup?: () => JSX.Element
 }
 
@@ -68,13 +76,14 @@ const FormField: FC<Props> = ({
   helpText,
   required,
   spacingTop,
+  spacingBottom,
   renderHelpPopup,
   children,
 }) => {
   const [popupOpen, setPopupOpen] = useState<boolean>(false)
 
   return (
-    <FormFieldWrapper spacingTop={spacingTop}>
+    <FormFieldWrapper spacingTop={spacingTop} spacingBottom={spacingBottom}>
       <LabelWrapper>
         {label ? (
           <StyledLabel required={required} as="label">

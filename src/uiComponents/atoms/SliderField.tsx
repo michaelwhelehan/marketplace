@@ -8,6 +8,7 @@ import {
   primaryColor,
   primaryFontColor,
 } from '../../styles/colors'
+import { fwBold } from '../../styles/typography'
 
 const StyledSlider = styled(Slider)`
   width: 100%;
@@ -41,10 +42,11 @@ const StyledTrack = styled.div<{ index: number; multiple: boolean }>`
 `
 
 const StyledTrackValue = styled.div`
-  position: absolute;
+  position: relative;
   top: 20px;
-  left: 0;
+  left: -10px;
   color: ${primaryFontColor};
+  ${fwBold};
 `
 
 const Thumb = props => <StyledThumb {...props} />
@@ -57,26 +59,48 @@ const Track = (props, state) => (
   >
     {state.index === 1 && (
       <StyledTrackValue>
-        {Array.isArray(state.value) ? <>{state.value[0]}</> : state.value}
+        {Array.isArray(state.value) ? (
+          <>
+            {props.unit}
+            {Math.round((state.value[0] / 100) * props.range).toString()}
+          </>
+        ) : (
+          <>
+            {Math.round((state.value / 100) * props.range).toString()}
+            {props.unit}
+          </>
+        )}
       </StyledTrackValue>
     )}
     {state.index === 2 && (
       <StyledTrackValue>
-        {Array.isArray(state.value) ? <>{state.value[1]}</> : state.value}
+        {Array.isArray(state.value) ? (
+          <>
+            {props.unit}
+            {Math.round((state.value[1] / 100) * props.range).toString()}
+          </>
+        ) : (
+          <>
+            {Math.round((state.value / 100) * props.range).toString()}
+            {props.unit}
+          </>
+        )}
       </StyledTrackValue>
     )}
   </StyledTrack>
 )
 
 interface Props {
+  range: number
   value: number | number[]
+  unit: 'km' | 'R'
 }
 
-const SliderField: FC<Props> = ({ value }) => {
+const SliderField: FC<Props> = ({ value, unit, range }) => {
   return (
     <StyledSlider
       value={value}
-      renderTrack={Track}
+      renderTrack={(props, state) => Track({ ...props, range, unit }, state)}
       renderThumb={Thumb}
       minDistance={8}
     />
