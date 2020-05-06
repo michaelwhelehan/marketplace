@@ -169,8 +169,6 @@ const ADPInfo: FC<Props> = ({ task }) => {
         <InfoContainer>
           <StatusBar>
             <StatusIndicator active>Open</StatusIndicator>
-            <StatusIndicator>Assigned</StatusIndicator>
-            <StatusIndicator>Completed</StatusIndicator>
           </StatusBar>
         </InfoContainer>
         <InfoContainer>

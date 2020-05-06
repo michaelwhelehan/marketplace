@@ -25,7 +25,7 @@ const CardOuter = styled.div`
 
 const CardInner = styled.div<{ active?: boolean }>`
   border: ${({ active }) =>
-    active ? `2px solid ${primaryColor}` : `1px solid ${borderColor}`};
+    active ? `2px solid #545a77` : `1px solid ${borderColor}`};
   box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.25);
   border-radius: 6px;
   height: 100%;

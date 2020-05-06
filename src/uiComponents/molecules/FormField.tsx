@@ -22,7 +22,7 @@ const FormFieldWrapper = styled.div<{
   ${({ spacingBottom }) =>
     spacingBottom &&
     css`
-      margin-bottom: 40px;
+      margin-bottom: 20px;
     `}
 `
 

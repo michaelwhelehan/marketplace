@@ -93,24 +93,24 @@ const FilterDropdown: FC<Props> = ({ name, dropdownOpen, onToggle }) => {
               </>
             )}
           >
-            <FormField label="TO BE DONE">
+            <FormField label="Where">
               <WhereWrapper>
                 <RadioField name="where" label="In Person" value="in-person" />
                 <RadioField name="where" label="Online" value="online" />
                 <RadioField name="where" label="All" value="all" />
               </WhereWrapper>
             </FormField>
-            <FormField label="SUBURB" spacingTop>
+            <FormField label="Suburb" spacingTop>
               <TextFieldIcon
                 iconName="MdPlace"
                 placeholder="Enter a surburb"
                 fullWidth
               />
             </FormField>
-            <FormField label="DISTANCE" spacingTop spacingBottom>
+            <FormField label="Distance" spacingTop spacingBottom>
               <SliderField value={30} range={100} unit="km" />
             </FormField>
-            <FormField label="TASK PRICE" spacingTop spacingBottom>
+            <FormField label="Task Price" spacingTop spacingBottom>
               <SliderField value={[5, 80]} range={20000} unit="R" />
             </FormField>
           </DropDown>

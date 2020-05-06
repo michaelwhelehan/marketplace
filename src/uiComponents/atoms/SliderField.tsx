@@ -10,6 +10,10 @@ import {
 } from '../../styles/colors'
 import { fwBold } from '../../styles/typography'
 
+const SliderContainer = styled.div`
+  margin-bottom: 20px;
+`
+
 const StyledSlider = styled(Slider)`
   width: 100%;
   height: 25px;
@@ -98,12 +102,14 @@ interface Props {
 
 const SliderField: FC<Props> = ({ value, unit, range }) => {
   return (
-    <StyledSlider
-      value={value}
-      renderTrack={(props, state) => Track({ ...props, range, unit }, state)}
-      renderThumb={Thumb}
-      minDistance={8}
-    />
+    <SliderContainer>
+      <StyledSlider
+        value={value}
+        renderTrack={(props, state) => Track({ ...props, range, unit }, state)}
+        renderThumb={Thumb}
+        minDistance={8}
+      />
+    </SliderContainer>
   )
 }
 
