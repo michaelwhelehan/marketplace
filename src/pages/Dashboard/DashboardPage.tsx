@@ -2,15 +2,12 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import BaseContainer from '../../uiComponents/atoms/Container'
 import Button from '../../uiComponents/atoms/Button'
-import {
-  borderColor,
-  offWhite,
-  white,
-  primaryFontColor,
-} from '../../styles/colors'
-import { Link } from 'react-router-dom'
-import Icon from '../../uiComponents/atoms/Icon'
+import { borderColor, offWhite, white } from '../../styles/colors'
 import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
+import Navigation from './sections/Navigation'
+import { Switch, Route, useRouteMatch } from 'react-router-dom'
+import ProfilePage from './Profile/ProfilePage'
+import DashboardPageContainer from './DashboardPageContainer'
 
 const StyledContainer = styled(BaseContainer)`
   min-height: calc(100vh - ${MAIN_HEADER_HEIGHT}px);
@@ -32,56 +29,30 @@ const MainContainer = styled.article`
   background-color: ${offWhite};
 `
 
-const Navigation = styled.ul`
-  margin-top: 20px;
-`
-
-const NavigationItem = styled.li`
-  margin-bottom: 20px;
-  > a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    font-weight: bold;
-    color: ${primaryFontColor};
-  }
-`
-
-type NavigationItemType = {
-  icon: string
-  title: string
-  link: string
-}
-
-const navigationItems: NavigationItemType[] = [
-  { icon: 'MdDashboard', title: 'Dashboard', link: '/dashboard' },
-  { icon: 'MdEmail', title: 'Messages', link: '/dashboard/inbox' },
-  { icon: 'MdWork', title: 'Tasks', link: '' },
-  { icon: 'MdPerson', title: 'Profile', link: '' },
-  { icon: 'MdSettings', title: 'Settings', link: '' },
-  { icon: 'MdSchedule', title: 'Payment History', link: '' },
-  { icon: 'MdMonetizationOn', title: 'Payment Methods', link: '' },
-  { icon: 'MdExitToApp', title: 'Logout', link: '' },
-]
-
 const DashboardPage: FC = () => {
+  const match = useRouteMatch()
+
   return (
     <>
       <StyledContainer>
         <SideListContainer>
           <Button fullWidth>Create Task</Button>
-          <Navigation>
-            {navigationItems.map(navItem => (
-              <NavigationItem key={navItem.title}>
-                <Link to={navItem.link}>
-                  <Icon size={20} name={navItem.icon} spacingEnd />{' '}
-                  {navItem.title}
-                </Link>
-              </NavigationItem>
-            ))}
-          </Navigation>
+          <Navigation />
         </SideListContainer>
-        <MainContainer>This is your dashboard</MainContainer>
+        <MainContainer>
+          <Switch>
+            <Route path={`${match.path}/profile`}>
+              <ProfilePage />
+            </Route>
+            <Route path={match.path}>
+              <DashboardPageContainer
+                style={{ padding: '20px', height: '100%' }}
+              >
+                This is your dashboard
+              </DashboardPageContainer>
+            </Route>
+          </Switch>
+        </MainContainer>
       </StyledContainer>
     </>
   )

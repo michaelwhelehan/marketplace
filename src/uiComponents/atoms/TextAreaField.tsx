@@ -14,6 +14,7 @@ const StyledTextField = styled.textarea<StyledProps>`
       width: 100%;
     `}
   height: 200px;
+  resize: vertical;
 `
 
 const StyledTextAreaField = styled(StyledTextField)``
