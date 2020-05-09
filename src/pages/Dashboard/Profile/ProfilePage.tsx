@@ -3,7 +3,6 @@ import DashboardPageContainer from '../DashboardPageContainer'
 import ProfileHeader from './sections/ProfileHeader'
 import styled from 'styled-components'
 import {
-  borderColorDark,
   black,
   primaryFontColor,
   white,
@@ -33,10 +32,12 @@ const ProfileSplitContainer = styled.div`
 
 const ProfileSplit = styled.div`
   flex: 1;
-  padding: 20px;
+  padding: 20px 40px;
 
   &:first-child {
-    border-right: 1px solid ${borderColorDark};
+    border-right: 1px solid;
+    border-image: linear-gradient(to top, ${primaryFontColor}, rgba(0, 0, 0, 0))
+      1 100%;
   }
 `
 
