@@ -7,6 +7,7 @@ import {
   primaryFontColor,
   white,
   primaryColor,
+  borderColorDark,
 } from '../../../styles/colors'
 import Avatar from '../../../uiComponents/atoms/Avatar'
 import Button from '../../../uiComponents/atoms/Button'
@@ -36,7 +37,7 @@ const ProfileSplit = styled.div`
 
   &:first-child {
     border-right: 1px solid;
-    border-image: linear-gradient(to top, ${primaryFontColor}, rgba(0, 0, 0, 0))
+    border-image: linear-gradient(to top, ${borderColorDark}, rgba(0, 0, 0, 0))
       1 100%;
   }
 `
