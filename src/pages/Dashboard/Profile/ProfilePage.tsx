@@ -187,8 +187,8 @@ const ProfilePage: FC = () => {
               <SectionValue>
                 <StyledName>Skills</StyledName>
                 <ParagraphXS>
-                  These are you skills. Keep them updated with any new skills
-                  you learn so members know what you can offer
+                  These are your skills. Keep them updated with any new skills
+                  you learn so members know what you can offer.
                 </ParagraphXS>
               </SectionValue>
             </SectionTitle>
