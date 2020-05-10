@@ -40,7 +40,7 @@ const ModalContainer = styled.div`
   border-radius: 6px;
   z-index: 99;
   width: 600px;
-  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `
 
 const ModalHeaderContainer = styled.div`

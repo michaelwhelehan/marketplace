@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 import { TaskType } from '../../../types/task'
 import { primaryColor, primaryFontColor } from '../../../styles/colors'
 import Avatar from '../../../uiComponents/atoms/Avatar'
-import { fwBold, fsS, fsXXL, fsXXS } from '../../../styles/typography'
+import { fwBold, fsS, fsXXL, fsXXS, fsXS } from '../../../styles/typography'
 import { Link } from 'react-router-dom'
 import Icon from '../../../uiComponents/atoms/Icon'
 import { formatDate } from '../../../utils/date'
@@ -110,7 +110,7 @@ const StatusBar = styled.div`
 const StatusIndicator = styled.div<{ active?: boolean }>`
   border-radius: 16px;
   ${fwBold};
-  font-size: ${fsXXS}px;
+  font-size: ${fsXS}px;
   padding: 10px;
   text-transform: uppercase;
   color ${primaryFontColor};
@@ -137,7 +137,7 @@ const ADPInfo: FC<Props> = ({ task }) => {
       <InfoStart>
         <InfoRow>
           <InfoIcon>
-            <Avatar src={task.creator.profilePictureUrl} size={40} />
+            <Avatar src={task.creator.profilePictureUrl} size={50} />
           </InfoIcon>
           <InfoValue>
             <InfoValueTitle>Posted By</InfoValueTitle>
@@ -146,7 +146,7 @@ const ADPInfo: FC<Props> = ({ task }) => {
         </InfoRow>
         <InfoRow>
           <InfoIcon>
-            <Icon name="MdPlace" size={40} color={primaryFontColor} />
+            <Icon contained name="MdPlace" size={30} color={primaryFontColor} />
           </InfoIcon>
           <InfoValue>
             <InfoValueTitle>Location</InfoValueTitle>
@@ -155,7 +155,12 @@ const ADPInfo: FC<Props> = ({ task }) => {
         </InfoRow>
         <InfoRow>
           <InfoIcon>
-            <Icon name="MdEventNote" size={40} color={primaryFontColor} />
+            <Icon
+              contained
+              name="MdEventNote"
+              size={30}
+              color={primaryFontColor}
+            />
           </InfoIcon>
           <InfoValue>
             <InfoValueTitle>Due Date</InfoValueTitle>

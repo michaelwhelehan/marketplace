@@ -16,7 +16,6 @@ type TitleType = {
 }
 
 const Step1: FC<Props> & TitleType = ({ register, control }) => {
-  console.log(control)
   return (
     <form>
       <FormField label="What do you need done?" required>

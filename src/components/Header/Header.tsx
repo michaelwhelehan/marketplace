@@ -2,13 +2,19 @@ import React, { FC, useState, MouseEvent } from 'react'
 import styled from 'styled-components'
 import logo from '../../assets/images/logo.svg'
 import BaseContainer from '../../uiComponents/atoms/Container'
-import { white, borderColor, primaryFontColor } from '../../styles/colors'
+import {
+  white,
+  borderColor,
+  primaryFontColor,
+  darkGrey,
+} from '../../styles/colors'
 import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
 import Avatar from '../../uiComponents/atoms/Avatar'
 import { Link } from 'react-router-dom'
 import { fwBold } from '../../styles/typography'
 import profilePictureUrl from '../../assets/images/profile.png'
 import DropDown from '../../uiComponents/atoms/DropDown'
+import Notifications from './Notifications/Notifications'
 
 type LinkIdType = 'tasks' | 'notifications' | 'messages'
 
@@ -55,7 +61,7 @@ const HeaderLink = styled.li`
   }
 
   a {
-    color: ${primaryFontColor};
+    color: ${darkGrey};
     ${fwBold};
     text-decoration: none;
   }
@@ -79,7 +85,7 @@ const Header: FC = () => {
         )
       },
       hasDropDown: true,
-      renderDropDown: () => <>Notifications</>,
+      renderDropDown: () => <Notifications />,
     },
     {
       id: 'messages',

@@ -25,9 +25,12 @@ const StyledDropdown = styled.div<{
   box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   width: 350px;
-  height: ${({ autoHeight }) => (autoHeight ? 'auto' : '440px')};
+  min-height: 400px;
+  max-height: 90vh;
   background: ${white};
   padding: 20px;
+  display: flex;
+  flex-direction: column;
 
   &:before,
   :after {
@@ -81,30 +84,41 @@ const StyledDropdown = styled.div<{
   }
 `
 
-const StyledDropdownWrapper = styled.div`
-  position: relative;
-  height: 100%;
-  width: 100%;
+const StyledDropdownWrapper = styled.div<{ overflowContent: boolean }>`
+  flex: 1;
+  ${({ overflowContent }) =>
+    overflowContent &&
+    css`
+      overflow-y: auto;
+    `};
+`
+
+const StyledDropdownFooter = styled.div`
+  flex-shrink: 0;
 `
 
 interface Props {
   renderFooter?: () => JSX.Element
   position?: PositionType
   autoHeight?: boolean
+  overflowContent?: boolean
 }
 
 const DropDown: FC<Props> = ({
   children,
   renderFooter,
   autoHeight,
+  overflowContent = true,
   position = 'start',
 }) => {
   return (
     <StyledDropdown position={position} autoHeight={autoHeight}>
-      <StyledDropdownWrapper>
+      <StyledDropdownWrapper overflowContent={overflowContent}>
         {children}
-        {renderFooter ? <footer>{renderFooter()}</footer> : null}
       </StyledDropdownWrapper>
+      {renderFooter ? (
+        <StyledDropdownFooter>{renderFooter()}</StyledDropdownFooter>
+      ) : null}
     </StyledDropdown>
   )
 }

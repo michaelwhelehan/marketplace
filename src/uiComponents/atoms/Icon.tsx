@@ -1,5 +1,17 @@
 import React, { FC, MouseEvent } from 'react'
 import { IconContext } from 'react-icons'
+import styled from 'styled-components'
+import { lightGrey } from '../../styles/colors'
+
+const IconContainer = styled.div<{ size: number }>`
+  border-radius: 50%;
+  background-color: ${lightGrey};
+  width: ${({ size }) => `${size + 20}px`};
+  height: ${({ size }) => `${size + 20}px`};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 
 interface Props {
   name: string
@@ -7,6 +19,7 @@ interface Props {
   size?: number
   spacingStart?: boolean | number
   spacingEnd?: boolean | number
+  contained?: boolean
   onClick?: (event: MouseEvent) => void
 }
 
@@ -16,6 +29,7 @@ const Icon: FC<Props> = ({
   size,
   spacingStart,
   spacingEnd,
+  contained,
   onClick,
   ...props
 }) => {
@@ -37,7 +51,7 @@ const Icon: FC<Props> = ({
     spacingEnd = 10
   }
 
-  return (
+  const icon = (
     <IconContext.Provider value={{ size: `${size}px`, color }}>
       <ReactIcon
         style={{
@@ -49,6 +63,12 @@ const Icon: FC<Props> = ({
       />
     </IconContext.Provider>
   )
+
+  if (contained) {
+    return <IconContainer size={size}>{icon}</IconContainer>
+  }
+
+  return icon
 }
 
 export default Icon

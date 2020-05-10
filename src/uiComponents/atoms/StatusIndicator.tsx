@@ -4,7 +4,6 @@ import { OnlineStatusType } from '../../types/user'
 
 interface Props {
   onlineStatus: OnlineStatusType
-  className?: string
 }
 
 const Indicator = styled.span<{ onlineStatus: OnlineStatusType }>`
@@ -15,8 +14,8 @@ const Indicator = styled.span<{ onlineStatus: OnlineStatusType }>`
   background-color: green;
 `
 
-const StatusIndicator: FC<Props> = ({ onlineStatus, className }) => {
-  return <Indicator className={className} onlineStatus={onlineStatus} />
+const StatusIndicator: FC<Props> = ({ onlineStatus, ...props }) => {
+  return <Indicator onlineStatus={onlineStatus} {...props} />
 }
 
 export default StatusIndicator

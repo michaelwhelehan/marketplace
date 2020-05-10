@@ -5,7 +5,6 @@ import Button from '../../uiComponents/atoms/Button'
 import styled from 'styled-components'
 import Step1 from './Step1'
 import Step2 from './Step2'
-import Step3 from './Step3'
 
 const FooterContainer = styled.div`
   display: flex;
@@ -16,19 +15,19 @@ const FooterContainer = styled.div`
   }
 `
 
-type StepType = 'step1' | 'step2' | 'step3'
+type StepType = 'step1' | 'step2'
 
-interface CreateTaskProps {
+interface MakeOfferProps {
   onClose: (event: MouseEvent) => void
 }
 
-interface CreateTaskFooterProps {
+interface MakeOfferFooterProps {
   onPreviousClick?: (event: MouseEvent) => void
   onNextClick: (event: MouseEvent) => void
   proceedText: string
 }
 
-const CreateTaskFooter: FC<CreateTaskFooterProps> = ({
+const MakeOfferFooter: FC<MakeOfferFooterProps> = ({
   onPreviousClick,
   onNextClick,
   proceedText,
@@ -43,7 +42,7 @@ const CreateTaskFooter: FC<CreateTaskFooterProps> = ({
   </FooterContainer>
 )
 
-const CreateTask: FC<CreateTaskProps> = ({ onClose }) => {
+const MakeOffer: FC<MakeOfferProps> = ({ onClose }) => {
   const [currentStep, setStep] = useState<StepType>('step1')
   const { register, watch, control, handleSubmit } = useForm({
     defaultValues: {
@@ -59,11 +58,6 @@ const CreateTask: FC<CreateTaskProps> = ({ onClose }) => {
 
   const handleStep2Submit = useCallback(data => {
     console.log(data)
-    setStep('step3')
-  }, [])
-
-  const handleStep3Submit = useCallback(data => {
-    console.log(data)
   }, [])
 
   const handleStepSubmit = useCallback(
@@ -75,20 +69,15 @@ const CreateTask: FC<CreateTaskProps> = ({ onClose }) => {
         case 'step2':
           handleStep2Submit(data)
           break
-        case 'step3':
-          handleStep3Submit(data)
       }
     },
-    [currentStep, handleStep1Submit, handleStep2Submit, handleStep3Submit],
+    [currentStep, handleStep1Submit, handleStep2Submit],
   )
 
   const handlePrevious = useCallback(() => {
     switch (currentStep) {
       case 'step2':
         setStep('step1')
-        break
-      case 'step3':
-        setStep('step2')
         break
     }
   }, [currentStep])
@@ -99,21 +88,19 @@ const CreateTask: FC<CreateTaskProps> = ({ onClose }) => {
         return Step1
       case 'step2':
         return Step2
-      case 'step3':
-        return Step3
     }
   }, [currentStep])
 
   return (
     <Modal
       title={Step.title}
-      overflowContent={currentStep === 'step3'}
       onClose={onClose}
+      overflowContent={false}
       renderFooter={() => (
-        <CreateTaskFooter
+        <MakeOfferFooter
           onPreviousClick={currentStep !== 'step1' && handlePrevious}
           onNextClick={handleSubmit(handleStepSubmit)}
-          proceedText={currentStep === 'step3' ? 'Get quotes' : 'Next'}
+          proceedText={currentStep === 'step2' ? 'Make Offer' : 'Continue'}
         />
       )}
     >
@@ -122,4 +109,4 @@ const CreateTask: FC<CreateTaskProps> = ({ onClose }) => {
   )
 }
 
-export default CreateTask
+export default MakeOffer

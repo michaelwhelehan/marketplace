@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, MouseEvent } from 'react'
 import styled, { css } from 'styled-components'
 import { TaskType } from '../../../types/task'
 import { borderColor, black, white } from '../../../styles/colors'
@@ -34,13 +34,14 @@ const StyledButton = styled(Button)`
 
 interface Props {
   task: TaskType
+  onMakeOfferClick: (event: MouseEvent) => void
 }
 
-const ADPHeader: FC<Props> = ({ task }) => {
+const ADPHeader: FC<Props> = ({ task, onMakeOfferClick }) => {
   return (
     <Container>
       <StyledHeading>{task.title}</StyledHeading>
-      <StyledButton large>
+      <StyledButton large onClick={onMakeOfferClick}>
         Make offer on {task.currency.iso}
         {task.budget}
       </StyledButton>

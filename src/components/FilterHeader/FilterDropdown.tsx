@@ -43,18 +43,15 @@ const FilterDropdownWrapper = styled.div`
   cursor: pointer;
 `
 
-const StyledCancel = styled(ParagraphS)`
-  ${fwBold};
-  position: absolute;
-  cursor: pointer;
-  bottom: 8px;
-  right: left;
+const DropdownFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `
 
-const StyledButton = styled(Button)`
-  position: absolute;
-  bottom: 0;
-  right: 0;
+const StyledCancel = styled(ParagraphS)`
+  ${fwBold};
+  cursor: pointer;
 `
 
 const WhereWrapper = styled.div`
@@ -82,15 +79,14 @@ const FilterDropdown: FC<Props> = ({ name, dropdownOpen, onToggle }) => {
         </FilterDropdownWrapper>
         {dropdownOpen && (
           <DropDown
+            overflowContent={false}
             renderFooter={() => (
-              <>
+              <DropdownFooter>
                 <StyledCancel onClick={e => onToggle(e, false)}>
                   Cancel
                 </StyledCancel>
-                <StyledButton onClick={e => onToggle(e, false)}>
-                  Apply
-                </StyledButton>
-              </>
+                <Button onClick={e => onToggle(e, false)}>Apply</Button>
+              </DropdownFooter>
             )}
           >
             <FormField label="Where">

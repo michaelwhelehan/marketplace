@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react'
+import React, { FC, useRef, useCallback } from 'react'
 import styled from 'styled-components'
 import ADPHeader from './sections/ADPHeader'
 import ADPInfo from './sections/ADPInfo'
@@ -9,6 +9,8 @@ import { useParams } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
 import { TaskType } from '../../types/task'
 import ADPAttachments from './sections/ADPAttachments'
+import ADPOffers from './sections/ADPOffers'
+import { GET_MAKE_OFFER_VISIBLE } from '../../components/Layout/Layout'
 
 interface TaskData {
   task: TaskType
@@ -85,7 +87,15 @@ const ArticleDetailPage: FC = () => {
   const { data, loading } = useQuery<TaskData, TaskVars>(GET_TASK, {
     variables: { slug: taskSlug },
   })
+  const { client } = useQuery(GET_MAKE_OFFER_VISIBLE)
   const scrollElement = useRef(null)
+
+  const handleMakeOfferClick = useCallback(() => {
+    client.writeQuery({
+      query: GET_MAKE_OFFER_VISIBLE,
+      data: { makeOfferVisible: true },
+    })
+  }, [client])
 
   return (
     <Container ref={scrollElement}>
@@ -93,11 +103,12 @@ const ArticleDetailPage: FC = () => {
         <>Loading...</>
       ) : (
         <>
-          <ADPHeader task={data.task} />
+          <ADPHeader task={data.task} onMakeOfferClick={handleMakeOfferClick} />
           <ADPInfo task={data.task} />
           <StyledHR />
           <ADPDetails details={data.task.details} />
           <ADPAttachments />
+          <ADPOffers onMakeOfferClick={handleMakeOfferClick} />
           <ScrollElementContextProvider scrollElement={scrollElement}>
             <ADPQuestions />
           </ScrollElementContextProvider>
