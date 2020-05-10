@@ -1,6 +1,6 @@
 import React, { FC, MouseEvent } from 'react'
 import styled from 'styled-components'
-import { black, lightGrey, primaryFontColor } from '../../../styles/colors'
+import { black, primaryColor, white } from '../../../styles/colors'
 import { HeadingS } from '../../../uiComponents/atoms/Headings'
 import faker from 'faker'
 import Avatar from '../../../uiComponents/atoms/Avatar'
@@ -24,7 +24,7 @@ const OfferOuter = styled.div`
   cursor: pointer;
   border-radius: 50%;
   margin-right: 10px;
-  background-color: ${lightGrey};
+  background-color: ${primaryColor};
   width: 58px;
   height: 58px;
   position: relative;
@@ -37,7 +37,7 @@ const OfferInner = styled.div`
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  border: 1px dashed ${primaryFontColor};
+  border: 1px dashed ${white};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,7 +69,7 @@ const ADPOffers: FC<Props> = ({ onMakeOfferClick }) => {
         </OfferOuter>
         <OfferOuter onClick={onMakeOfferClick}>
           <OfferInner>
-            <Icon name="MdAdd" size={35} color={primaryFontColor} />
+            <Icon name="MdAdd" size={35} color={white} />
           </OfferInner>
         </OfferOuter>
       </OfferContainer>
