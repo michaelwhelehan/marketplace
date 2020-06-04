@@ -21,6 +21,9 @@ import { Controller, useForm } from 'react-hook-form'
 import { ParagraphM, ParagraphXS } from '../../../uiComponents/atoms/Paragraphs'
 import { fwBold } from '../../../styles/typography'
 import Icon from '../../../uiComponents/atoms/Icon'
+import ProfileTabs from './sections/ProfileTabs'
+import useTabs from '../../../hooks/useTabs'
+import { TabType } from './types'
 
 const ProfileForm = styled.form`
   padding-top: 20px;
@@ -110,9 +113,12 @@ const ProfilePage: FC = () => {
     console.log(data)
   }
 
+  const { currentTab, updateTab } = useTabs<TabType>('basicInfo')
+
   return (
     <DashboardPageContainer>
       <ProfileHeader />
+      <ProfileTabs currentTab={currentTab} updateTab={updateTab} />
       <ProfileForm onSubmit={handleSubmit(onSubmit)}>
         <ProfileSplitContainer>
           <ProfileSplit>

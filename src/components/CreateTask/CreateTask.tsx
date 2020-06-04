@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent, useCallback, useState, useMemo } from 'react'
+import React, { FC, MouseEvent, useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import Modal from '../../uiComponents/molecules/Modal'
 import Button from '../../uiComponents/atoms/Button'
@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import Step1 from './Step1'
 import Step2 from './Step2'
 import Step3 from './Step3'
+import useWizard from '../../hooks/useWizard'
 
 const FooterContainer = styled.div`
   display: flex;
@@ -15,8 +16,6 @@ const FooterContainer = styled.div`
     margin-right: 10px;
   }
 `
-
-type StepType = 'step1' | 'step2' | 'step3'
 
 interface CreateTaskProps {
   onClose: (event: MouseEvent) => void
@@ -44,7 +43,7 @@ const CreateTaskFooter: FC<CreateTaskFooterProps> = ({
 )
 
 const CreateTask: FC<CreateTaskProps> = ({ onClose }) => {
-  const [currentStep, setStep] = useState<StepType>('step1')
+  const { currentStep, onNextStep, onPrevStep, canGoBack } = useWizard(3)
   const { register, watch, control, handleSubmit } = useForm({
     defaultValues: {
       where: 'in-person',
@@ -52,15 +51,21 @@ const CreateTask: FC<CreateTaskProps> = ({ onClose }) => {
     },
   })
 
-  const handleStep1Submit = useCallback(data => {
-    console.log(data)
-    setStep('step2')
-  }, [])
+  const handleStep1Submit = useCallback(
+    data => {
+      console.log(data)
+      onNextStep()
+    },
+    [onNextStep],
+  )
 
-  const handleStep2Submit = useCallback(data => {
-    console.log(data)
-    setStep('step3')
-  }, [])
+  const handleStep2Submit = useCallback(
+    data => {
+      console.log(data)
+      onNextStep()
+    },
+    [onNextStep],
+  )
 
   const handleStep3Submit = useCallback(data => {
     console.log(data)
@@ -69,37 +74,26 @@ const CreateTask: FC<CreateTaskProps> = ({ onClose }) => {
   const handleStepSubmit = useCallback(
     data => {
       switch (currentStep) {
-        case 'step1':
+        case 1:
           handleStep1Submit(data)
           break
-        case 'step2':
+        case 2:
           handleStep2Submit(data)
           break
-        case 'step3':
+        case 3:
           handleStep3Submit(data)
       }
     },
     [currentStep, handleStep1Submit, handleStep2Submit, handleStep3Submit],
   )
 
-  const handlePrevious = useCallback(() => {
-    switch (currentStep) {
-      case 'step2':
-        setStep('step1')
-        break
-      case 'step3':
-        setStep('step2')
-        break
-    }
-  }, [currentStep])
-
   const Step = useMemo(() => {
     switch (currentStep) {
-      case 'step1':
+      case 1:
         return Step1
-      case 'step2':
+      case 2:
         return Step2
-      case 'step3':
+      case 3:
         return Step3
     }
   }, [currentStep])
@@ -107,13 +101,13 @@ const CreateTask: FC<CreateTaskProps> = ({ onClose }) => {
   return (
     <Modal
       title={Step.title}
-      overflowContent={currentStep === 'step3'}
+      overflowContent={currentStep === 3}
       onClose={onClose}
       renderFooter={() => (
         <CreateTaskFooter
-          onPreviousClick={currentStep !== 'step1' && handlePrevious}
+          onPreviousClick={canGoBack && onPrevStep}
           onNextClick={handleSubmit(handleStepSubmit)}
-          proceedText={currentStep === 'step3' ? 'Get quotes' : 'Next'}
+          proceedText={currentStep === 3 ? 'Get quotes' : 'Next'}
         />
       )}
     >
