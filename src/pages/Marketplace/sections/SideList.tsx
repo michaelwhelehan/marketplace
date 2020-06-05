@@ -9,7 +9,7 @@ const StyledSideList = styled.div`
   height: 100%;
 `
 
-const ROW_HEIGHT = 170
+const ROW_HEIGHT = 160
 
 interface Props {
   tasks: TaskType[]

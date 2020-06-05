@@ -43,7 +43,7 @@ const CardMain = styled.div`
 
 const CardFooter = styled.div`
   border-top: 1px solid ${borderColor};
-  padding: 12px 10px 5px 10px;
+  padding: 7px 10px 5px 10px;
 `
 
 const CardRibbon = styled.div`

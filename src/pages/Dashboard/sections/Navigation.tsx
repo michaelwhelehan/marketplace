@@ -37,7 +37,11 @@ const Navigation: FC = () => {
       title: 'Payment History',
       link: '/dashboard/payment-history',
     },
-    { icon: 'MdMonetizationOn', title: 'Payment Methods', link: '' },
+    {
+      icon: 'MdMonetizationOn',
+      title: 'Payment Methods',
+      link: '/dashboard/payment-methods',
+    },
     { icon: 'MdExitToApp', title: 'Logout', link: '' },
   ]
 
