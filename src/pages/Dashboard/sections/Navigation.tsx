@@ -29,7 +29,7 @@ const Navigation: FC = () => {
   const navigationItems: NavigationItemType[] = [
     { icon: 'MdDashboard', title: 'Dashboard', link: '/dashboard' },
     { icon: 'MdEmail', title: 'Messages', link: '/dashboard/inbox' },
-    { icon: 'MdWork', title: 'Tasks', link: '' },
+    { icon: 'MdWork', title: 'Tasks', link: '/dashboard/my-tasks' },
     { icon: 'MdPerson', title: 'Profile', link: '/dashboard/profile' },
     { icon: 'MdSettings', title: 'Settings', link: '' },
     { icon: 'MdSchedule', title: 'Payment History', link: '' },

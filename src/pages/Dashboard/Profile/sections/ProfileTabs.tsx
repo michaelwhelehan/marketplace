@@ -1,15 +1,8 @@
 import React, { FC } from 'react'
-import styled from 'styled-components'
-import { borderColor, black } from '../../../../styles/colors'
-import { TabType } from '../types'
 import Tab from '../../../../uiComponents/atoms/Tab'
-
-const TabContainer = styled.div`
-  padding: 20px;
-  border-bottom: 1px solid ${borderColor};
-  display: flex;
-  align-items: center;
-`
+import DashboardTabPanel from '../../../../components/Panels/DashboardTabPanel'
+import { Tabs } from '../../../../types/tab'
+import { TabType } from '../types'
 
 interface Props {
   currentTab: TabType
@@ -17,30 +10,40 @@ interface Props {
 }
 
 const ProfileTabs: FC<Props> = ({ currentTab, updateTab }) => {
-  const tabs = [
+  const tabs: Tabs<TabType>[] = [
     {
       title: 'Basic Info',
       active: currentTab === 'basicInfo',
+      type: 'basicInfo',
     },
     {
       title: 'Education',
       active: currentTab === 'education',
+      type: 'education',
     },
     {
       title: 'Work Experience',
       active: currentTab === 'workExperience',
+      type: 'workExperience',
     },
     {
       title: 'Portfolio',
       active: currentTab === 'portfolio',
+      type: 'portfolio',
     },
   ]
   return (
-    <TabContainer>
-      {tabs.map(tab => (
-        <Tab title={tab.title} active={tab.active} spacingRight />
+    <DashboardTabPanel>
+      {tabs.map((tab, index) => (
+        <Tab
+          key={index}
+          title={tab.title}
+          active={tab.active}
+          onClick={() => updateTab(tab.type)}
+          underline
+        />
       ))}
-    </TabContainer>
+    </DashboardTabPanel>
   )
 }
 

@@ -3,45 +3,38 @@ import styled, { css } from 'styled-components'
 import { fwBold } from '../../styles/typography'
 import { primaryFontColor, primaryColor } from '../../styles/colors'
 
-const StyledTab = styled.div<{ active?: boolean; spacingRight?: boolean }>`
+const StyledTab = styled.div<{ active?: boolean; underline?: boolean }>`
   position: relative;
+  padding: 20px 0;
+  margin: 0 20px;
   cursor: pointer;
   ${fwBold};
   color: ${primaryFontColor};
 
-  ${({ spacingRight }) =>
-    spacingRight &&
-    css`
-      margin-right: 20px;
-    `}
-
-  ${({ active }) =>
+  ${({ active, underline }) =>
     active &&
     css`
       color: ${primaryColor};
 
-      &:after {
-        position: absolute;
-        content: '';
-        height: 3px;
-        bottom: -22px;
-        margin: 0 auto;
-        left: 0;
-        right: 0;
-        background-color: ${primaryColor};
-      }
+      ${underline && `border-bottom: 3px solid ${primaryColor};`}
     `}
 `
 
 interface Props {
   title: string
+  onClick: () => void
   active?: boolean
-  spacingRight?: boolean
+  underline?: boolean
 }
 
-const Tab: FC<Props> = ({ title, active = false, spacingRight = false }) => {
+const Tab: FC<Props> = ({
+  title,
+  onClick,
+  active = false,
+  underline = false,
+}) => {
   return (
-    <StyledTab active={active} spacingRight={spacingRight}>
+    <StyledTab onClick={onClick} active={active} underline={underline}>
       {title}
     </StyledTab>
   )

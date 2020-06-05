@@ -8,6 +8,7 @@ import Navigation from './sections/Navigation'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import ProfilePage from './Profile/ProfilePage'
 import DashboardPageContainer from './DashboardPageContainer'
+import TasksPage from './Tasks/TasksPage'
 
 const StyledContainer = styled(BaseContainer)`
   min-height: calc(100vh - ${MAIN_HEADER_HEIGHT}px);
@@ -43,6 +44,9 @@ const DashboardPage: FC = () => {
           <Switch>
             <Route path={`${match.path}/profile`}>
               <ProfilePage />
+            </Route>
+            <Route path={`${match.path}/my-tasks`}>
+              <TasksPage />
             </Route>
             <Route path={match.path}>
               <DashboardPageContainer
