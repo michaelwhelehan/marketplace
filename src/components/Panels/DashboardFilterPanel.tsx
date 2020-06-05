@@ -6,6 +6,7 @@ const DashboardFilterPanel = styled.div`
   background-color: ${white};
   display: flex;
   align-items: center;
+  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.05);
 `
 
 export default DashboardFilterPanel

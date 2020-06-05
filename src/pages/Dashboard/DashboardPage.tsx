@@ -7,10 +7,24 @@ import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
 import Navigation from './sections/Navigation'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import ProfilePage from './Profile/ProfilePage'
-import DashboardPageContainer from './DashboardPageContainer'
 import TasksPage from './Tasks/TasksPage'
 import PaymentHistoryPage from './PaymentHistory/PaymentHistoryPage'
 import PaymentMethodsPage from './PaymentMethods/PaymentMethodsPage'
+import RecentTasks from './sections/RecentTasks'
+import AccountSummary from './sections/AccountSummary'
+
+const DashboardContainer = styled.article`
+  display: flex;
+`
+
+const DashboardStart = styled.main`
+  flex: 2;
+  margin-right: 20px;
+`
+
+const DashboardEnd = styled.aside`
+  flex: 1;
+`
 
 const StyledContainer = styled(BaseContainer)`
   min-height: calc(100vh - ${MAIN_HEADER_HEIGHT}px);
@@ -57,11 +71,14 @@ const DashboardPage: FC = () => {
               <PaymentMethodsPage />
             </Route>
             <Route path={match.path}>
-              <DashboardPageContainer
-                style={{ padding: '20px', height: '100%' }}
-              >
-                This is your dashboard
-              </DashboardPageContainer>
+              <DashboardContainer>
+                <DashboardStart>
+                  <RecentTasks />
+                </DashboardStart>
+                <DashboardEnd>
+                  <AccountSummary />
+                </DashboardEnd>
+              </DashboardContainer>
             </Route>
           </Switch>
         </MainContainer>

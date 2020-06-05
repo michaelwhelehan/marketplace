@@ -9,9 +9,9 @@ const ProgressBarContainer = styled.div`
   justify-content: center;
 `
 
-const StyledProgressBar = styled.div`
-  width: 200px;
-  height: 15px;
+const StyledProgressBar = styled.div<{ short?: boolean; fullWidth?: boolean }>`
+  width: ${({ fullWidth }) => (fullWidth ? '100%' : '200px')};
+  height: ${({ short }) => (short ? '7px' : '14px')};
   position: relative;
   border-radius: 20px;
   background-color: ${lightGrey};
@@ -33,13 +33,20 @@ const Description = styled(ParagraphXXS)`
 interface Props {
   percentComplete: number
   description?: string
+  short?: boolean
+  fullWidth?: boolean
 }
 
-const ProgressBar: FC<Props> = ({ percentComplete, description }) => {
+const ProgressBar: FC<Props> = ({
+  percentComplete,
+  description,
+  short = false,
+  fullWidth = false,
+}) => {
   return (
     <ProgressBarContainer>
       {description ? <Description>{description}</Description> : null}
-      <StyledProgressBar>
+      <StyledProgressBar short={short} fullWidth={fullWidth}>
         <ProgressBarInner percentComplete={percentComplete} />
       </StyledProgressBar>
     </ProgressBarContainer>

@@ -72,7 +72,7 @@ const WindowedTable: FC<Props> = ({
               width={width}
               gridStyle={{ border: `1px solid ${borderColor}` }}
               rowStyle={{ borderBottom: `1px solid ${borderColor}` }}
-              headerStyle={{ color: primaryFontColor }}
+              headerStyle={{ color: primaryFontColor, textTransform: 'none' }}
             >
               {columns.map((column, index) => (
                 <Column
