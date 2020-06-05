@@ -9,7 +9,7 @@ interface Props {
   updateTab: (tab: TabType) => void
 }
 
-const TasksFilterPanel: FC<Props> = ({ currentTab, updateTab }) => {
+const FilterPanel: FC<Props> = ({ currentTab, updateTab }) => {
   const tabs: Tabs<TabType>[] = [
     {
       title: 'ACTIVE',
@@ -56,4 +56,4 @@ const TasksFilterPanel: FC<Props> = ({ currentTab, updateTab }) => {
   )
 }
 
-export default TasksFilterPanel
+export default FilterPanel

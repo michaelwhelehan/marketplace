@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { primaryFontColor } from '../../../styles/colors'
-import { Link } from 'react-router-dom'
+import { primaryFontColor, primaryColor } from '../../../styles/colors'
+import { NavLink } from 'react-router-dom'
 import Icon from '../../../uiComponents/atoms/Icon'
 
 const StyledNavigation = styled.ul`
@@ -32,7 +32,11 @@ const Navigation: FC = () => {
     { icon: 'MdWork', title: 'Tasks', link: '/dashboard/my-tasks' },
     { icon: 'MdPerson', title: 'Profile', link: '/dashboard/profile' },
     { icon: 'MdSettings', title: 'Settings', link: '' },
-    { icon: 'MdSchedule', title: 'Payment History', link: '' },
+    {
+      icon: 'MdSchedule',
+      title: 'Payment History',
+      link: '/dashboard/payment-history',
+    },
     { icon: 'MdMonetizationOn', title: 'Payment Methods', link: '' },
     { icon: 'MdExitToApp', title: 'Logout', link: '' },
   ]
@@ -41,9 +45,13 @@ const Navigation: FC = () => {
     <StyledNavigation>
       {navigationItems.map(navItem => (
         <NavigationItem key={navItem.title}>
-          <Link to={navItem.link}>
+          <NavLink
+            to={navItem.link}
+            exact
+            activeStyle={{ color: primaryColor }}
+          >
             <Icon size={20} name={navItem.icon} spacingEnd /> {navItem.title}
-          </Link>
+          </NavLink>
         </NavigationItem>
       ))}
     </StyledNavigation>

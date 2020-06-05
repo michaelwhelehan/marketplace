@@ -14,7 +14,7 @@ import Icon from '../../../uiComponents/atoms/Icon'
 import { formatDate } from '../../../utils/date'
 import Avatar from '../../../uiComponents/atoms/Avatar'
 
-const CARD_PADDING = 10
+const CARD_PADDING = 6
 
 const CardOuter = styled.div`
   display: block;
@@ -43,7 +43,7 @@ const CardMain = styled.div`
 
 const CardFooter = styled.div`
   border-top: 1px solid ${borderColor};
-  padding: 7px 10px 5px 10px;
+  padding: 12px 10px 5px 10px;
 `
 
 const CardRibbon = styled.div`

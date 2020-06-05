@@ -68,7 +68,7 @@ const Header: FC = () => {
     {
       id: 'tasks',
       name: 'My Tasks',
-      href: '/dashboard/tasks',
+      href: '/dashboard/my-tasks',
     },
     {
       id: 'notifications',
