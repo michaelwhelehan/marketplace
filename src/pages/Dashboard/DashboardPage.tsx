@@ -12,6 +12,8 @@ import PaymentHistoryPage from './PaymentHistory/PaymentHistoryPage'
 import PaymentMethodsPage from './PaymentMethods/PaymentMethodsPage'
 import RecentTasks from './sections/RecentTasks'
 import AccountSummary from './sections/AccountSummary'
+import CreditSummary from './sections/CreditSummary'
+import ActivityFeed from './sections/ActivityFeed'
 
 const DashboardContainer = styled.article`
   display: flex;
@@ -20,10 +22,18 @@ const DashboardContainer = styled.article`
 const DashboardStart = styled.main`
   flex: 2;
   margin-right: 20px;
+
+  > div:not(:first-child) {
+    margin-top: 20px;
+  }
 `
 
 const DashboardEnd = styled.aside`
   flex: 1;
+
+  > div:not(:first-child) {
+    margin-top: 20px;
+  }
 `
 
 const StyledContainer = styled(BaseContainer)`
@@ -74,9 +84,11 @@ const DashboardPage: FC = () => {
               <DashboardContainer>
                 <DashboardStart>
                   <RecentTasks />
+                  <ActivityFeed />
                 </DashboardStart>
                 <DashboardEnd>
                   <AccountSummary />
+                  <CreditSummary />
                 </DashboardEnd>
               </DashboardContainer>
             </Route>
