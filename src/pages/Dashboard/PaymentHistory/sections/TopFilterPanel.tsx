@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { TabType } from '../types'
 import Tab from '../../../../uiComponents/atoms/Tab'
 import { Tabs } from '../../../../types/tab'
-import DashboardFilterPanel from '../../../../components/Panels/DashboardFilterPanel'
+import DashboardFilterPanel from '../../Panels/DashboardFilterPanel'
 
 interface Props {
   currentTab: TabType

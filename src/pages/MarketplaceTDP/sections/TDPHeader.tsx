@@ -37,7 +37,7 @@ interface Props {
   onMakeOfferClick: (event: MouseEvent) => void
 }
 
-const ADPHeader: FC<Props> = ({ task, onMakeOfferClick }) => {
+const TDPHeader: FC<Props> = ({ task, onMakeOfferClick }) => {
   return (
     <Container>
       <StyledHeading>{task.title}</StyledHeading>
@@ -49,4 +49,4 @@ const ADPHeader: FC<Props> = ({ task, onMakeOfferClick }) => {
   )
 }
 
-export default ADPHeader
+export default TDPHeader

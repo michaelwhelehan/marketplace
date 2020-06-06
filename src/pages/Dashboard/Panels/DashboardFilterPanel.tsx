@@ -1,12 +1,13 @@
-import { borderColor, white } from '../../styles/colors'
+import { borderColor, white } from '../../../styles/colors'
 import styled from 'styled-components'
+import { featherShadow } from '../../../styles/shadows'
 
 const DashboardFilterPanel = styled.div`
   border: 1px solid ${borderColor};
   background-color: ${white};
   display: flex;
   align-items: center;
-  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.05);
+  ${featherShadow};
 `
 
 export default DashboardFilterPanel

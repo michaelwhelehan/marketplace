@@ -15,7 +15,7 @@ const ConversationContainer = styled.div`
   margin-top: 10px;
 `
 
-const ADPQuestions: FC = () => {
+const TDPQuestions: FC = () => {
   return (
     <Container>
       <Title>Questions (10)</Title>
@@ -26,4 +26,4 @@ const ADPQuestions: FC = () => {
   )
 }
 
-export default ADPQuestions
+export default TDPQuestions

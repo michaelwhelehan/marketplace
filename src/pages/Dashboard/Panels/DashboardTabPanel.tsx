@@ -1,4 +1,4 @@
-import { borderColor } from '../../styles/colors'
+import { borderColor } from '../../../styles/colors'
 import styled from 'styled-components'
 
 const DashboardTabPanel = styled.div`

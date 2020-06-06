@@ -11,7 +11,7 @@ import profilePictureUrl from '../../assets/images/profile.png'
 import DropDown from '../../uiComponents/atoms/DropDown'
 import Notifications from './Notifications/Notifications'
 
-type LinkIdType = 'tasks' | 'notifications' | 'messages'
+type LinkIdType = 'browse' | 'tasks' | 'notifications' | 'messages'
 
 type LinkType = {
   id: LinkIdType
@@ -65,6 +65,11 @@ const HeaderLink = styled.li`
 const Header: FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState<LinkIdType | null>(null)
   const links: LinkType[] = [
+    {
+      id: 'browse',
+      name: 'Browse Tasks',
+      href: '/',
+    },
     {
       id: 'tasks',
       name: 'My Tasks',

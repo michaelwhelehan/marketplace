@@ -1,40 +1,89 @@
 import React, { FC } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { UserType } from '../../types/user'
 import Avatar from '../atoms/Avatar'
 import UserName from '../atoms/UserName'
 import { ParagraphS } from '../atoms/Paragraphs'
 import Rating from '../atoms/Rating'
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`
+export type DisplayType = 'stacked' | 'inline'
+
+const JobTitle = styled(ParagraphS)``
 
 const RatingContainer = styled.div`
   margin-top: 5px;
 `
 
+const UserDetails = styled.div<{ display: DisplayType }>`
+  display: flex;
+  align-items: center;
+
+  ${({ display }) => {
+    if (display === 'stacked') {
+      return css`
+        flex-direction: column;
+        align-items: center;
+      `
+    }
+
+    if (display === 'inline') {
+      return css`
+        margin-left: 10px;
+        width: 250px;
+        flex-wrap: wrap;
+
+        ${JobTitle} {
+          order: 100;
+        }
+
+        ${RatingContainer} {
+          margin-left: 10px;
+        }
+      `
+    }
+  }}
+`
+
+const Container = styled.div<{ display: DisplayType }>`
+  display: flex;
+  align-items: center;
+
+  ${({ display }) => {
+    if (display === 'stacked') {
+      return css`
+        flex-direction: column;
+      `
+    }
+  }}
+`
+
 interface Props {
-  member: UserType
+  user: UserType
+  display?: DisplayType
+  avatarSize?: number
 }
 
-const UserCard: FC<Props> = ({ member }) => {
+const UserCard: FC<Props> = ({
+  user,
+  display = 'stacked',
+  avatarSize = 80,
+}) => {
   return (
-    <Container>
-      <Avatar src={member.profilePictureUrl} size={80} />
-      <UserName style={{ marginTop: '5px' }}>{member.name}</UserName>
-      {member.jobTitle ? (
-        <ParagraphS style={{ marginTop: '5px' }}>{member.jobTitle}</ParagraphS>
-      ) : null}
-      <RatingContainer>
-        {member.rating && member.numRatings ? (
-          <Rating rating={member.rating} numRatings={member.numRatings} />
-        ) : (
-          'New'
-        )}
-      </RatingContainer>
+    <Container display={display}>
+      <Avatar src={user.profilePictureUrl} size={avatarSize} />
+      <UserDetails display={display}>
+        <UserName style={{ marginTop: '5px' }}>{user.name}</UserName>
+        {user.jobTitle ? (
+          <JobTitle style={{ marginTop: '5px' }}>{user.jobTitle}</JobTitle>
+        ) : null}
+        <RatingContainer>
+          {user.rating && user.numRatings ? (
+            <Rating rating={user.rating} numRatings={user.numRatings} />
+          ) : (
+            'New'
+          )}
+        </RatingContainer>
+      </UserDetails>
     </Container>
   )
 }

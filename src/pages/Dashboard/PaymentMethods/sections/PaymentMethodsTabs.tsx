@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import Tab from '../../../../uiComponents/atoms/Tab'
-import DashboardTabPanel from '../../../../components/Panels/DashboardTabPanel'
+import DashboardTabPanel from '../../Panels/DashboardTabPanel'
 import { Tabs } from '../../../../types/tab'
 import { TabType } from '../types'
 

@@ -4,6 +4,7 @@ import Marketplace from './pages/Marketplace/MarketplacePage'
 import Dashboard from './pages/Dashboard/DashboardPage'
 import Inbox from './pages/Inbox/InboxPage'
 import { Switch, Route } from 'react-router-dom'
+import TaskDetailPage from './pages/Dashboard/TaskDetail/TaskDetailPage'
 
 const Routes: FC = () => {
   return (
@@ -12,6 +13,9 @@ const Routes: FC = () => {
         <Switch>
           <Route path="/dashboard/inbox">
             <Inbox />
+          </Route>
+          <Route path="/my-tasks/:taskSlug">
+            <TaskDetailPage />
           </Route>
           <Route path="/dashboard">
             <Dashboard />

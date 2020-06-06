@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { white, borderColor, black, primaryColor } from '../../../styles/colors'
-import { HeadingM } from '../../../uiComponents/atoms/Headings'
+import { primaryColor } from '../../../styles/colors'
 import WindowedTable, {
   ColumnType,
 } from '../../../uiComponents/molecules/WindowedTable'
@@ -9,28 +8,7 @@ import { formatDate } from '../../../utils/date'
 import faker from 'faker'
 import { Link } from 'react-router-dom'
 import { fwBold } from '../../../styles/typography'
-
-const Container = styled.div`
-  background-color: ${white};
-  border: 1px solid ${borderColor};
-  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.05);
-`
-
-const Header = styled.div`
-  padding: 20px;
-  border-bottom: 1px solid ${borderColor};
-`
-
-const Footer = styled.div`
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-
-const StyledHeading = styled(HeadingM)`
-  color: ${black};
-`
+import DashboardPanel from '../Panels/DashboardPanel'
 
 const GridContainer = styled.div`
   margin-top: 5px;
@@ -62,7 +40,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/try-to-navigate-the-sas-application-maybe-it-will',
+    href: '/my-tasks/abc',
     status: 'Open',
   },
   {
@@ -75,7 +53,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/try-to-navigate-the-sas-application-maybe-it-will',
+    href: '/my-tasks/abc',
     status: 'Open',
   },
   {
@@ -88,7 +66,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/try-to-navigate-the-sas-application-maybe-it-will',
+    href: '/my-tasks/abc',
     status: 'Open',
   },
   {
@@ -101,7 +79,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/try-to-navigate-the-sas-application-maybe-it-will',
+    href: '/my-tasks/abc',
     status: 'Open',
   },
   {
@@ -114,7 +92,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/try-to-navigate-the-sas-application-maybe-it-will',
+    href: '/my-tasks/abc',
     status: 'Open',
   },
 ]
@@ -159,10 +137,12 @@ const RecentTasks: FC = () => {
   ]
 
   return (
-    <Container>
-      <Header>
-        <StyledHeading>Recent Tasks</StyledHeading>
-      </Header>
+    <DashboardPanel
+      title="Recent Tasks"
+      footerContent={
+        <StyledLink to={'/dashboard/my-tasks'}>View All</StyledLink>
+      }
+    >
       <GridContainer>
         <WindowedTable
           columns={columns}
@@ -171,10 +151,7 @@ const RecentTasks: FC = () => {
           scrollElement={window}
         />
       </GridContainer>
-      <Footer>
-        <StyledLink to={'/dashboard/my-tasks'}>View All</StyledLink>
-      </Footer>
-    </Container>
+    </DashboardPanel>
   )
 }
 

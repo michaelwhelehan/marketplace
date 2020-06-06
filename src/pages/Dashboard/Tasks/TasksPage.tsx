@@ -39,7 +39,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/try-to-navigate-the-sas-application-maybe-it-will',
+    href: '/my-tasks/abc',
   },
   {
     avatar: faker.image.avatar(),
@@ -51,7 +51,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/try-to-navigate-the-sas-application-maybe-it-will',
+    href: '/my-tasks/abc',
   },
   {
     avatar: faker.image.avatar(),
@@ -63,7 +63,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/try-to-navigate-the-sas-application-maybe-it-will',
+    href: '/my-tasks/abc',
   },
   {
     avatar: faker.image.avatar(),
@@ -75,7 +75,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/try-to-navigate-the-sas-application-maybe-it-will',
+    href: '/my-tasks/abc',
   },
   {
     avatar: faker.image.avatar(),
@@ -87,7 +87,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/try-to-navigate-the-sas-application-maybe-it-will',
+    href: '/my-tasks/abc',
   },
   {
     avatar: faker.image.avatar(),
@@ -99,7 +99,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/try-to-navigate-the-sas-application-maybe-it-will',
+    href: '/my-tasks/abc',
   },
   {
     avatar: faker.image.avatar(),
@@ -111,7 +111,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/try-to-navigate-the-sas-application-maybe-it-will',
+    href: '/my-tasks/abc',
   },
   {
     avatar: faker.image.avatar(),
@@ -123,7 +123,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/try-to-navigate-the-sas-application-maybe-it-will',
+    href: '/my-tasks/abc',
   },
   {
     avatar: faker.image.avatar(),
@@ -135,7 +135,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/try-to-navigate-the-sas-application-maybe-it-will',
+    href: '/my-tasks/abc',
   },
 ]
 

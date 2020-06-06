@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import DashboardFilterPanel from '../../../../components/Panels/DashboardFilterPanel'
+import DashboardFilterPanel from '../../Panels/DashboardFilterPanel'
 import styled from 'styled-components'
 import { fwBold } from '../../../../styles/typography'
 import { primaryFontColor } from '../../../../styles/colors'

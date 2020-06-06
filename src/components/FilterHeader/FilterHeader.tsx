@@ -8,12 +8,13 @@ import TextFieldIcon from '../../uiComponents/molecules/TextFieldIcon'
 import FilterDropdown from './FilterDropdown'
 import { useQuery } from '@apollo/client'
 import { GET_CREATE_TASK_VISIBLE } from '../Layout/Layout'
+import { featherShadow } from '../../styles/shadows'
 
 const StyledHeader = styled.header`
   height: ${FILTER_HEADER_HEIGHT}px;
   border-bottom: 1px solid ${borderColor};
   background-color: ${white};
-  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.05);
+  ${featherShadow};
   position: relative;
   z-index: 997;
 `

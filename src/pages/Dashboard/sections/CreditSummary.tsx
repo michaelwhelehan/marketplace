@@ -1,22 +1,11 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { white, borderColor, black } from '../../../styles/colors'
-import { HeadingM } from '../../../uiComponents/atoms/Headings'
+import { borderColor, black } from '../../../styles/colors'
 import { ParagraphS } from '../../../uiComponents/atoms/Paragraphs'
 import { fwBold } from '../../../styles/typography'
+import DashboardPanel from '../Panels/DashboardPanel'
 
 const Container = styled.div`
-  background-color: ${white};
-  border: 1px solid ${borderColor};
-  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.05);
-`
-
-const Header = styled.div`
-  padding: 20px;
-  border-bottom: 1px solid ${borderColor};
-`
-
-const Body = styled.div`
   padding: 20px;
 `
 
@@ -42,17 +31,10 @@ const SummaryTitle = styled(ParagraphS)`
 
 const SummaryValue = styled(ParagraphS)``
 
-const StyledHeading = styled(HeadingM)`
-  color: ${black};
-`
-
 const CreditSummary: FC = () => {
   return (
-    <Container>
-      <Header>
-        <StyledHeading>Credit Summary</StyledHeading>
-      </Header>
-      <Body>
+    <DashboardPanel title="Credit Summary">
+      <Container>
         <SummaryItem>
           <SummaryTitle>Remaining</SummaryTitle>
           <SummaryValue>7/8</SummaryValue>
@@ -65,8 +47,8 @@ const CreditSummary: FC = () => {
           <SummaryTitle>Replenishment rate</SummaryTitle>
           <SummaryValue>1x</SummaryValue>
         </SummaryItem>
-      </Body>
-    </Container>
+      </Container>
+    </DashboardPanel>
   )
 }
 

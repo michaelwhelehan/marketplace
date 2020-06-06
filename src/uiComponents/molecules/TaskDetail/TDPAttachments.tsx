@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import { black } from '../../../styles/colors'
-import { HeadingS } from '../../../uiComponents/atoms/Headings'
+import { HeadingS } from '../../atoms/Headings'
 import faker from 'faker'
 
 const Container = styled.article`
@@ -25,7 +25,7 @@ const Attachment = styled.img`
 
 interface Props {}
 
-const ADPAttachments: FC<Props> = () => {
+const TDPAttachments: FC<Props> = () => {
   return (
     <Container>
       <Title>Attachments</Title>
@@ -53,4 +53,4 @@ const ADPAttachments: FC<Props> = () => {
   )
 }
 
-export default ADPAttachments
+export default TDPAttachments

@@ -4,7 +4,7 @@ import { HeadingS } from '../../../../uiComponents/atoms/Headings'
 import Button from '../../../../uiComponents/atoms/Button'
 import {
   ParagraphS,
-  ParagraphL,
+  ParagraphM,
 } from '../../../../uiComponents/atoms/Paragraphs'
 import FormField from '../../../../uiComponents/molecules/FormField'
 import TextField from '../../../../uiComponents/atoms/TextField'
@@ -26,7 +26,7 @@ const CreditItemTitle = styled(ParagraphS)`
   ${fwBold};
 `
 
-const CredititemValue = styled(ParagraphL)`
+const CredititemValue = styled(ParagraphM)`
   ${fwBold};
   color: ${black};
 `

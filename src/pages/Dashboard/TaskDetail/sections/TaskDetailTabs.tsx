@@ -1,35 +1,35 @@
 import React, { FC } from 'react'
-import Tab from '../../../../uiComponents/atoms/Tab'
 import DashboardTabPanel from '../../Panels/DashboardTabPanel'
 import { Tabs } from '../../../../types/tab'
 import { TabType } from '../types'
+import Tab from '../../../../uiComponents/atoms/Tab'
 
 interface Props {
   currentTab: TabType
   updateTab: (tab: TabType) => void
 }
 
-const ProfileTabs: FC<Props> = ({ currentTab, updateTab }) => {
+const TaskDetailTabs: FC<Props> = ({ currentTab, updateTab }) => {
   const tabs: Tabs<TabType>[] = [
     {
-      title: 'Basic Info',
-      active: currentTab === 'basicInfo',
-      type: 'basicInfo',
+      title: 'Task Details',
+      active: currentTab === 'taskDetails',
+      type: 'taskDetails',
     },
     {
-      title: 'Education',
-      active: currentTab === 'education',
-      type: 'education',
+      title: 'Offers (4)',
+      active: currentTab === 'offers',
+      type: 'offers',
     },
     {
-      title: 'Work Experience',
-      active: currentTab === 'workExperience',
-      type: 'workExperience',
+      title: 'Hires (1)',
+      active: currentTab === 'hires',
+      type: 'hires',
     },
     {
-      title: 'Portfolio',
-      active: currentTab === 'portfolio',
-      type: 'portfolio',
+      title: 'Task Progress',
+      active: currentTab === 'taskProgress',
+      type: 'taskProgress',
     },
   ]
   return (
@@ -47,4 +47,4 @@ const ProfileTabs: FC<Props> = ({ currentTab, updateTab }) => {
   )
 }
 
-export default ProfileTabs
+export default TaskDetailTabs

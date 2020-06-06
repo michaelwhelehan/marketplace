@@ -5,7 +5,7 @@ import BaseContainer from '../../uiComponents/atoms/Container'
 import Map from './sections/Map'
 import SideList from './sections/SideList'
 import { useRouteMatch, Switch, Route, useLocation } from 'react-router-dom'
-import ArticleDetailPage from '../MarketplaceADP/ArticleDetailPage'
+import TaskDetailPage from '../MarketplaceTDP/TaskDetailPage'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { MAIN_HEADER_HEIGHT, FILTER_HEADER_HEIGHT } from '../../constants/sizes'
 import { useQuery, gql } from '@apollo/client'
@@ -127,7 +127,7 @@ const MarketplacePage: FC = () => {
             >
               <Switch location={location}>
                 <Route path={`${match.path}:taskSlug`}>
-                  <ArticleDetailPage />
+                  <TaskDetailPage />
                 </Route>
                 <Route path={match.path}>
                   <Map />

@@ -1,15 +1,15 @@
 import React, { FC, useRef, useCallback } from 'react'
 import styled from 'styled-components'
-import ADPHeader from './sections/ADPHeader'
-import ADPInfo from './sections/ADPInfo'
-import ADPDetails from './sections/ADPDetails'
-import ADPQuestions from './sections/ADPQuestions'
+import TDPHeader from './sections/TDPHeader'
+import TDPInfo from '../../uiComponents/molecules/TaskDetail/TDPInfo'
+import TDPDetails from '../../uiComponents/molecules/TaskDetail/TDPDetails'
+import TDPQuestions from './sections/TDPQuestions'
 import { ScrollElementContextProvider } from '../../contexts/ScrollElementContext'
 import { useParams } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
 import { TaskType } from '../../types/task'
-import ADPAttachments from './sections/ADPAttachments'
-import ADPOffers from './sections/ADPOffers'
+import TDPAttachments from '../../uiComponents/molecules/TaskDetail/TDPAttachments'
+import TDPOffers from './sections/TDPOffers'
 import { GET_MAKE_OFFER_VISIBLE } from '../../components/Layout/Layout'
 
 interface TaskData {
@@ -82,7 +82,7 @@ export const GET_TASK = gql`
   }
 `
 
-const ArticleDetailPage: FC = () => {
+const TaskDetailPage: FC = () => {
   const { taskSlug } = useParams()
   const { data, loading } = useQuery<TaskData, TaskVars>(GET_TASK, {
     variables: { slug: taskSlug },
@@ -103,14 +103,14 @@ const ArticleDetailPage: FC = () => {
         <>Loading...</>
       ) : (
         <>
-          <ADPHeader task={data.task} onMakeOfferClick={handleMakeOfferClick} />
-          <ADPInfo task={data.task} />
+          <TDPHeader task={data.task} onMakeOfferClick={handleMakeOfferClick} />
+          <TDPInfo task={data.task} />
           <StyledHR />
-          <ADPDetails details={data.task.details} />
-          <ADPAttachments />
-          <ADPOffers onMakeOfferClick={handleMakeOfferClick} />
+          <TDPDetails details={data.task.details} />
+          <TDPAttachments />
+          <TDPOffers onMakeOfferClick={handleMakeOfferClick} />
           <ScrollElementContextProvider scrollElement={scrollElement}>
-            <ADPQuestions />
+            <TDPQuestions />
           </ScrollElementContextProvider>
         </>
       )}
@@ -118,4 +118,4 @@ const ArticleDetailPage: FC = () => {
   )
 }
 
-export default ArticleDetailPage
+export default TaskDetailPage

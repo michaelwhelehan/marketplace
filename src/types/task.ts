@@ -1,6 +1,8 @@
 import { Currency } from './currency'
 import { UserType } from './user'
 
+export type TaskStatusType = 'open' | 'in-progress' | 'complete'
+
 export type TaskType = {
   id: string
   creator: UserType
@@ -11,4 +13,6 @@ export type TaskType = {
   location: string
   dueDate: Date
   details: string
+  status?: TaskStatusType
+  numOffers: number
 }

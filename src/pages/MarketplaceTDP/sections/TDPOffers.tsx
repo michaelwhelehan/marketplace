@@ -56,7 +56,7 @@ interface Props {
 const avatarSrc1 = faker.image.avatar()
 const avatarSrc2 = faker.image.avatar()
 
-const ADPOffers: FC<Props> = ({ onMakeOfferClick }) => {
+const TDPOffers: FC<Props> = ({ onMakeOfferClick }) => {
   return (
     <Container>
       <Title>Offers (2)</Title>
@@ -77,4 +77,4 @@ const ADPOffers: FC<Props> = ({ onMakeOfferClick }) => {
   )
 }
 
-export default ADPOffers
+export default TDPOffers

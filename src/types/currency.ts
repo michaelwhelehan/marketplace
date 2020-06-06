@@ -1,4 +1,4 @@
 export type Currency = {
-  code: 'EUR'
-  iso: '€'
+  code: 'ZAR'
+  iso: 'R'
 }

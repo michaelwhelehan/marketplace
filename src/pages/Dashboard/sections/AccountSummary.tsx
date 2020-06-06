@@ -12,11 +12,12 @@ import { fwBold } from '../../../styles/typography'
 import ProgressBar from '../../../uiComponents/atoms/ProgressBar'
 import { Link } from 'react-router-dom'
 import Icon from '../../../uiComponents/atoms/Icon'
+import { featherShadow } from '../../../styles/shadows'
 
 const Container = styled.div`
   background-color: ${white};
   border: 1px solid ${borderColor};
-  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.05);
+  ${featherShadow};
 `
 
 const Header = styled.div`

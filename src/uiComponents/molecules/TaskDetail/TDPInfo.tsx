@@ -1,14 +1,15 @@
 import React, { FC } from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { TaskType } from '../../../types/task'
 import { primaryColor, primaryFontColor } from '../../../styles/colors'
-import Avatar from '../../../uiComponents/atoms/Avatar'
-import { fwBold, fsS, fsXXL, fsXXS, fsXS } from '../../../styles/typography'
+import Avatar from '../../atoms/Avatar'
+import { fwBold, fsS, fsXXL, fsXXS } from '../../../styles/typography'
 import { Link } from 'react-router-dom'
-import Icon from '../../../uiComponents/atoms/Icon'
+import Icon from '../../atoms/Icon'
 import { formatDate } from '../../../utils/date'
-import { ParagraphXS } from '../../../uiComponents/atoms/Paragraphs'
-import { lighten } from 'polished'
+import { ParagraphXS } from '../../atoms/Paragraphs'
+import Button from '../../atoms/Button'
+import TaskStatusIndicator from '../../atoms/TaskStatusIndicator'
 
 const Container = styled.article`
   padding: 20px;
@@ -107,31 +108,12 @@ const StatusBar = styled.div`
   display: flex;
 `
 
-const StatusIndicator = styled.div<{ active?: boolean }>`
-  border-radius: 16px;
-  ${fwBold};
-  font-size: ${fsXS}px;
-  padding: 10px;
-  text-transform: uppercase;
-  color ${primaryFontColor};
-
-  ${({ active }) =>
-    active &&
-    css`
-      color: ${primaryColor};
-      background-color: ${lighten(0.4, primaryColor)};
-    `}
-
-  &:not(:last-child) {
-    margin-right: 5px;
-  }
-`
-
 interface Props {
   task: TaskType
+  editable?: boolean
 }
 
-const ADPInfo: FC<Props> = ({ task }) => {
+const TDPInfo: FC<Props> = ({ task, editable = false }) => {
   return (
     <Container>
       <InfoStart>
@@ -173,7 +155,7 @@ const ADPInfo: FC<Props> = ({ task }) => {
       <InfoEnd>
         <InfoContainer>
           <StatusBar>
-            <StatusIndicator active>Open</StatusIndicator>
+            <TaskStatusIndicator status="open" />
           </StatusBar>
         </InfoContainer>
         <InfoContainer>
@@ -184,37 +166,43 @@ const ADPInfo: FC<Props> = ({ task }) => {
               {task.budget}
             </InfoBudgetValue>
           </InfoSection>
-          <InfoSection>
-            <InfoValueTitle>Share</InfoValueTitle>
-            <InfoShare>
-              <Icon
-                name="FaFacebook"
-                size={20}
-                color={primaryFontColor}
-                spacingEnd
-              />
-              <Icon
-                name="FaTwitter"
-                size={20}
-                color={primaryFontColor}
-                spacingEnd
-              />
-              <Icon
-                name="FaLinkedin"
-                size={20}
-                color={primaryFontColor}
-                spacingEnd
-              />
-              <Icon name="MdCode" size={20} color={primaryFontColor} />
-            </InfoShare>
-            <ReportLink to="">
-              <Icon name="MdFlag" size={10} /> Report this task
-            </ReportLink>
-          </InfoSection>
+          {editable ? (
+            <InfoSection>
+              <Button>Edit Task</Button>
+            </InfoSection>
+          ) : (
+            <InfoSection>
+              <InfoValueTitle>Share</InfoValueTitle>
+              <InfoShare>
+                <Icon
+                  name="FaFacebook"
+                  size={20}
+                  color={primaryFontColor}
+                  spacingEnd
+                />
+                <Icon
+                  name="FaTwitter"
+                  size={20}
+                  color={primaryFontColor}
+                  spacingEnd
+                />
+                <Icon
+                  name="FaLinkedin"
+                  size={20}
+                  color={primaryFontColor}
+                  spacingEnd
+                />
+                <Icon name="MdCode" size={20} color={primaryFontColor} />
+              </InfoShare>
+              <ReportLink to="">
+                <Icon name="MdFlag" size={10} /> Report this task
+              </ReportLink>
+            </InfoSection>
+          )}
         </InfoContainer>
       </InfoEnd>
     </Container>
   )
 }
 
-export default ADPInfo
+export default TDPInfo
