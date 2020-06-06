@@ -15,13 +15,13 @@ const Container = styled.div`
 
 const SummaryTitle = styled(HeadingS)`
   &:not(:first-child) {
-    margin-top: 20px;
+    margin-top: 10px;
   }
 `
 
 const SummaryValue = styled(ParagraphS)`
   ${fwBold};
-  margin-top: 10px;
+  margin-top: 5px;
 `
 
 const Budget = styled(SummaryValue)`

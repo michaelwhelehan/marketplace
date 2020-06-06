@@ -4,7 +4,7 @@ import OfferCard, { OfferCardSelector } from './OfferCard'
 
 const Container = styled.div`
   ${OfferCardSelector}:not(:first-child) {
-    margin-top: 10px;
+    margin-top: 15px;
   }
 `
 
