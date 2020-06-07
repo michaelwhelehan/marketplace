@@ -12,6 +12,8 @@ import OffersMain from './sections/Offers/OffersMain'
 import OffersSummary from './sections/Offers/OffersSummary'
 import HiresMain from './sections/Hires/HiresMain'
 import HiresSummary from './sections/Hires/HiresSummary'
+import ProgressMain from './sections/Progress/ProgressMain'
+import ProgressSummary from './sections/Progress/ProgressSummary'
 
 const StyledContainer = styled(BaseContainer)``
 
@@ -49,6 +51,8 @@ const TaskDetailPage: FC<Props> = () => {
         return <OffersMain />
       case 'hires':
         return <HiresMain />
+      case 'taskProgress':
+        return <ProgressMain />
       default:
         return null
     }
@@ -62,6 +66,8 @@ const TaskDetailPage: FC<Props> = () => {
         return <OffersSummary />
       case 'hires':
         return <HiresSummary />
+      case 'taskProgress':
+        return <ProgressSummary />
       default:
         return null
     }

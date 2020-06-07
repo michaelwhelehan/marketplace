@@ -20,7 +20,7 @@ const HiresMain: FC<Props> = () => {
     {
       creator: {
         profilePictureUrl: faker.image.avatar(),
-        name: faker.name.findName(),
+        name: `${faker.name.firstName()} ${faker.name.lastName().charAt(0)}.`,
         onlineStatus: 'online' as OnlineStatusType,
         lastSeen: new Date(),
         jobTitle: 'Web Developer',

@@ -40,7 +40,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/my-tasks/abc',
+    href: '/tasks/abc',
     status: 'Open',
   },
   {
@@ -53,7 +53,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/my-tasks/abc',
+    href: '/tasks/abc',
     status: 'Open',
   },
   {
@@ -66,7 +66,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/my-tasks/abc',
+    href: '/tasks/abc',
     status: 'Open',
   },
   {
@@ -79,7 +79,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/my-tasks/abc',
+    href: '/tasks/abc',
     status: 'Open',
   },
   {
@@ -92,7 +92,7 @@ const list = [
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/my-tasks/abc',
+    href: '/tasks/abc',
     status: 'Open',
   },
 ]

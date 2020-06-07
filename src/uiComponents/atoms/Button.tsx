@@ -1,12 +1,14 @@
 import styled, { css } from 'styled-components'
 import { darken } from 'polished'
-import { primaryColor, white } from '../../styles/colors'
+import { primaryColor, white, red } from '../../styles/colors'
 import { fsS, fsXS } from '../../styles/typography'
+
+export type ButtonStyleType = 'primary' | 'primary-outline' | 'error'
 
 interface StyledButtonProps {
   fullWidth?: boolean
   large?: boolean
-  styleType?: string
+  styleType?: ButtonStyleType
 }
 
 const StyledButton = styled.button<StyledButtonProps>`
@@ -16,6 +18,8 @@ const StyledButton = styled.button<StyledButtonProps>`
         return primaryColor
       case 'primary-outline':
         return white
+      case 'error':
+        return red
     }
   }};
   color: ${({ styleType = 'primary' }) => {
@@ -24,6 +28,8 @@ const StyledButton = styled.button<StyledButtonProps>`
         return white
       case 'primary-outline':
         return primaryColor
+      case 'error':
+        return white
     }
   }};
   cursor: pointer;
@@ -45,6 +51,8 @@ const StyledButton = styled.button<StyledButtonProps>`
           return darken(0.2, primaryColor)
         case 'primary-outline':
           return darken(0.2, white)
+        case 'error':
+          return darken(0.2, red)
       }
     }};
   }

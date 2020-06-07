@@ -29,7 +29,11 @@ const Navigation: FC = () => {
   const navigationItems: NavigationItemType[] = [
     { icon: 'MdDashboard', title: 'Dashboard', link: '/dashboard' },
     { icon: 'MdEmail', title: 'Messages', link: '/dashboard/inbox' },
-    { icon: 'MdBusinessCenter', title: 'Tasks', link: '/dashboard/my-tasks' },
+    {
+      icon: 'MdBusinessCenter',
+      title: 'My Tasks',
+      link: '/dashboard/my-tasks',
+    },
     { icon: 'MdPerson', title: 'Profile', link: '/dashboard/profile' },
     { icon: 'MdSettings', title: 'Settings', link: '' },
     {

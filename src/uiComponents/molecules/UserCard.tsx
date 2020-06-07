@@ -29,7 +29,7 @@ const UserDetails = styled.div<{ display: DisplayType }>`
     if (display === 'inline') {
       return css`
         margin-left: 10px;
-        width: 250px;
+        width: 200px;
         flex-wrap: wrap;
 
         ${JobTitle} {

@@ -1,12 +1,27 @@
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
 import { fwBold } from '../../styles/typography'
-import { primaryFontColor, primaryColor } from '../../styles/colors'
+import {
+  primaryFontColor,
+  primaryColor,
+  borderColorDark,
+} from '../../styles/colors'
+
+const underLineCss = css`
+  position: absolute;
+  content: '';
+  height: 3px;
+  bottom: 0;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  width: 100%;
+  transition: 0.3s ease-in-out;
+`
 
 const StyledTab = styled.div<{ active?: boolean; underline?: boolean }>`
   position: relative;
-  padding: 20px 0;
-  margin: 0 20px;
+  padding: 20px;
   cursor: pointer;
   ${fwBold};
   color: ${primaryFontColor};
@@ -16,7 +31,23 @@ const StyledTab = styled.div<{ active?: boolean; underline?: boolean }>`
     css`
       color: ${primaryColor};
 
-      ${underline && `border-bottom: 3px solid ${primaryColor};`}
+      ${underline &&
+        `:after {
+        ${underLineCss};
+        background-color: ${primaryColor};
+      }`}
+    `}
+
+  ${({ active, underline }) =>
+    !active &&
+    css`
+      &:hover {
+        ${underline &&
+          `:after {
+          ${underLineCss};
+        background-color: ${borderColorDark};
+        }`}
+      }
     `}
 `
 
