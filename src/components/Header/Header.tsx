@@ -10,8 +10,9 @@ import { fwBold } from '../../styles/typography'
 import profilePictureUrl from '../../assets/images/profile.png'
 import DropDown from '../../uiComponents/atoms/DropDown'
 import Notifications from './Notifications/Notifications'
+import Icon from '../../uiComponents/atoms/Icon'
 
-type LinkIdType = 'browse' | 'tasks' | 'notifications' | 'messages'
+type LinkIdType = 'browse' | 'tasks' | 'updates' | 'messages'
 
 type LinkType = {
   id: LinkIdType
@@ -20,6 +21,7 @@ type LinkType = {
   onClick?: (e: MouseEvent) => void
   hasDropDown?: boolean
   renderDropDown?: () => JSX.Element
+  icon: string
 }
 
 const StyledHeader = styled.header`
@@ -52,13 +54,19 @@ const HeaderLinks = styled.ul`
 const HeaderLink = styled.li`
   position: relative;
   &:not(:last-child) {
-    margin-right: 10px;
+    margin-right: 20px;
   }
 
   a {
     color: ${darkGrey};
     ${fwBold};
     text-decoration: none;
+    display: flex;
+    align-items: center;
+
+    span {
+      margin-left: 5px;
+    }
   }
 `
 
@@ -67,30 +75,32 @@ const Header: FC = () => {
   const links: LinkType[] = [
     {
       id: 'browse',
-      name: 'Browse Tasks',
+      name: 'Browse',
       href: '/',
+      icon: 'MdSearch',
     },
     {
       id: 'tasks',
       name: 'My Tasks',
       href: '/dashboard/my-tasks',
+      icon: 'MdBusinessCenter',
     },
     {
-      id: 'notifications',
-      name: 'Notifications',
+      id: 'updates',
+      name: 'Updates',
       onClick: e => {
         e.preventDefault()
-        setDropdownOpen(prev =>
-          prev === 'notifications' ? null : 'notifications',
-        )
+        setDropdownOpen(prev => (prev === 'updates' ? null : 'updates'))
       },
       hasDropDown: true,
       renderDropDown: () => <Notifications />,
+      icon: 'MdNotificationsNone',
     },
     {
       id: 'messages',
       name: 'Messages',
       href: '/dashboard/inbox',
+      icon: 'MdMailOutline',
     },
   ]
   const avatarUrl = profilePictureUrl
@@ -114,7 +124,7 @@ const Header: FC = () => {
             {links.map(link => (
               <HeaderLink key={link.name}>
                 <Link onClick={link.onClick} to={link.href}>
-                  {link.name}
+                  <Icon name={link.icon} size={25} /> <span>{link.name}</span>
                 </Link>
                 {link.hasDropDown && dropdownOpen === link.id ? (
                   <DropDown position="end">{link.renderDropDown()}</DropDown>

@@ -15,7 +15,7 @@ const Container = styled.div`
 
 interface Props {}
 
-const OffersMain: FC<Props> = () => {
+const HiresMain: FC<Props> = () => {
   const offers: OfferType[] = [
     {
       creator: {
@@ -39,7 +39,7 @@ const OffersMain: FC<Props> = () => {
           key={index}
           offer={offer}
           action={{
-            title: 'Hire',
+            title: 'Pay Now',
             onClick: () => {
               console.log('click')
             },
@@ -50,4 +50,4 @@ const OffersMain: FC<Props> = () => {
   )
 }
 
-export default OffersMain
+export default HiresMain

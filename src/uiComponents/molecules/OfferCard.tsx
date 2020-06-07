@@ -5,19 +5,14 @@ import {
   borderColor,
   primaryColor,
   primaryFontColor,
-} from '../../../../../styles/colors'
-import { featherShadow } from '../../../../../styles/shadows'
-import UserCard from '../../../../../uiComponents/molecules/UserCard'
-import Button from '../../../../../uiComponents/atoms/Button'
-import { OnlineStatusType } from '../../../../../types/user'
-import {
-  ParagraphL,
-  ParagraphXS,
-  ParagraphS,
-} from '../../../../../uiComponents/atoms/Paragraphs'
-import { fwBold } from '../../../../../styles/typography'
-import faker from 'faker'
-import Icon from '../../../../../uiComponents/atoms/Icon'
+} from '../../styles/colors'
+import { featherShadow } from '../../styles/shadows'
+import { ParagraphS, ParagraphL, ParagraphXS } from '../atoms/Paragraphs'
+import Button from '../atoms/Button'
+import { fwBold } from '../../styles/typography'
+import UserCard from './UserCard'
+import Icon from '../atoms/Icon'
+import { OfferType } from '../../types/offer'
 
 export const OfferCardSelector = styled.div`
   background-color: ${white};
@@ -93,25 +88,24 @@ const Budget = styled(ParagraphL)`
   ${fwBold};
 `
 
-interface Props {}
-
-const OfferCard: FC<Props> = () => {
-  const user = {
-    profilePictureUrl: faker.image.avatar(),
-    name: faker.name.findName(),
-    onlineStatus: 'online' as OnlineStatusType,
-    lastSeen: new Date(),
-    jobTitle: 'Web Developer',
-    rating: 4.8,
-    numRatings: 10,
+interface Props {
+  offer: OfferType
+  action: {
+    title: string
+    onClick: () => void
   }
+}
 
+const OfferCard: FC<Props> = ({ offer, action }) => {
   return (
     <OfferCardSelector>
       <TopWrapper>
-        <UserCard user={user} avatarSize={50} display="inline" />
+        <UserCard user={offer.creator} avatarSize={50} display="inline" />
         <div>
-          <Budget>R500</Budget>
+          <Budget>
+            {offer.currency.iso}
+            {offer.amount}
+          </Budget>
           <IconContainer>
             <Icon name="MdDelete" size={24} color={primaryFontColor} />
             <Icon name="MdBookmark" size={24} color={primaryFontColor} />
@@ -119,7 +113,7 @@ const OfferCard: FC<Props> = () => {
         </div>
       </TopWrapper>
       <BottomWrapper>
-        <CoverLetter>{faker.lorem.paragraph(10)}</CoverLetter>
+        <CoverLetter>{offer.coverLetter}</CoverLetter>
         <ActionContainer>
           <RepliesWithin>
             <Icon name="MdAccessTime" size={14} color={primaryFontColor} />
@@ -129,7 +123,9 @@ const OfferCard: FC<Props> = () => {
             <Button styleType="primary-outline" fullWidth>
               Message
             </Button>
-            <Button fullWidth>Hire</Button>
+            <Button fullWidth onClick={action.onClick}>
+              {action.title}
+            </Button>
           </ButtonContainer>
         </ActionContainer>
       </BottomWrapper>

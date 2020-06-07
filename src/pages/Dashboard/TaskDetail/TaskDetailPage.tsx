@@ -10,6 +10,8 @@ import TaskDetailsMain from './sections/TaskDetails/TaskDetailsMain'
 import TaskDetailsSummary from './sections/TaskDetails/TaskDetailsSummary'
 import OffersMain from './sections/Offers/OffersMain'
 import OffersSummary from './sections/Offers/OffersSummary'
+import HiresMain from './sections/Hires/HiresMain'
+import HiresSummary from './sections/Hires/HiresSummary'
 
 const StyledContainer = styled(BaseContainer)``
 
@@ -45,6 +47,8 @@ const TaskDetailPage: FC<Props> = () => {
         return <TaskDetailsMain />
       case 'offers':
         return <OffersMain />
+      case 'hires':
+        return <HiresMain />
       default:
         return null
     }
@@ -56,6 +60,8 @@ const TaskDetailPage: FC<Props> = () => {
         return <TaskDetailsSummary />
       case 'offers':
         return <OffersSummary />
+      case 'hires':
+        return <HiresSummary />
       default:
         return null
     }
