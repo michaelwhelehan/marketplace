@@ -6,12 +6,24 @@ import TextFieldIcon from '../molecules/TextFieldIcon'
 interface Props {
   placeholder?: string
   onChange: any
+  fullWidth?: boolean
 }
 
-const DateField: FC<Props> = ({ placeholder, onChange, ...props }) => {
+const DateField: FC<Props> = ({
+  placeholder,
+  onChange,
+  fullWidth = false,
+  ...props
+}) => {
   return (
     <DayPickerInput
-      component={props => <TextFieldIcon iconName="MdDateRange" {...props} />}
+      component={props => (
+        <TextFieldIcon
+          iconName="MdDateRange"
+          fullWidth={fullWidth}
+          {...props}
+        />
+      )}
       placeholder={placeholder}
       onDayChange={onChange}
       {...props}

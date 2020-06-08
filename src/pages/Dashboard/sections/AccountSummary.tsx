@@ -13,6 +13,7 @@ import ProgressBar from '../../../uiComponents/atoms/ProgressBar'
 import { Link } from 'react-router-dom'
 import Icon from '../../../uiComponents/atoms/Icon'
 import { featherShadow } from '../../../styles/shadows'
+import LineBreak from '../../../uiComponents/atoms/LineBreak'
 
 const Container = styled.div`
   background-color: ${white};
@@ -68,12 +69,6 @@ const AdvanceProfileBenefit = styled(ParagraphS)`
   ${fwBold};
 `
 
-const StyledHR = styled.hr`
-  border: 0;
-  border-top: 1px solid ${borderColor};
-  margin: 20px 0;
-`
-
 const AccountBalanceContainer = styled.div`
   display: flex;
   align-items: center;
@@ -117,7 +112,7 @@ const AccountSummary: FC = () => {
           </AdvanceProfileLink>
           <AdvanceProfileBenefit>+ 6%</AdvanceProfileBenefit>
         </AdvanceProfileItem>
-        <StyledHR />
+        <LineBreak />
         <div>
           <AccountBalanceContainer>
             <AccountBalanceTitle>Account Balance</AccountBalanceTitle>

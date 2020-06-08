@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useCallback } from 'react'
 import styled from 'styled-components'
 import OfferCard, {
   OfferCardSelector,
@@ -6,6 +6,8 @@ import OfferCard, {
 import faker from 'faker'
 import { OnlineStatusType } from '../../../../../types/user'
 import { OfferType } from '../../../../../types/offer'
+import { GET_HIRE_VISIBLE } from '../../../../../components/Layout/Layout'
+import { useQuery } from '@apollo/client'
 
 const Container = styled.div`
   ${OfferCardSelector}:not(:first-child) {
@@ -16,6 +18,15 @@ const Container = styled.div`
 interface Props {}
 
 const OffersMain: FC<Props> = () => {
+  const { client } = useQuery(GET_HIRE_VISIBLE)
+
+  const handleHireClick = useCallback(() => {
+    client.writeQuery({
+      query: GET_HIRE_VISIBLE,
+      data: { hireVisible: true },
+    })
+  }, [client])
+
   const offers: OfferType[] = [
     {
       creator: {
@@ -82,9 +93,7 @@ const OffersMain: FC<Props> = () => {
           offer={offer}
           action={{
             title: 'Hire',
-            onClick: () => {
-              console.log('click')
-            },
+            onClick: handleHireClick,
           }}
         />
       ))}

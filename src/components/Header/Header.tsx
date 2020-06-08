@@ -11,6 +11,7 @@ import profilePictureUrl from '../../assets/images/profile.png'
 import DropDown from '../../uiComponents/atoms/DropDown'
 import Notifications from './Notifications/Notifications'
 import Icon from '../../uiComponents/atoms/Icon'
+import UpdateIndicator from '../../uiComponents/atoms/UpdateIndicator'
 
 type LinkIdType = 'browse' | 'tasks' | 'updates' | 'messages'
 
@@ -22,6 +23,7 @@ type LinkType = {
   hasDropDown?: boolean
   renderDropDown?: () => JSX.Element
   icon: string
+  hasUpdates?: boolean
 }
 
 const StyledHeader = styled.header`
@@ -51,23 +53,24 @@ const HeaderLinks = styled.ul`
   margin-right: 20px;
 `
 
-const HeaderLink = styled.li`
+const HeaderItem = styled.li`
   position: relative;
   &:not(:last-child) {
     margin-right: 20px;
   }
+`
 
-  a {
-    color: ${darkGrey};
-    ${fwBold};
-    text-decoration: none;
-    display: flex;
-    align-items: center;
+const HeaderLink = styled(Link)`
+  color: ${darkGrey};
+  ${fwBold};
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+`
 
-    span {
-      margin-left: 5px;
-    }
-  }
+const HeaderLinkIcon = styled.span`
+  position: relative;
+  margin-right: 5px;
 `
 
 const Header: FC = () => {
@@ -95,12 +98,14 @@ const Header: FC = () => {
       hasDropDown: true,
       renderDropDown: () => <Notifications />,
       icon: 'MdNotificationsNone',
+      hasUpdates: true,
     },
     {
       id: 'messages',
       name: 'Messages',
       href: '/dashboard/inbox',
       icon: 'MdMailOutline',
+      hasUpdates: true,
     },
   ]
   const avatarUrl = profilePictureUrl
@@ -122,14 +127,18 @@ const Header: FC = () => {
         <HeaderEnd>
           <HeaderLinks>
             {links.map(link => (
-              <HeaderLink key={link.name}>
-                <Link onClick={link.onClick} to={link.href}>
-                  <Icon name={link.icon} size={25} /> <span>{link.name}</span>
-                </Link>
+              <HeaderItem key={link.name}>
+                <HeaderLink onClick={link.onClick} to={link.href}>
+                  <HeaderLinkIcon>
+                    <Icon name={link.icon} size={25} />
+                    {link.hasUpdates && <UpdateIndicator />}
+                  </HeaderLinkIcon>
+                  <span>{link.name}</span>
+                </HeaderLink>
                 {link.hasDropDown && dropdownOpen === link.id ? (
                   <DropDown position="end">{link.renderDropDown()}</DropDown>
                 ) : null}
-              </HeaderLink>
+              </HeaderItem>
             ))}
           </HeaderLinks>
           {avatarUrl ? (

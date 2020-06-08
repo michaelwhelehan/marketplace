@@ -6,16 +6,13 @@ import TDPInfo from '../../../../../uiComponents/molecules/TaskDetail/TDPInfo'
 import TDPDetails from '../../../../../uiComponents/molecules/TaskDetail/TDPDetails'
 import TDPAttachments from '../../../../../uiComponents/molecules/TaskDetail/TDPAttachments'
 import { TaskType } from '../../../../../types/task'
+import LineBreak from '../../../../../uiComponents/atoms/LineBreak'
 
 const Container = styled.div`
   background-color: ${white};
   border: 1px solid ${borderColor};
   ${featherShadow};
   padding: 20px;
-`
-
-const StyledHR = styled.hr`
-  margin: 10px 20px;
 `
 
 interface Props {}
@@ -46,7 +43,7 @@ const TaskDetailsMain: FC<Props> = () => {
   return (
     <Container>
       <TDPInfo task={task} editable />
-      <StyledHR />
+      <LineBreak />
       <TDPDetails details={details} />
       <TDPAttachments />
     </Container>

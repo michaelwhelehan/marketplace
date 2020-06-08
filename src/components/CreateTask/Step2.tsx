@@ -8,12 +8,7 @@ import { ParagraphXS } from '../../uiComponents/atoms/Paragraphs'
 import { borderColorDark, primaryFontColor } from '../../styles/colors'
 import Icon from '../../uiComponents/atoms/Icon'
 import TextFieldIcon from '../../uiComponents/molecules/TextFieldIcon'
-
-const SplitSection = styled.div`
-  display: grid;
-  grid-column-gap: 10px;
-  grid-template-columns: 1fr 1fr;
-`
+import FieldContainer from '../../uiComponents/molecules/FieldContainer'
 
 const Section = styled.div`
   border-radius: 4px;
@@ -50,7 +45,7 @@ const Step2: FC<Props> & TitleType = ({ watch, register, control }) => {
   return (
     <form>
       <FormField label="Where do you need it done?" required>
-        <SplitSection>
+        <FieldContainer split>
           <Section>
             <InnerSectionContainer>
               <InnerSectionStart>
@@ -91,7 +86,7 @@ const Step2: FC<Props> & TitleType = ({ watch, register, control }) => {
               Select this if the work can be completed online
             </WhereExplanation>
           </Section>
-        </SplitSection>
+        </FieldContainer>
       </FormField>
       {watchWhere === 'in-person' && (
         <FormField spacingTop>
@@ -103,7 +98,7 @@ const Step2: FC<Props> & TitleType = ({ watch, register, control }) => {
           />
         </FormField>
       )}
-      <FormField label="When do you need it done?" spacingTop>
+      <FormField label="When do you need it done?" required spacingTop>
         <Controller
           as={DateField}
           name="dueDate"

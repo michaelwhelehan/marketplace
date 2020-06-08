@@ -11,6 +11,7 @@ import { TaskType } from '../../types/task'
 import TDPAttachments from '../../uiComponents/molecules/TaskDetail/TDPAttachments'
 import TDPOffers from './sections/TDPOffers'
 import { GET_MAKE_OFFER_VISIBLE } from '../../components/Layout/Layout'
+import LineBreak from '../../uiComponents/atoms/LineBreak'
 
 interface TaskData {
   task: TaskType
@@ -53,10 +54,6 @@ const Container = styled.div`
   &.slide-exit-active {
     transform: translateX(100%);
   }
-`
-
-const StyledHR = styled.hr`
-  margin: 10px 20px;
 `
 
 export const GET_TASK = gql`
@@ -105,7 +102,7 @@ const TaskDetailPage: FC = () => {
         <>
           <TDPHeader task={data.task} onMakeOfferClick={handleMakeOfferClick} />
           <TDPInfo task={data.task} />
-          <StyledHR />
+          <LineBreak />
           <TDPDetails details={data.task.details} />
           <TDPAttachments />
           <TDPOffers onMakeOfferClick={handleMakeOfferClick} />

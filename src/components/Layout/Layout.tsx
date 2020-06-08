@@ -3,6 +3,7 @@ import Header from '../Header/Header'
 import CreateTask from '../CreateTask/CreateTask'
 import { gql, useQuery } from '@apollo/client'
 import MakeOffer from '../MakeOffer/MakeOffer'
+import Hire from '../Hire/Hire'
 
 export const GET_CREATE_TASK_VISIBLE = gql`
   {
@@ -16,6 +17,12 @@ export const GET_MAKE_OFFER_VISIBLE = gql`
   }
 `
 
+export const GET_HIRE_VISIBLE = gql`
+  {
+    hireVisible @client
+  }
+`
+
 const Layout: FC = ({ children }) => {
   const { data: taskData, client: taskClient } = useQuery(
     GET_CREATE_TASK_VISIBLE,
@@ -23,6 +30,8 @@ const Layout: FC = ({ children }) => {
   const { data: offerData, client: offerClient } = useQuery(
     GET_MAKE_OFFER_VISIBLE,
   )
+  const { data: hireData, client: hireClient } = useQuery(GET_HIRE_VISIBLE)
+
   return (
     <>
       <Header />
@@ -43,6 +52,16 @@ const Layout: FC = ({ children }) => {
             offerClient.writeQuery({
               query: GET_MAKE_OFFER_VISIBLE,
               data: { makeOfferVisible: false },
+            })
+          }
+        />
+      )}
+      {hireData?.hireVisible && (
+        <Hire
+          onClose={() =>
+            hireClient.writeQuery({
+              query: GET_HIRE_VISIBLE,
+              data: { hireVisible: false },
             })
           }
         />

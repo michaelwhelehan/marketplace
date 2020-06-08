@@ -24,6 +24,7 @@ import Icon from '../../../uiComponents/atoms/Icon'
 import ProfileTabs from './sections/ProfileTabs'
 import useTabs from '../../../hooks/useTabs'
 import { TabType } from './types'
+import FieldContainer from '../../../uiComponents/molecules/FieldContainer'
 
 const ProfileForm = styled.form`
   padding-top: 20px;
@@ -43,13 +44,6 @@ const ProfileSplit = styled.div`
     border-image: linear-gradient(to top, ${borderColorDark}, rgba(0, 0, 0, 0))
       1 100%;
   }
-`
-
-const FieldContainer = styled.div`
-  display: grid;
-  margin-top: 20px;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 20px;
 `
 
 const ButtonContainer = styled.div`
@@ -136,7 +130,7 @@ const ProfilePage: FC = () => {
                 <ParagraphXS>{watchNamePosition.position}</ParagraphXS>
               </SectionValue>
             </SectionTitle>
-            <FieldContainer>
+            <FieldContainer split spacingTop>
               <FormField label="First Name">
                 <TextField
                   name="firstName"
@@ -200,81 +194,83 @@ const ProfilePage: FC = () => {
                 </ParagraphXS>
               </SectionValue>
             </SectionTitle>
-            <FormField label="What are you good at?" spacingTop>
-              <Controller
-                as={SelectField}
-                name="skills"
-                control={control}
-                placeholder="eg. Accounting, cleaning, web development"
-                isMulti
-                options={[
-                  { label: 'Accounting', value: 'accounting' },
-                  { label: 'Cleaning', value: 'cleaning' },
-                  { label: 'Web Development', value: 'web' },
-                ]}
-              />
-            </FormField>
-            <FormField label="How do you get around?" spacingTop>
-              <HorizontalAlign>
-                <StyledRadio
-                  name="transport"
-                  label="Bicycle"
-                  value="bicycle"
-                  ref={register()}
+            <FieldContainer spacingTop>
+              <FormField label="What are you good at?">
+                <Controller
+                  as={SelectField}
+                  name="skills"
+                  control={control}
+                  placeholder="eg. Accounting, cleaning, web development"
+                  isMulti
+                  options={[
+                    { label: 'Accounting', value: 'accounting' },
+                    { label: 'Cleaning', value: 'cleaning' },
+                    { label: 'Web Development', value: 'web' },
+                  ]}
                 />
-                <StyledRadio
-                  name="transport"
-                  label="Car"
-                  value="car"
-                  ref={register()}
+              </FormField>
+              <FormField label="How do you get around?" spacingTop>
+                <HorizontalAlign>
+                  <StyledRadio
+                    name="transport"
+                    label="Bicycle"
+                    value="bicycle"
+                    ref={register()}
+                  />
+                  <StyledRadio
+                    name="transport"
+                    label="Car"
+                    value="car"
+                    ref={register()}
+                  />
+                  <StyledRadio
+                    name="transport"
+                    label="Train"
+                    value="train"
+                    ref={register()}
+                  />
+                  <StyledRadio
+                    name="transport"
+                    label="Online"
+                    value="online"
+                    ref={register()}
+                  />
+                </HorizontalAlign>
+              </FormField>
+              <FormField label="What languages can you speak/write?" spacingTop>
+                <Controller
+                  as={SelectField}
+                  name="languages"
+                  control={control}
+                  placeholder="eg. English, Afrikaans, Xhosa"
+                  isMulti
+                  options={[
+                    { label: 'English', value: 'english' },
+                    { label: 'Afrikaans', value: 'afrikaans' },
+                    { label: 'Xhosa', value: 'xhosa' },
+                  ]}
                 />
-                <StyledRadio
-                  name="transport"
-                  label="Train"
-                  value="train"
-                  ref={register()}
+              </FormField>
+              <FormField label="What qualifications have you got?" spacingTop>
+                <Controller
+                  as={SelectField}
+                  name="qualifications"
+                  control={control}
+                  placeholder="eg. High school certificate"
+                  isMulti
+                  isCreatable
+                  options={[]}
                 />
-                <StyledRadio
-                  name="transport"
-                  label="Online"
-                  value="online"
+              </FormField>
+              <FormField label="What's your work experience?" spacingTop>
+                <TextAreaField
+                  name="experience"
                   ref={register()}
+                  placeholder="eg. 3 years as a Barista"
+                  fullWidth
                 />
-              </HorizontalAlign>
-            </FormField>
-            <FormField label="What languages can you speak/write?" spacingTop>
-              <Controller
-                as={SelectField}
-                name="languages"
-                control={control}
-                placeholder="eg. English, Afrikaans, Xhosa"
-                isMulti
-                options={[
-                  { label: 'English', value: 'english' },
-                  { label: 'Afrikaans', value: 'afrikaans' },
-                  { label: 'Xhosa', value: 'xhosa' },
-                ]}
-              />
-            </FormField>
-            <FormField label="What qualifications have you got?" spacingTop>
-              <Controller
-                as={SelectField}
-                name="qualifications"
-                control={control}
-                placeholder="eg. High school certificate"
-                isMulti
-                isCreatable
-                options={[]}
-              />
-            </FormField>
-            <FormField label="What's your work experience?" spacingTop>
-              <TextAreaField
-                name="experience"
-                ref={register()}
-                placeholder="eg. 3 years as a Barista"
-                fullWidth
-              />
-            </FormField>
+              </FormField>
+            </FieldContainer>
           </ProfileSplit>
         </ProfileSplitContainer>
         <ButtonContainer>

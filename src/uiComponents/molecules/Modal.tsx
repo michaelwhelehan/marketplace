@@ -26,7 +26,7 @@ const ModalCurtain = styled.div`
   overflow-x: hidden;
 `
 
-const ModalContainer = styled.div`
+const ModalContainer = styled.div<{ large?: boolean }>`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -39,7 +39,7 @@ const ModalContainer = styled.div`
   border: 1px solid ${borderColor};
   border-radius: 6px;
   z-index: 99;
-  width: 600px;
+  width: ${({ large }) => (large ? '780px' : '600px')};
   box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `
 
@@ -82,6 +82,7 @@ const StyledIcon = styled(Icon)`
 interface Props {
   title?: string
   overflowContent?: boolean
+  large?: boolean
   onClose: (event: MouseEvent) => void
   renderFooter: () => JSX.Element
 }
@@ -91,6 +92,7 @@ const Modal: FC<Props> = ({
   title,
   onClose,
   renderFooter,
+  large = false,
   overflowContent = true,
 }) => {
   const el = useMemo(() => document.createElement('div'), [])
@@ -110,7 +112,7 @@ const Modal: FC<Props> = ({
 
   return ReactDOM.createPortal(
     <ModalCurtain>
-      <ModalContainer>
+      <ModalContainer large={large}>
         <ModalHeaderContainer>
           {title ? <StyledHeading>{title}</StyledHeading> : null}
           <StyledIcon onClick={onClose} name="MdClose" size={30}></StyledIcon>

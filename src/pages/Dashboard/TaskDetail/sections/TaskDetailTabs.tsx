@@ -3,6 +3,12 @@ import DashboardTabPanel from '../../Panels/DashboardTabPanel'
 import { Tabs } from '../../../../types/tab'
 import { TabType } from '../types'
 import Tab from '../../../../uiComponents/atoms/Tab'
+import styled from 'styled-components'
+import UpdateIndicator from '../../../../uiComponents/atoms/UpdateIndicator'
+
+const TabWrapper = styled.div`
+  position: relative;
+`
 
 interface Props {
   currentTab: TabType
@@ -30,18 +36,21 @@ const TaskDetailTabs: FC<Props> = ({ currentTab, updateTab }) => {
       title: 'Task Progress',
       active: currentTab === 'taskProgress',
       type: 'taskProgress',
+      hasUpdates: true,
     },
   ]
   return (
     <DashboardTabPanel>
       {tabs.map((tab, index) => (
-        <Tab
-          key={index}
-          title={tab.title}
-          active={tab.active}
-          onClick={() => updateTab(tab.type)}
-          underline
-        />
+        <TabWrapper key={index}>
+          <Tab
+            title={tab.title}
+            active={tab.active}
+            onClick={() => updateTab(tab.type)}
+            underline
+          />
+          {tab.hasUpdates && <UpdateIndicator position="middleEnd" />}
+        </TabWrapper>
       ))}
     </DashboardTabPanel>
   )
