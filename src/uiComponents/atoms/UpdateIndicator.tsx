@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
-import { red } from '../../styles/colors'
+import { red, white } from '../../styles/colors'
 
 export type PositionType = 'topEnd' | 'middleEnd' | 'bottomEnd'
 
@@ -12,10 +12,11 @@ interface Props {
 const Indicator = styled.span<{ position?: PositionType }>`
   position: absolute;
   right: 0;
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background-color: ${red};
+  border: 2px solid ${white};
 
   ${({ position }) => {
     if (position === 'topEnd') {

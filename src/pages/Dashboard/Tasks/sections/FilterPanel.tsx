@@ -3,6 +3,21 @@ import { TabType } from '../types'
 import Tab from '../../../../uiComponents/atoms/Tab'
 import { Tabs } from '../../../../types/tab'
 import DashboardFilterPanel from '../../Panels/DashboardFilterPanel'
+import styled from 'styled-components'
+import RoleToggle from '../../../../uiComponents/atoms/RoleToggle'
+
+const StyledDashboardFilterPanel = styled(DashboardFilterPanel)`
+  justify-content: space-between;
+`
+
+const TabContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const RoleContainer = styled.div`
+  padding-right: 20px;
+`
 
 interface Props {
   currentTab: TabType
@@ -43,16 +58,21 @@ const FilterPanel: FC<Props> = ({ currentTab, updateTab }) => {
     },
   ]
   return (
-    <DashboardFilterPanel>
-      {tabs.map((tab, index) => (
-        <Tab
-          key={index}
-          title={tab.title}
-          active={tab.active}
-          onClick={() => updateTab(tab.type)}
-        />
-      ))}
-    </DashboardFilterPanel>
+    <StyledDashboardFilterPanel>
+      <TabContainer>
+        {tabs.map((tab, index) => (
+          <Tab
+            key={index}
+            title={tab.title}
+            active={tab.active}
+            onClick={() => updateTab(tab.type)}
+          />
+        ))}
+      </TabContainer>
+      <RoleContainer>
+        <RoleToggle />
+      </RoleContainer>
+    </StyledDashboardFilterPanel>
   )
 }
 

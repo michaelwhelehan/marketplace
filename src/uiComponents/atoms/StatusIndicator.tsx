@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import { OnlineStatusType } from '../../types/user'
+import { white } from '../../styles/colors'
 
 interface Props {
   onlineStatus: OnlineStatusType
@@ -9,7 +10,7 @@ interface Props {
 const Indicator = styled.span<{ onlineStatus: OnlineStatusType }>`
   width: 16px;
   height: 16px;
-  border: 3px solid white;
+  border: 3px solid ${white};
   border-radius: 50%;
   background-color: green;
 `
