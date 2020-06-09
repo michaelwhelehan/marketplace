@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components'
 
 interface StyledProps {
   fullWidth?: boolean
+  short?: boolean
 }
 
 const StyledTextField = styled.textarea<StyledProps>`
@@ -13,13 +14,14 @@ const StyledTextField = styled.textarea<StyledProps>`
     css`
       width: 100%;
     `}
-  height: 200px;
+  height: ${({ short }) => (short ? '100px' : '200px')};
   resize: vertical;
 `
 
 const StyledTextAreaField = styled(StyledTextField)``
 
 interface TextAreaFieldProps extends TextProps {
+  short?: boolean
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void
 }

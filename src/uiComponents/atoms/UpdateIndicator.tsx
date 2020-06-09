@@ -27,7 +27,7 @@ const Indicator = styled.span<{ position?: PositionType }>`
 
     if (position === 'middleEnd') {
       return css`
-        top: 45%;
+        top: 42%;
       `
     }
 

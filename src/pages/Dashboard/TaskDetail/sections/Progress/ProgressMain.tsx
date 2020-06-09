@@ -59,6 +59,7 @@ const ConversationContainer = styled.div`
   background-color: ${white};
   ${featherShadow};
   border: 1px solid ${borderColor};
+  position: relative;
 `
 
 interface Props {}
@@ -67,8 +68,12 @@ const ProgressMain: FC<Props> = () => {
   return (
     <Container>
       <EmployerDetailsContainer>
-        <ParagraphS>Employer: Michael W.</ParagraphS>
-        <ParagraphS>Created: 2 June 2020</ParagraphS>
+        <ParagraphS>
+          <strong>Employer:</strong> Michael W.
+        </ParagraphS>
+        <ParagraphS>
+          <strong>Created:</strong> 2 June 2020
+        </ParagraphS>
       </EmployerDetailsContainer>
       <TimelineStartedContainer>
         <Timeline />

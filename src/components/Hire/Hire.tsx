@@ -15,6 +15,7 @@ import TextFieldIcon from '../../uiComponents/molecules/TextFieldIcon'
 import DateField from '../../uiComponents/atoms/DateField'
 import { ParagraphS } from '../../uiComponents/atoms/Paragraphs'
 import CreditCardForm from '../PaymentMethods/CreditCardForm'
+import TextAreaField from '../../uiComponents/atoms/TextAreaField'
 
 const FooterContainer = styled.div`
   display: flex;
@@ -86,6 +87,13 @@ const Hire: FC<CreateTaskProps> = ({ onClose }) => {
     >
       <StyledHeading>Hiring</StyledHeading>
       <UserCard user={user} display="inline" avatarSize={50} />
+      <LineBreak />
+      <StyledHeading>Message</StyledHeading>
+      <TextAreaField
+        fullWidth
+        placeholder="Write a message to the freelancer"
+        short
+      />
       <LineBreak />
       <StyledHeading>Terms</StyledHeading>
       <FieldContainer split>

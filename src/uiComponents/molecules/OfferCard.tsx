@@ -13,6 +13,7 @@ import { fwBold } from '../../styles/typography'
 import UserCard from './UserCard'
 import Icon from '../atoms/Icon'
 import { OfferType } from '../../types/offer'
+import StatusIndicator from '../atoms/StatusIndicator'
 
 export const OfferCardSelector = styled.div`
   background-color: ${white};
@@ -69,12 +70,23 @@ const IconContainer = styled.div`
   justify-content: flex-end;
 `
 
+const StyledStatusIndicator = styled(StatusIndicator)`
+  display: inline-flex;
+`
+
 const ButtonContainer = styled.div`
   margin-top: 10px;
   display: flex;
 
   ${Button} {
     flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    ${StyledStatusIndicator} {
+      margin-right: 5px;
+    }
   }
 
   ${Button}:first-child {
@@ -121,6 +133,7 @@ const OfferCard: FC<Props> = ({ offer, action }) => {
           </RepliesWithin>
           <ButtonContainer>
             <Button styleType="primary-outline" fullWidth>
+              <StyledStatusIndicator onlineStatus="online" />
               Message
             </Button>
             <Button fullWidth onClick={action.onClick}>

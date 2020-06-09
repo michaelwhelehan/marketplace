@@ -18,6 +18,7 @@ interface Props {}
 const HiresMain: FC<Props> = () => {
   const offers: OfferType[] = [
     {
+      created: faker.date.past(),
       creator: {
         profilePictureUrl: faker.image.avatar(),
         name: `${faker.name.firstName()} ${faker.name.lastName().charAt(0)}.`,
@@ -30,6 +31,25 @@ const HiresMain: FC<Props> = () => {
       currency: { iso: 'R', code: 'ZAR' },
       amount: 500,
       coverLetter: faker.lorem.paragraph(10),
+      task: {
+        id: '20f7edab-746c-4443-91f1-b30ab4fea473',
+        creator: {
+          name: 'Ali Franecki PhD',
+          profilePictureUrl:
+            'https://s3.amazonaws.com/uifaces/faces/twitter/magugzbrand2d/128.jpg',
+          onlineStatus: 'online',
+          lastSeen: faker.date.past(),
+        },
+        title: 'Try to navigate the SAS application, maybe it will',
+        slug: 'try-to-navigate-the-sas-application-maybe-it-will',
+        budget: 249,
+        currency: { code: 'ZAR', iso: 'R' },
+        location: 'Remote',
+        dueDate: faker.date.future(),
+        details:
+          'Fugit velit aut tempora. Iste consequatur et debitis itaque necessitatibus illo nihil ut perspiciatis. Consequatur itaque non. Enim veniam iure dicta debitis ipsam saepe sit commodi. Praesentium ipsa labore iste ipsa nemo nemo ullam id. Nisi dolorum numquam distinctio voluptatem veritatis.',
+        numOffers: 2,
+      },
     },
   ]
   return (
