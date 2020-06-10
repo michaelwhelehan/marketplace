@@ -83,13 +83,10 @@ const BottomButtonContainer = styled.div`
 
 interface Props {
   offer: OfferType
-  action: {
-    title: string
-    onClick: () => void
-  }
+  onRejectClick: () => void
 }
 
-const HireCard: FC<Props> = ({ offer, action }) => {
+const HireCard: FC<Props> = ({ offer, onRejectClick }) => {
   return (
     <HireCardSelector>
       <StartContainer>
@@ -119,7 +116,9 @@ const HireCard: FC<Props> = ({ offer, action }) => {
             </ParagraphS>
             <BottomButtonContainer>
               <Button>Accept</Button>
-              <Button styleType="primary-outline">Reject</Button>
+              <Button styleType="primary-outline" onClick={onRejectClick}>
+                Reject
+              </Button>
             </BottomButtonContainer>
           </ActionContainer>
         </InnerContainer>

@@ -1,16 +1,20 @@
-import React, { FC } from 'react'
+import React, { FC, useCallback } from 'react'
 import DashboardPanel from '../Panels/DashboardPanel'
 import styled from 'styled-components'
 import { OfferType } from '../../../types/offer'
 import { OnlineStatusType } from '../../../types/user'
 import faker from 'faker'
 import HireCard from '../../../uiComponents/molecules/HireCard'
+import { GET_REJECT_OFFER_VISIBLE } from '../../../components/Layout/Layout'
+import { useQuery } from '@apollo/client'
 
 const Container = styled.div`
   padding: 20px;
 `
 
 const ActivityFeed: FC = () => {
+  const { client } = useQuery(GET_REJECT_OFFER_VISIBLE)
+
   const offers: OfferType[] = [
     {
       created: faker.date.recent(),
@@ -47,6 +51,14 @@ const ActivityFeed: FC = () => {
       },
     },
   ]
+
+  const handleRejectOfferClick = useCallback(() => {
+    client.writeQuery({
+      query: GET_REJECT_OFFER_VISIBLE,
+      data: { rejectOfferVisible: true },
+    })
+  }, [client])
+
   return (
     <DashboardPanel title="Activity Feed">
       <Container>
@@ -54,10 +66,7 @@ const ActivityFeed: FC = () => {
           <HireCard
             key={index}
             offer={offer}
-            action={{
-              title: 'Hire',
-              onClick: () => console.log('click'),
-            }}
+            onRejectClick={handleRejectOfferClick}
           />
         ))}
       </Container>

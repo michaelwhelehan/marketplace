@@ -38,8 +38,8 @@ const ProfilePage: FC<Props> = () => {
         <UserPanel />
         <InfoPanel />
       </StartContainer>
-      <MiddleContainer>Ho</MiddleContainer>
-      <EndContainer>He</EndContainer>
+      <MiddleContainer></MiddleContainer>
+      <EndContainer></EndContainer>
     </StyledContainer>
   )
 }
