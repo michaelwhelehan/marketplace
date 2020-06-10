@@ -1,16 +1,12 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { white, borderColor, primaryColor } from '../../../../../styles/colors'
-import { featherShadow } from '../../../../../styles/shadows'
+import { primaryColor } from '../../../../../styles/colors'
 import { ParagraphS } from '../../../../../uiComponents/atoms/Paragraphs'
 import { fwBold } from '../../../../../styles/typography'
 import Icon from '../../../../../uiComponents/atoms/Icon'
+import { DashboardPanelContainer } from '../../../Panels/DashboardPanel'
 
-const Container = styled.div`
-  background-color: ${white};
-  border: 1px solid ${borderColor};
-  ${featherShadow};
-  padding: 20px;
+const Container = styled(DashboardPanelContainer)`
   position: sticky;
   top: 0;
 `
@@ -33,7 +29,7 @@ interface Props {}
 
 const ProgressSummary: FC<Props> = () => {
   return (
-    <Container>
+    <Container padded>
       <SummaryValue>
         <Icon name="MdCheckCircle" color={primaryColor} size={30} />
         <span>Offer Accepted</span>

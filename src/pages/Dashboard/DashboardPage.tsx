@@ -14,6 +14,8 @@ import RecentTasks from './sections/RecentTasks'
 import AccountSummary from './sections/AccountSummary'
 import CreditSummary from './sections/CreditSummary'
 import ActivityFeed from './sections/ActivityFeed'
+import { GET_CREATE_TASK_VISIBLE } from '../../components/Layout/Layout'
+import { useQuery } from '@apollo/client'
 
 const DashboardContainer = styled.article`
   display: flex;
@@ -58,12 +60,23 @@ const MainContainer = styled.article`
 
 const DashboardPage: FC = () => {
   const match = useRouteMatch()
+  const { client } = useQuery(GET_CREATE_TASK_VISIBLE)
 
   return (
     <>
       <StyledContainer>
         <SideListContainer>
-          <Button fullWidth>Create Task</Button>
+          <Button
+            fullWidth
+            onClick={() =>
+              client.writeQuery({
+                query: GET_CREATE_TASK_VISIBLE,
+                data: { createTaskVisible: true },
+              })
+            }
+          >
+            Create Task
+          </Button>
           <Navigation />
         </SideListContainer>
         <MainContainer>

@@ -1,22 +1,10 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import {
-  white,
-  borderColor,
-  primaryColor,
-  black,
-} from '../../../../../styles/colors'
+import { primaryColor, black } from '../../../../../styles/colors'
 import { HeadingS } from '../../../../../uiComponents/atoms/Headings'
-import { featherShadow } from '../../../../../styles/shadows'
 import { ParagraphS } from '../../../../../uiComponents/atoms/Paragraphs'
 import { fwBold } from '../../../../../styles/typography'
-
-const Container = styled.div`
-  background-color: ${white};
-  border: 1px solid ${borderColor};
-  ${featherShadow};
-  padding: 20px;
-`
+import { DashboardPanelContainer } from '../../../Panels/DashboardPanel'
 
 const SummaryTitle = styled(HeadingS)`
   &:not(:first-child) {
@@ -38,14 +26,14 @@ interface Props {}
 
 const OffersSummary: FC<Props> = () => {
   return (
-    <Container>
+    <DashboardPanelContainer padded>
       <SummaryTitle>Budget</SummaryTitle>
       <Budget>R500</Budget>
       <SummaryTitle>Offers</SummaryTitle>
       <SummaryValue>4</SummaryValue>
       <SummaryTitle>Average Offer</SummaryTitle>
       <SummaryValue>R450</SummaryValue>
-    </Container>
+    </DashboardPanelContainer>
   )
 }
 

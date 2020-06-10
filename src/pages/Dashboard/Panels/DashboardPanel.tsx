@@ -1,13 +1,18 @@
 import React, { FC } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { white, borderColor, black } from '../../../styles/colors'
 import { HeadingM } from '../../../uiComponents/atoms/Headings'
 import { featherShadow } from '../../../styles/shadows'
 
-const Container = styled.div`
+export const DashboardPanelContainer = styled.div<{ padded?: boolean }>`
   background-color: ${white};
   border: 1px solid ${borderColor};
   ${featherShadow};
+  ${({ padded }) =>
+    padded &&
+    css`
+      padding: 20px;
+    `}
 `
 
 const Header = styled.div`
@@ -35,13 +40,13 @@ interface Props {
 
 const DashboardPanel: FC<Props> = ({ title, children, footerContent }) => {
   return (
-    <Container>
+    <DashboardPanelContainer>
       <Header>
         <StyledHeading>{title}</StyledHeading>
       </Header>
       <Body>{children}</Body>
       {footerContent ? <Footer>{footerContent}</Footer> : null}
-    </Container>
+    </DashboardPanelContainer>
   )
 }
 

@@ -1,18 +1,11 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { white, borderColor, black } from '../../../../../styles/colors'
+import { black } from '../../../../../styles/colors'
 import { HeadingS } from '../../../../../uiComponents/atoms/Headings'
-import { featherShadow } from '../../../../../styles/shadows'
 import { ParagraphS } from '../../../../../uiComponents/atoms/Paragraphs'
 import Button from '../../../../../uiComponents/atoms/Button'
 import { fwBold } from '../../../../../styles/typography'
-
-const Container = styled.div`
-  background-color: ${white};
-  border: 1px solid ${borderColor};
-  ${featherShadow};
-  padding: 20px;
-`
+import { DashboardPanelContainer } from '../../../Panels/DashboardPanel'
 
 const SummaryTitle = styled(HeadingS)`
   &:not(:first-child) {
@@ -34,13 +27,13 @@ interface Props {}
 
 const HiresSummary: FC<Props> = () => {
   return (
-    <Container>
+    <DashboardPanelContainer padded>
       <SummaryTitle>Contact Started</SummaryTitle>
       <SummaryValue>2 June 2020</SummaryValue>
       <ButtonContainer>
         <Button styleType="error">Cancel Contract</Button>
       </ButtonContainer>
-    </Container>
+    </DashboardPanelContainer>
   )
 }
 

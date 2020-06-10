@@ -1,28 +1,18 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import {
-  white,
-  borderColor,
-  borderColorDark,
-  black,
-} from '../../../../../styles/colors'
-import { featherShadow } from '../../../../../styles/shadows'
+import { borderColorDark, black } from '../../../../../styles/colors'
 import {
   ParagraphS,
-  ParagraphL,
   ParagraphM,
 } from '../../../../../uiComponents/atoms/Paragraphs'
 import ConversationConnected from '../../../../../components/Conversation/ConversationConnected'
 import { ScrollElementContextProvider } from '../../../../../contexts/ScrollElementContext'
+import { DashboardPanelContainer } from '../../../Panels/DashboardPanel'
 
 const Container = styled.div``
 
-const EmployerDetailsContainer = styled.div`
+const EmployerDetailsContainer = styled(DashboardPanelContainer)`
   display: flex;
-  background-color: ${white};
-  padding: 20px;
-  ${featherShadow};
-  border: 1px solid ${borderColor};
 
   ${ParagraphS} {
     margin-right: 20px;
@@ -54,12 +44,8 @@ const TimelineDivider = styled(ParagraphM)`
   color: ${black};
 `
 
-const ConversationContainer = styled.div`
+const ConversationContainer = styled(DashboardPanelContainer)`
   margin-top: 20px;
-  background-color: ${white};
-  ${featherShadow};
-  border: 1px solid ${borderColor};
-  position: relative;
 `
 
 interface Props {}
@@ -67,7 +53,7 @@ interface Props {}
 const ProgressMain: FC<Props> = () => {
   return (
     <Container>
-      <EmployerDetailsContainer>
+      <EmployerDetailsContainer padded>
         <ParagraphS>
           <strong>Employer:</strong> Michael W.
         </ParagraphS>

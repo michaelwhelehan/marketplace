@@ -40,7 +40,7 @@ const ProfileHeader: FC = () => {
         <Button
           styleType="primary-outline"
           as={StyledLink}
-          to="/profile/blah"
+          to="/profile/me"
           style={{ marginLeft: '20px' }}
         >
           View Public Profile

@@ -1,19 +1,10 @@
 import React, { FC } from 'react'
-import styled from 'styled-components'
-import { white, borderColor } from '../../../../../styles/colors'
-import { featherShadow } from '../../../../../styles/shadows'
 import TDPInfo from '../../../../../uiComponents/molecules/TaskDetail/TDPInfo'
 import TDPDetails from '../../../../../uiComponents/molecules/TaskDetail/TDPDetails'
 import TDPAttachments from '../../../../../uiComponents/molecules/TaskDetail/TDPAttachments'
 import { TaskType } from '../../../../../types/task'
 import LineBreak from '../../../../../uiComponents/atoms/LineBreak'
-
-const Container = styled.div`
-  background-color: ${white};
-  border: 1px solid ${borderColor};
-  ${featherShadow};
-  padding: 20px;
-`
+import { DashboardPanelContainer } from '../../../Panels/DashboardPanel'
 
 interface Props {}
 
@@ -41,12 +32,12 @@ const TaskDetailsMain: FC<Props> = () => {
     'Fugit velit aut tempora. Iste consequatur et debitis itaque necessitatibus illo nihil ut perspiciatis. Consequatur itaque non. Enim veniam iure dicta debitis ipsam saepe sit commodi. Praesentium ipsa labore iste ipsa nemo nemo ullam id. Nisi dolorum numquam distinctio voluptatem veritatis.'
 
   return (
-    <Container>
+    <DashboardPanelContainer padded>
       <TDPInfo task={task} editable />
       <LineBreak />
       <TDPDetails details={details} />
       <TDPAttachments />
-    </Container>
+    </DashboardPanelContainer>
   )
 }
 

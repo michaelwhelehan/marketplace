@@ -12,14 +12,8 @@ import { fwBold } from '../../../styles/typography'
 import ProgressBar from '../../../uiComponents/atoms/ProgressBar'
 import { Link } from 'react-router-dom'
 import Icon from '../../../uiComponents/atoms/Icon'
-import { featherShadow } from '../../../styles/shadows'
 import LineBreak from '../../../uiComponents/atoms/LineBreak'
-
-const Container = styled.div`
-  background-color: ${white};
-  border: 1px solid ${borderColor};
-  ${featherShadow};
-`
+import { DashboardPanelContainer } from '../Panels/DashboardPanel'
 
 const Header = styled.div`
   padding: 20px;
@@ -92,7 +86,7 @@ const StyledLink = styled(Link)`
 const AccountSummary: FC = () => {
   const percentComplete = 40
   return (
-    <Container>
+    <DashboardPanelContainer>
       <Header>
         <WelcomeText>Welcome back,</WelcomeText>
         <UserFullNameText>Michael W.</UserFullNameText>
@@ -123,7 +117,7 @@ const AccountSummary: FC = () => {
           <AccountBalanceValue>R50</AccountBalanceValue>
         </div>
       </Body>
-    </Container>
+    </DashboardPanelContainer>
   )
 }
 

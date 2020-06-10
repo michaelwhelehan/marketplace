@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import BaseContainer from '../../../uiComponents/atoms/Container'
-import { white } from '../../../styles/colors'
 import TaskDetailHeader from './sections/TaskDetailHeader'
 import TaskDetailTabs from './sections/TaskDetailTabs'
 import { TabType } from './types'
@@ -14,14 +13,10 @@ import HiresMain from './sections/Hires/HiresMain'
 import HiresSummary from './sections/Hires/HiresSummary'
 import ProgressMain from './sections/Progress/ProgressMain'
 import ProgressSummary from './sections/Progress/ProgressSummary'
+import { DashboardPanelContainer } from '../Panels/DashboardPanel'
 
-const StyledContainer = styled(BaseContainer)``
-
-const TopContainer = styled.div`
+const TopContainer = styled(DashboardPanelContainer)`
   margin-top: 20px;
-  background-color: ${white};
-  width: 100%;
-  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.05);
 `
 
 const BottomContainer = styled.div`
@@ -74,7 +69,7 @@ const TaskDetailPage: FC<Props> = () => {
   }
 
   return (
-    <StyledContainer>
+    <BaseContainer>
       <TopContainer>
         <TaskDetailHeader />
         <TaskDetailTabs currentTab={currentTab} updateTab={updateTab} />
@@ -83,7 +78,7 @@ const TaskDetailPage: FC<Props> = () => {
         <BottomContainerStart>{renderTabStart()}</BottomContainerStart>
         <BottomContainerEnd>{renderTabEnd()}</BottomContainerEnd>
       </BottomContainer>
-    </StyledContainer>
+    </BaseContainer>
   )
 }
 

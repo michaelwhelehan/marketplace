@@ -1,12 +1,6 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import {
-  white,
-  borderColor,
-  primaryColor,
-  primaryFontColor,
-} from '../../styles/colors'
-import { featherShadow } from '../../styles/shadows'
+import { primaryColor, primaryFontColor } from '../../styles/colors'
 import { ParagraphS, ParagraphL, ParagraphXS } from '../atoms/Paragraphs'
 import Button from '../atoms/Button'
 import { fwBold } from '../../styles/typography'
@@ -14,12 +8,9 @@ import UserCard from './UserCard'
 import Icon from '../atoms/Icon'
 import { OfferType } from '../../types/offer'
 import StatusIndicator from '../atoms/StatusIndicator'
+import { DashboardPanelContainer } from '../../pages/Dashboard/Panels/DashboardPanel'
 
-export const OfferCardSelector = styled.div`
-  background-color: ${white};
-  border: 1px solid ${borderColor};
-  ${featherShadow};
-  padding: 20px;
+export const OfferCardSelector = styled(DashboardPanelContainer)`
   border-radius: 6px;
 `
 
@@ -110,7 +101,7 @@ interface Props {
 
 const OfferCard: FC<Props> = ({ offer, action }) => {
   return (
-    <OfferCardSelector>
+    <OfferCardSelector padded>
       <TopWrapper>
         <UserCard user={offer.creator} avatarSize={50} display="inline" />
         <div>
