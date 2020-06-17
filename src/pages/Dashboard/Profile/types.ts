@@ -1,1 +1,6 @@
-export type TabType = 'basicInfo' | 'education' | 'workExperience' | 'portfolio'
+export type TabType =
+  | 'basicInfo'
+  | 'education'
+  | 'workExperience'
+  | 'portfolio'
+  | 'badges'

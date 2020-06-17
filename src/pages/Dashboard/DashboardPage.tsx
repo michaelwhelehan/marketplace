@@ -16,6 +16,7 @@ import CreditSummary from './sections/CreditSummary'
 import ActivityFeed from './sections/ActivityFeed'
 import { GET_CREATE_TASK_VISIBLE } from '../../components/Layout/Layout'
 import { useQuery } from '@apollo/client'
+import SettingsPage from './Settings/SettingsPage'
 
 const DashboardContainer = styled.article`
   display: flex;
@@ -83,6 +84,9 @@ const DashboardPage: FC = () => {
           <Switch>
             <Route path={`${match.path}/profile`}>
               <ProfilePage />
+            </Route>
+            <Route path={`${match.path}/settings`}>
+              <SettingsPage />
             </Route>
             <Route path={`${match.path}/my-tasks`}>
               <TasksPage />

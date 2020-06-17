@@ -9,32 +9,27 @@ interface Props {
   updateTab: (tab: TabType) => void
 }
 
-const ProfileTabs: FC<Props> = ({ currentTab, updateTab }) => {
+const SettingsTabs: FC<Props> = ({ currentTab, updateTab }) => {
   const tabs: Tabs<TabType>[] = [
     {
-      title: 'Basic Info',
-      active: currentTab === 'basicInfo',
-      type: 'basicInfo',
+      title: 'Account',
+      active: currentTab === 'account',
+      type: 'account',
     },
     {
-      title: 'Education',
-      active: currentTab === 'education',
-      type: 'education',
+      title: 'Task Alerts',
+      active: currentTab === 'taskAlerts',
+      type: 'taskAlerts',
     },
     {
-      title: 'Work Experience',
-      active: currentTab === 'workExperience',
-      type: 'workExperience',
+      title: 'Notification Settings',
+      active: currentTab === 'notificationSettings',
+      type: 'notificationSettings',
     },
     {
-      title: 'Portfolio',
-      active: currentTab === 'portfolio',
-      type: 'portfolio',
-    },
-    {
-      title: 'Badges',
-      active: currentTab === 'badges',
-      type: 'badges',
+      title: 'Password',
+      active: currentTab === 'password',
+      type: 'password',
     },
   ]
   return (
@@ -52,4 +47,4 @@ const ProfileTabs: FC<Props> = ({ currentTab, updateTab }) => {
   )
 }
 
-export default ProfileTabs
+export default SettingsTabs

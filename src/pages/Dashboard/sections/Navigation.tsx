@@ -35,7 +35,7 @@ const Navigation: FC = () => {
       link: '/dashboard/my-tasks',
     },
     { icon: 'MdPerson', title: 'Profile', link: '/dashboard/profile' },
-    { icon: 'MdSettings', title: 'Settings', link: '' },
+    { icon: 'MdSettings', title: 'Settings', link: '/dashboard/settings' },
     {
       icon: 'MdSchedule',
       title: 'Payment History',
