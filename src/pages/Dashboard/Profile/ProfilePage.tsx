@@ -11,7 +11,7 @@ import Portfolio from './sections/Portfolio'
 import Badges from './sections/Badges'
 
 const ProfilePage: FC = () => {
-  const { currentTab, updateTab } = useTabs<TabType>('badges')
+  const { currentTab, updateTab } = useTabs<TabType>('basicInfo')
 
   function renderTab() {
     switch (currentTab) {

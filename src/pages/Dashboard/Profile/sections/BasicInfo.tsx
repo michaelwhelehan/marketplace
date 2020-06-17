@@ -12,7 +12,6 @@ import {
   ParagraphXS,
 } from '../../../../uiComponents/atoms/Paragraphs'
 import { fwBold } from '../../../../styles/typography'
-import RadioField from '../../../../uiComponents/atoms/RadioField'
 import { useForm, Controller } from 'react-hook-form'
 import Avatar from '../../../../uiComponents/atoms/Avatar'
 import Icon from '../../../../uiComponents/atoms/Icon'
@@ -23,6 +22,7 @@ import TextAreaField from '../../../../uiComponents/atoms/TextAreaField'
 import SelectField from '../../../../uiComponents/atoms/SelectField'
 import Button from '../../../../uiComponents/atoms/Button'
 import profilePictureUrl from '../../../../assets/images/profile.png'
+import CheckboxField from '../../../../uiComponents/atoms/CheckboxField'
 
 const StyledForm = styled.form`
   padding-top: 20px;
@@ -74,7 +74,7 @@ const HorizontalAlign = styled.div`
   display: flex;
 `
 
-const StyledRadio = styled(RadioField)`
+const StyledCheckbox = styled(CheckboxField)`
   margin-right: 10px;
 `
 
@@ -204,25 +204,25 @@ const BasicInfo: FC = () => {
             </FormField>
             <FormField label="How do you get around?" spacingTop>
               <HorizontalAlign>
-                <StyledRadio
+                <StyledCheckbox
                   name="transport"
                   label="Bicycle"
                   value="bicycle"
                   ref={register()}
                 />
-                <StyledRadio
+                <StyledCheckbox
                   name="transport"
                   label="Car"
                   value="car"
                   ref={register()}
                 />
-                <StyledRadio
+                <StyledCheckbox
                   name="transport"
                   label="Train"
                   value="train"
                   ref={register()}
                 />
-                <StyledRadio
+                <StyledCheckbox
                   name="transport"
                   label="Online"
                   value="online"

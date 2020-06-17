@@ -6,6 +6,7 @@ import { TabType } from './types'
 import PaymentMethodsHeader from './sections/PaymentMethodsHeader'
 import styled from 'styled-components'
 import MakePayments from './sections/MakePayments'
+import ReceivePayments from './sections/ReceivePayments'
 
 const Container = styled.div`
   padding: 20px;
@@ -18,6 +19,8 @@ const PaymentMethodsPage: FC = () => {
     switch (currentTab) {
       case 'makePayments':
         return <MakePayments />
+      case 'receivePayments':
+        return <ReceivePayments />
       default:
         return null
     }

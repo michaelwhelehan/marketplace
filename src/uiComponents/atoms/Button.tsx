@@ -32,10 +32,20 @@ const StyledButton = styled.button<StyledButtonProps>`
         return white
     }
   }};
-  cursor: pointer;
-  border-radius: 3px;
-  font-weight: bold;
   border: 1px solid ${primaryColor};
+  border-color: ${({ styleType = 'primary' }) => {
+    switch (styleType) {
+      case 'primary':
+        return white
+      case 'primary-outline':
+        return primaryColor
+      case 'error':
+        return white
+    }
+  }};
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
   font-size: ${({ large }) => (large ? `${fsS}px` : `${fsXS}px`)};
   padding: ${({ large }) => (large ? '15px 30px' : '10px 20px')};
   ${({ fullWidth }) =>
@@ -44,6 +54,7 @@ const StyledButton = styled.button<StyledButtonProps>`
       width: 100%;
     `}
   transition: 0.5s all ease-out;
+
   &:hover {
     background-color: ${({ styleType = 'primary' }) => {
       switch (styleType) {

@@ -12,11 +12,6 @@ interface Props {
 const SettingsTabs: FC<Props> = ({ currentTab, updateTab }) => {
   const tabs: Tabs<TabType>[] = [
     {
-      title: 'Account',
-      active: currentTab === 'account',
-      type: 'account',
-    },
-    {
       title: 'Task Alerts',
       active: currentTab === 'taskAlerts',
       type: 'taskAlerts',
@@ -25,6 +20,11 @@ const SettingsTabs: FC<Props> = ({ currentTab, updateTab }) => {
       title: 'Notification Settings',
       active: currentTab === 'notificationSettings',
       type: 'notificationSettings',
+    },
+    {
+      title: 'Account',
+      active: currentTab === 'account',
+      type: 'account',
     },
     {
       title: 'Password',

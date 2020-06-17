@@ -26,6 +26,7 @@ const DateField: FC<Props> = ({
       )}
       placeholder={placeholder}
       onDayChange={onChange}
+      style={{ display: 'block' }}
       {...props}
     />
   )

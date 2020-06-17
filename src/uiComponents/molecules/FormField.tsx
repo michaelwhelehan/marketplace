@@ -87,7 +87,7 @@ const FormField: FC<Props> = ({
       <LabelWrapper>
         {label ? (
           <StyledLabel required={required} as="label">
-            {label}
+            {label} {required && '*'}
           </StyledLabel>
         ) : null}
         {renderHelpPopup ? (
