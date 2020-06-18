@@ -6,13 +6,13 @@ import { black } from '../../../styles/colors'
 
 export const SkillSelector = styled.div``
 
-const SkillHeading = styled(ParagraphS)`
+export const SkillHeading = styled(ParagraphS)`
   color: ${black};
   ${fwBold};
+  margin-bottom: 10px;
 `
 
 const SkillValues = styled(ParagraphS)`
-  margin-top: 10px;
   ${fwBold};
 `
 

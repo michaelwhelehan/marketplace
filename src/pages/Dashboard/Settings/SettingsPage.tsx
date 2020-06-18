@@ -7,6 +7,7 @@ import { TabType } from './types'
 import Account from './sections/Account'
 import Password from './sections/Password'
 import TaskAlerts from './sections/TaskAlerts'
+import NotificationSettings from './sections/NotificationSettings'
 
 const SettingsPage: FC = () => {
   const { currentTab, updateTab } = useTabs<TabType>('taskAlerts')
@@ -18,7 +19,7 @@ const SettingsPage: FC = () => {
       case 'taskAlerts':
         return <TaskAlerts />
       case 'notificationSettings':
-        return null
+        return <NotificationSettings />
       case 'password':
         return <Password />
       default:

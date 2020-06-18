@@ -8,11 +8,50 @@ import { OnlineStatusType } from '../../../../../types/user'
 import { OfferType } from '../../../../../types/offer'
 import { GET_HIRE_VISIBLE } from '../../../../../components/Layout/Layout'
 import { useQuery } from '@apollo/client'
+import SelectField from '../../../../../uiComponents/atoms/SelectField'
+import { ParagraphS } from '../../../../../uiComponents/atoms/Paragraphs'
+import { fwBold } from '../../../../../styles/typography'
 
 const Container = styled.div`
   ${OfferCardSelector}:not(:first-child) {
     margin-top: 15px;
   }
+`
+
+const InnerFilterContainerStart = styled.div`
+  display: flex;
+
+  > * {
+    margin-right: 10px;
+    flex: 1;
+  }
+`
+
+const InnerFilterContainerEnd = styled.div`
+  display: flex;
+  align-items: center;
+
+  > *:last-child {
+    flex: 1;
+  }
+`
+
+const FilterContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  ${InnerFilterContainerStart} {
+    width: 60%;
+  }
+
+  ${InnerFilterContainerEnd} {
+    width: 25%;
+  }
+`
+
+const SortByTitle = styled(ParagraphS)`
+  ${fwBold};
+  margin-right: 10px;
 `
 
 interface Props {}
@@ -167,6 +206,29 @@ const OffersMain: FC<Props> = () => {
   ]
   return (
     <Container>
+      <FilterContainer>
+        <InnerFilterContainerStart>
+          <SelectField
+            placeholder="Bid Amount"
+            options={[{ label: 'Project is spam or fraud', value: 'spam' }]}
+          />
+          <SelectField
+            placeholder="Reviews"
+            options={[{ label: 'Project is spam or fraud', value: 'spam' }]}
+          />
+          <SelectField
+            placeholder="Rating"
+            options={[{ label: 'Project is spam or fraud', value: 'spam' }]}
+          />
+        </InnerFilterContainerStart>
+        <InnerFilterContainerEnd>
+          <SortByTitle>Sort by:</SortByTitle>
+          <SelectField
+            placeholder="Best Rank"
+            options={[{ label: 'Project is spam or fraud', value: 'spam' }]}
+          />
+        </InnerFilterContainerEnd>
+      </FilterContainer>
       {offers.map((offer, index) => (
         <OfferCard
           key={index}

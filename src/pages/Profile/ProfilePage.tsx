@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import BaseContainer from '../../uiComponents/atoms/Container'
 import UserPanel from './sections/UserPanel'
 import InfoPanel, { InfoPanelSelector } from './sections/InfoPanel'
+import MainPanel from './sections/MainPanel'
+import ReviewPanel from './sections/ReviewPanel'
 
 const StyledContainer = styled(BaseContainer)`
   display: flex;
@@ -26,7 +28,7 @@ const MiddleContainer = styled.div`
 const EndContainer = styled.div`
   margin-top: 20px;
   margin-left: 20px;
-  flex-basis: 300px;
+  flex-basis: 330px;
 `
 
 interface Props {}
@@ -38,8 +40,12 @@ const ProfilePage: FC<Props> = () => {
         <UserPanel />
         <InfoPanel />
       </StartContainer>
-      <MiddleContainer></MiddleContainer>
-      <EndContainer></EndContainer>
+      <MiddleContainer>
+        <MainPanel />
+      </MiddleContainer>
+      <EndContainer>
+        <ReviewPanel />
+      </EndContainer>
     </StyledContainer>
   )
 }
