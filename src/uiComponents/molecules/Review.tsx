@@ -1,57 +1,70 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { fsXXS } from '../../styles/typography'
-import { primaryFontColor } from '../../styles/colors'
+import { fsXS } from '../../styles/typography'
+import { gold, primaryColor } from '../../styles/colors'
 import Avatar from '../atoms/Avatar'
-import { UserType } from '../../types/user'
+import { ReviewType } from '../../types/review'
+import Icon from '../atoms/Icon'
+import { ParagraphXS, ParagraphXXS } from '../atoms/Paragraphs'
+import { fromNow } from '../../utils/date'
+import { Link } from 'react-router-dom'
 
-const MessageContainerOuter = styled.div`
-  height: 100%;
-  padding-top: 15px;
-  padding-right: 20px;
-  padding-bottom: 15px;
-`
-
-const MessageContainer = styled.div`
+const ReviewContainer = styled.div`
   height: 100%;
   display: flex;
+  margin-top: 20px;
 `
 
-const MessageMemberAvatar = styled.div`
+const ReviewerAvatar = styled.div`
   width: 60px;
   padding-right: 10px;
 `
 
-const MessageContent = styled.div`
+const ReviewContent = styled.div`
   flex: 1;
 `
 
-const MessageTimestamp = styled.span`
-  padding-left: 10px;
-  padding-top: 2px;
-  font-size: ${fsXXS}px;
-  color: ${primaryFontColor};
+const ReviewerLink = styled(Link)`
+  font-size: ${fsXS}px;
+  color: ${primaryColor};
+  text-decoration: none;
+`
+
+const TaskLink = styled(Link)`
+  display: block;
+  color: ${primaryColor};
+  text-decoration: none;
+  margin: 5px 0;
 `
 
 interface Props {
-  user: UserType
-  comment: string
+  review: ReviewType
 }
 
-const Review: FC<Props> = ({ user, comment }) => {
+const Review: FC<Props> = ({ review }) => {
   return (
-    <MessageContainerOuter>
-      <MessageContainer>
-        <MessageMemberAvatar>
-          <Avatar
-            src={user.profilePictureUrl}
-            size={50}
-            onlineStatus="online"
-          />
-        </MessageMemberAvatar>
-        <MessageContent>{comment}</MessageContent>
-      </MessageContainer>
-    </MessageContainerOuter>
+    <ReviewContainer>
+      <ReviewerAvatar>
+        <Avatar src={review.reviewer.profilePictureUrl} size={50} />
+      </ReviewerAvatar>
+      <ReviewContent>
+        <div>
+          {Array(review.rating)
+            .fill(0)
+            .map((_, index) => (
+              <Icon key={index} name="MdStar" size={20} color={gold} />
+            ))}
+        </div>
+        <ParagraphXXS>{fromNow(review.created)}</ParagraphXXS>
+        <TaskLink to={`/${review.task.slug}`}>{review.task.title}</TaskLink>
+        <ParagraphXS>
+          <ReviewerLink to={`/${review.task.slug}`}>
+            {review.reviewer.name}
+          </ReviewerLink>{' '}
+          said "{review.body}"
+        </ParagraphXS>
+      </ReviewContent>
+    </ReviewContainer>
   )
 }
 

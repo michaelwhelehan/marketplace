@@ -7,6 +7,10 @@ import useTabs from '../../../hooks/useTabs'
 import Tab from '../../../uiComponents/atoms/Tab'
 import { Tabs } from '../../../types/tab'
 import DashboardTabPanel from '../../Dashboard/Panels/DashboardTabPanel'
+import faker from 'faker'
+import { OnlineStatusType } from '../../../types/user'
+import Review from '../../../uiComponents/molecules/Review'
+import { ReviewType } from '../../../types/review'
 
 const Container = styled(DashboardPanelContainer)`
   ${SkillHeading}:not(:first-child) {
@@ -33,6 +37,145 @@ const ReviewPanel: FC<Props> = () => {
     },
   ]
 
+  const reviews: ReviewType[] = [
+    {
+      id: faker.random.uuid(),
+      created: faker.date.past(),
+      reviewer: {
+        profilePictureUrl: faker.image.avatar(),
+        name: `${faker.name.firstName()} ${faker.name.lastName().charAt(0)}.`,
+        onlineStatus: 'online' as OnlineStatusType,
+        lastSeen: new Date(),
+        jobTitle: 'Web Developer',
+        rating: 4.8,
+        numRatings: 10,
+      },
+      rating: 5,
+      body: faker.lorem.paragraph(1),
+      task: {
+        id: '20f7edab-746c-4443-91f1-b30ab4fea473',
+        creator: {
+          name: 'Ali Franecki PhD',
+          profilePictureUrl:
+            'https://s3.amazonaws.com/uifaces/faces/twitter/magugzbrand2d/128.jpg',
+          onlineStatus: 'online',
+          lastSeen: faker.date.past(),
+        },
+        title: 'Try to navigate the SAS application, maybe it will',
+        slug: 'try-to-navigate-the-sas-application-maybe-it-will',
+        budget: 249,
+        currency: { code: 'ZAR', iso: 'R' },
+        location: 'Remote',
+        dueDate: faker.date.future(),
+        details:
+          'Fugit velit aut tempora. Iste consequatur et debitis itaque necessitatibus illo nihil ut perspiciatis. Consequatur itaque non. Enim veniam iure dicta debitis ipsam saepe sit commodi. Praesentium ipsa labore iste ipsa nemo nemo ullam id. Nisi dolorum numquam distinctio voluptatem veritatis.',
+        numOffers: 2,
+      },
+    },
+    {
+      id: faker.random.uuid(),
+      created: faker.date.past(),
+      reviewer: {
+        profilePictureUrl: faker.image.avatar(),
+        name: `${faker.name.firstName()} ${faker.name.lastName().charAt(0)}.`,
+        onlineStatus: 'online' as OnlineStatusType,
+        lastSeen: new Date(),
+        jobTitle: 'Web Developer',
+        rating: 4.8,
+        numRatings: 10,
+      },
+      rating: 5,
+      body: faker.lorem.paragraph(1),
+      task: {
+        id: '20f7edab-746c-4443-91f1-b30ab4fea473',
+        creator: {
+          name: 'Ali Franecki PhD',
+          profilePictureUrl:
+            'https://s3.amazonaws.com/uifaces/faces/twitter/magugzbrand2d/128.jpg',
+          onlineStatus: 'online',
+          lastSeen: faker.date.past(),
+        },
+        title: 'Try to navigate the SAS application, maybe it will',
+        slug: 'try-to-navigate-the-sas-application-maybe-it-will',
+        budget: 249,
+        currency: { code: 'ZAR', iso: 'R' },
+        location: 'Remote',
+        dueDate: faker.date.future(),
+        details:
+          'Fugit velit aut tempora. Iste consequatur et debitis itaque necessitatibus illo nihil ut perspiciatis. Consequatur itaque non. Enim veniam iure dicta debitis ipsam saepe sit commodi. Praesentium ipsa labore iste ipsa nemo nemo ullam id. Nisi dolorum numquam distinctio voluptatem veritatis.',
+        numOffers: 2,
+      },
+    },
+    {
+      id: faker.random.uuid(),
+      created: faker.date.past(),
+      reviewer: {
+        profilePictureUrl: faker.image.avatar(),
+        name: `${faker.name.firstName()} ${faker.name.lastName().charAt(0)}.`,
+        onlineStatus: 'online' as OnlineStatusType,
+        lastSeen: new Date(),
+        jobTitle: 'Web Developer',
+        rating: 4.8,
+        numRatings: 10,
+      },
+      rating: 5,
+      body: faker.lorem.paragraph(1),
+      task: {
+        id: '20f7edab-746c-4443-91f1-b30ab4fea473',
+        creator: {
+          name: 'Ali Franecki PhD',
+          profilePictureUrl:
+            'https://s3.amazonaws.com/uifaces/faces/twitter/magugzbrand2d/128.jpg',
+          onlineStatus: 'online',
+          lastSeen: faker.date.past(),
+        },
+        title: 'Try to navigate the SAS application, maybe it will',
+        slug: 'try-to-navigate-the-sas-application-maybe-it-will',
+        budget: 249,
+        currency: { code: 'ZAR', iso: 'R' },
+        location: 'Remote',
+        dueDate: faker.date.future(),
+        details:
+          'Fugit velit aut tempora. Iste consequatur et debitis itaque necessitatibus illo nihil ut perspiciatis. Consequatur itaque non. Enim veniam iure dicta debitis ipsam saepe sit commodi. Praesentium ipsa labore iste ipsa nemo nemo ullam id. Nisi dolorum numquam distinctio voluptatem veritatis.',
+        numOffers: 2,
+      },
+    },
+    {
+      id: faker.random.uuid(),
+      created: faker.date.past(),
+      reviewer: {
+        profilePictureUrl: faker.image.avatar(),
+        name: `${faker.name.firstName()} ${faker.name.lastName().charAt(0)}.`,
+        onlineStatus: 'online' as OnlineStatusType,
+        lastSeen: new Date(),
+        jobTitle: 'Web Developer',
+        rating: 4.8,
+        numRatings: 10,
+      },
+      rating: 5,
+      body: faker.lorem.paragraph(1),
+      task: {
+        id: '20f7edab-746c-4443-91f1-b30ab4fea473',
+        creator: {
+          name: 'Ali Franecki PhD',
+          profilePictureUrl:
+            'https://s3.amazonaws.com/uifaces/faces/twitter/magugzbrand2d/128.jpg',
+          onlineStatus: 'online',
+          lastSeen: faker.date.past(),
+        },
+        title: 'Try to navigate the SAS application, maybe it will',
+        slug: 'try-to-navigate-the-sas-application-maybe-it-will',
+        budget: 249,
+        currency: { code: 'ZAR', iso: 'R' },
+        location: 'Remote',
+        dueDate: faker.date.future(),
+        details:
+          'Fugit velit aut tempora. Iste consequatur et debitis itaque necessitatibus illo nihil ut perspiciatis. Consequatur itaque non. Enim veniam iure dicta debitis ipsam saepe sit commodi. Praesentium ipsa labore iste ipsa nemo nemo ullam id. Nisi dolorum numquam distinctio voluptatem veritatis.',
+        numOffers: 2,
+      },
+    },
+  ]
+
   return (
     <Container padded>
       <SkillHeading>Reviews</SkillHeading>
@@ -48,6 +191,9 @@ const ReviewPanel: FC<Props> = () => {
           />
         ))}
       </DashboardTabPanel>
+      {reviews.map((review, index) => (
+        <Review key={index} review={review} />
+      ))}
     </Container>
   )
 }
