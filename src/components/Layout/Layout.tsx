@@ -7,25 +7,25 @@ import Hire from '../Hire/Hire'
 import RejectOffer from '../RejectOffer/RejectOffer'
 
 export const GET_CREATE_TASK_VISIBLE = gql`
-  {
+  query CreateTask {
     createTaskVisible @client
   }
 `
 
 export const GET_MAKE_OFFER_VISIBLE = gql`
-  {
+  query MakeOffer {
     makeOfferVisible @client
   }
 `
 
 export const GET_REJECT_OFFER_VISIBLE = gql`
-  {
+  query RejectOffer {
     rejectOfferVisible @client
   }
 `
 
 export const GET_HIRE_VISIBLE = gql`
-  {
+  query Hire {
     hireVisible @client
   }
 `

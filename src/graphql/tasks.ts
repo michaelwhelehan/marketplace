@@ -3,10 +3,7 @@ import { gql } from '@apollo/client'
 import tasks from './tasks.fixture.json'
 
 function generateItem() {
-  const title = faker.hacker
-    .phrase()
-    .slice(0, 50)
-    .trim()
+  const title = faker.hacker.phrase().slice(0, 50).trim()
   const slug = faker.helpers.slugify(title).toLowerCase()
   return {
     id: faker.random.uuid(),
@@ -39,35 +36,44 @@ function generateItems(numToGenerate: number) {
 }
 
 export const typeDefs = gql`
+  extend type Query {
+    createTaskVisible: Boolean
+    makeOfferVisible: Boolean
+    rejectOfferVisible: Boolean
+    hireVisible: Boolean
+    taskFeed(cursor: String, loadAmount: Int): TaskFeed
+    task(slug: String): Task
+  }
+
   type TaskFeed {
     cursor: String!
     tasks: [Task]!
   }
 
-  type User {
-    name: String!
-    profilePictureUrl: String
-    onlineStatus: String!
-    lastSeen: Date
-  }
+  # type User {
+  #   name: String!
+  #   profilePictureUrl: String
+  #   onlineStatus: String!
+  #   lastSeen: Date
+  # }
 
   type Currency {
     code: String!
     iso: String!
   }
 
-  type Task {
-    id: ID!
-    creator: User!
-    title: String!
-    slug: String!
-    budget: Decimal!
-    currency: Currency!
-    location: String!
-    dueDate: Date!
-    details: String
-    numOffers: Integer!
-  }
+  # type Task {
+  #   id: ID!
+  #   creator: User!
+  #   title: String!
+  #   slug: String!
+  #   budget: Float!
+  #   currency: Currency!
+  #   location: String!
+  #   dueDate: Date!
+  #   details: String
+  #   numOffers: Int!
+  # }
 `
 
 export const resolvers = {

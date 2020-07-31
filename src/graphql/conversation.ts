@@ -20,7 +20,7 @@ function generateConversationItem() {
       name: `${faker.name.firstName()} ${faker.name.lastName().charAt(0)}.`,
       profilePictureUrl: faker.image.avatar(),
       onlineStatus: 'online',
-      __typename: 'ConversationMember',
+      __typename: 'User',
     },
     __typename: 'ConversationFeedMessage',
   }
@@ -90,10 +90,18 @@ function generateConversationListItems(numToGenerate: number) {
 }
 
 export const typeDefs = gql`
-  scalar Date
+  # scalar Date
 
   extend type Query {
     conversation(id: ID!): Conversation
+    conversationList(cursor: String, loadAmount: Int): ConversationList
+  }
+
+  extend type Mutation {
+    createConversationMessage(
+      conversationId: ID!
+      message: String!
+    ): ConversationFeedMessage
   }
 
   type ConversationList {
@@ -105,7 +113,7 @@ export const typeDefs = gql`
     id: ID!
     member: User!
     lastMessage: ConversationLastMessage!
-    conversationFeed: ConversationFeed!
+    conversationFeed(cursor: String, loadAmount: Int): ConversationFeed!
   }
 
   type ConversationFeed {
@@ -115,14 +123,8 @@ export const typeDefs = gql`
 
   type ConversationFeedMessage {
     id: ID!
-    member: ConversationMember!
+    member: User!
     message: ConversationMessage!
-  }
-
-  type User {
-    name: String!
-    profilePictureUrl: String!
-    onlineStatus: String!
   }
 
   type ConversationLastMessage {

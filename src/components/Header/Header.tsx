@@ -19,7 +19,7 @@ type LinkType = {
   id: LinkIdType
   name: string
   href?: string
-  onClick?: (e: MouseEvent) => void
+  onClick?: (e: MouseEvent<HTMLAnchorElement>) => void
   hasDropDown?: boolean
   renderDropDown?: () => JSX.Element
   icon: string

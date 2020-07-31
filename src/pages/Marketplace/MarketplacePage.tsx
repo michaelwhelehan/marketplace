@@ -44,7 +44,7 @@ const MainContainer = styled.article`
 `
 
 const GET_TASKS = gql`
-  query Tasks($cursor: String, $loadAmount: Integer) {
+  query Tasks($cursor: String, $loadAmount: Int) {
     taskFeed(cursor: $cursor, loadAmount: $loadAmount) @client {
       cursor
       tasks {
@@ -85,7 +85,7 @@ const MarketplacePage: FC = () => {
             tasksLoading={loading}
             tasks={data?.taskFeed?.tasks}
             tasksLoadAmount={10}
-            onLoadMoreTasks={async loadAmount => {
+            onLoadMoreTasks={async (loadAmount) => {
               await sleep(Math.floor(Math.random() * 1000) + 500)
               await fetchMore({
                 query: GET_TASKS,
@@ -142,7 +142,7 @@ const MarketplacePage: FC = () => {
 }
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 export default MarketplacePage

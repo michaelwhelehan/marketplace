@@ -31,9 +31,12 @@ const StyledHeading = styled(HeadingS)`
   margin-bottom: 20px;
 `
 
-const ButtonContainer = styled.div`
-  margin-top: 10px;
-`
+type FormValues = {
+  where: String
+  budgetType: String
+  amount: Number
+  dueDate: Date
+}
 
 interface CreateTaskProps {
   onClose: (event: MouseEvent) => void
@@ -51,7 +54,7 @@ const HireFooter: FC<HireFooterProps> = ({ onHireClick, name }) => (
 )
 
 const Hire: FC<CreateTaskProps> = ({ onClose }) => {
-  const { register, watch, control, handleSubmit } = useForm({
+  const { register, watch, control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       where: 'in-person',
       budgetType: 'total',

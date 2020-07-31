@@ -91,8 +91,16 @@ const EditIcon = styled.div`
   justify-content: center;
 `
 
+type FormValues = {
+  firstName: String
+  lastName: String
+  email: String
+  position: String
+  skills: String[]
+}
+
 const BasicInfo: FC = () => {
-  const { register, watch, control, handleSubmit } = useForm({
+  const { register, watch, control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       firstName: 'Mike',
       lastName: 'Wells',

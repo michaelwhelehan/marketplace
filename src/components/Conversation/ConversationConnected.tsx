@@ -49,7 +49,7 @@ const GET_CONVERSATION_MESSAGES = gql`
   query ConversationMessages(
     $conversationId: ID!
     $cursor: String
-    $loadAmount: Integer
+    $loadAmount: Int
   ) {
     conversation(id: $conversationId) @client {
       id
@@ -120,12 +120,12 @@ const ConversationConnected: FC<Props> = ({ position, scrollType }) => {
       messageList={data?.conversation?.conversationFeed?.messages}
       messagesLoadAmount={10}
       memberName="Michael W"
-      onMessageCreated={message => {
+      onMessageCreated={(message) => {
         createConversationMessage({
           variables: { conversationId: '1', message },
         })
       }}
-      onLoadMoreMessages={async loadAmount => {
+      onLoadMoreMessages={async (loadAmount) => {
         await sleep(Math.floor(Math.random() * 1000) + 500)
         await fetchMore({
           query: GET_CONVERSATION_MESSAGES,
@@ -171,7 +171,7 @@ const ConversationConnected: FC<Props> = ({ position, scrollType }) => {
 }
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 export default ConversationConnected
