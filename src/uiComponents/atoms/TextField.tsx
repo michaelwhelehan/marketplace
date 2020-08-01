@@ -33,6 +33,7 @@ const StyledTextField = styled.input<StyledProps>`
 
 export interface TextProps extends StyledProps {
   placeholder?: string
+  type?: string
   autoFocus?: boolean
   value?: string
   defaultValue?: string

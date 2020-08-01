@@ -6,6 +6,7 @@ import Inbox from './pages/Inbox/InboxPage'
 import ProfilePage from './pages/Profile/ProfilePage'
 import { Switch, Route } from 'react-router-dom'
 import TaskDetailPage from './pages/Dashboard/TaskDetail/TaskDetailPage'
+import LoginPage from './pages/Auth/LoginPage'
 
 const Routes: FC = () => {
   return (
@@ -23,6 +24,9 @@ const Routes: FC = () => {
           </Route>
           <Route path="/profile/:username">
             <ProfilePage />
+          </Route>
+          <Route path="/login">
+            <LoginPage />
           </Route>
           <Route path="/">
             <Marketplace />

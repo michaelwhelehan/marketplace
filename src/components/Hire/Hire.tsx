@@ -54,14 +54,14 @@ const HireFooter: FC<HireFooterProps> = ({ onHireClick, name }) => (
 )
 
 const Hire: FC<CreateTaskProps> = ({ onClose }) => {
-  const { register, watch, control, handleSubmit } = useForm<FormValues>({
+  const { register, control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       where: 'in-person',
       budgetType: 'total',
     },
   })
 
-  const handleHireSubmit = useCallback(data => {
+  const handleHireSubmit = useCallback((data) => {
     console.log(data)
   }, [])
 
@@ -116,7 +116,7 @@ const Hire: FC<CreateTaskProps> = ({ onClose }) => {
             fullWidth
             control={control}
             placeholder="Select a date"
-            onChange={day => {
+            onChange={(day) => {
               // React Select return object instead of value for selection
               return day[0]
             }}

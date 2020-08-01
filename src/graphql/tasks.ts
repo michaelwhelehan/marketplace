@@ -50,30 +50,30 @@ export const typeDefs = gql`
     tasks: [Task]!
   }
 
-  # type User {
-  #   name: String!
-  #   profilePictureUrl: String
-  #   onlineStatus: String!
-  #   lastSeen: Date
-  # }
+  extend type User {
+    name: String!
+    profilePictureUrl: String
+    onlineStatus: String!
+    lastSeen: Date
+  }
 
   type Currency {
     code: String!
     iso: String!
   }
 
-  # type Task {
-  #   id: ID!
-  #   creator: User!
-  #   title: String!
-  #   slug: String!
-  #   budget: Float!
-  #   currency: Currency!
-  #   location: String!
-  #   dueDate: Date!
-  #   details: String
-  #   numOffers: Int!
-  # }
+  type Task {
+    id: ID!
+    creator: User!
+    title: String!
+    slug: String!
+    budget: Float!
+    currency: Currency!
+    location: String!
+    dueDate: Date!
+    details: String
+    numOffers: Int!
+  }
 `
 
 export const resolvers = {

@@ -60,25 +60,28 @@ const useQuery = <
     loadMore: _loadMore,
   } = React.useMemo(
     () =>
-      (marketplace.legacyAPIProxy[query] as AdditionalAPI)(variables, {
-        ...(options as any),
-        onError: (error: ApolloErrorWithUserInput) =>
-          setResult((previousResult) => ({
-            ...previousResult,
-            error,
-            loading: false,
-          })),
-        onUpdate: (data: TData) => {
-          setData(data)
+      ((marketplace.legacyAPIProxy[query] as unknown) as AdditionalAPI)(
+        variables,
+        {
+          ...(options as any),
+          onError: (error: ApolloErrorWithUserInput) =>
+            setResult((previousResult) => ({
+              ...previousResult,
+              error,
+              loading: false,
+            })),
+          onUpdate: (data: TData) => {
+            setData(data)
+          },
         },
-      }),
+      ),
     [query, options.skip, authenticated],
   )
 
   const refetch = React.useCallback(
     (refetchVariables?: TVariables) => {
       setResult({ data: null, error: null, loading: true })
-      _refetch(refetchVariables)
+      _refetch()
     },
     [query],
   )

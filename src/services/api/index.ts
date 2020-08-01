@@ -51,6 +51,6 @@ export class MarketplaceAPI {
       marketplaceState.subscribeToNotifiedChanges(onStateUpdate)
     }
 
-    this.auth = new AuthAPI(marketplaceState, jobsManager, finalConfig)
+    this.auth = new AuthAPI(marketplaceState, jobsManager)
   }
 }

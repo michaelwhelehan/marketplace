@@ -4,11 +4,6 @@ import { IJobs, Jobs } from './Jobs'
 import { JobFunctionParameters } from './types'
 
 export class JobsManager {
-  private queue: Array<{
-    jobGroup: string
-    jobName: string
-  }>
-
   private jobs: IJobs
 
   private localStorageHandler: LocalStorageHandler
@@ -17,10 +12,6 @@ export class JobsManager {
     localStorageHandler: LocalStorageHandler,
     apolloClientManager: ApolloClientManager,
   ) {
-    this.queue = new Array<{
-      jobGroup: string
-      jobName: string
-    }>()
     this.localStorageHandler = localStorageHandler
 
     this.jobs = new Jobs(this.localStorageHandler, apolloClientManager)

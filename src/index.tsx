@@ -1,45 +1,89 @@
-import React from 'react'
+import React, { FC } from 'react'
 import ReactDOM from 'react-dom'
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
+// import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 import App from './App'
-import {
-  typeDefs as conversationTypeDefs,
-  resolvers as conversationResolvers,
-} from './graphql/conversation'
-import {
-  typeDefs as taskTypeDefs,
-  resolvers as taskResolvers,
-} from './graphql/tasks'
+import { MarketplaceProvider, useAuth } from './services'
+import { ConfigInput } from './services/types'
+import { apiUrl } from './constants/app'
+import { positions, Provider as AlertProvider, useAlert } from 'react-alert'
+import AlertTemplate from 'react-alert-template-basic'
+// import {
+//   typeDefs as conversationTypeDefs,
+//   resolvers as conversationResolvers,
+// } from './graphql/conversation'
+// import {
+//   typeDefs as taskTypeDefs,
+//   resolvers as taskResolvers,
+// } from './graphql/tasks'
 
-const cache = new InMemoryCache({
-  possibleTypes: {
-    ConversationFeed: [],
-    TaskFeed: [],
-    ConversationMessage: [
-      'ConversationMessageText',
-      'ConversationMessageImage',
-      'ConversationMessageVideo',
-    ],
-  },
-})
-const client = new ApolloClient({
-  cache,
-  typeDefs: [conversationTypeDefs, taskTypeDefs],
-  resolvers: [conversationResolvers, taskResolvers],
-  connectToDevTools: true,
-})
+// const cache = new InMemoryCache({
+//   possibleTypes: {
+//     ConversationFeed: [],
+//     TaskFeed: [],
+//     ConversationMessage: [
+//       'ConversationMessageText',
+//       'ConversationMessageImage',
+//       'ConversationMessageVideo',
+//     ],
+//   },
+// })
+// const client = new ApolloClient({
+//   cache,
+//   typeDefs: [conversationTypeDefs, taskTypeDefs],
+//   resolvers: [conversationResolvers, taskResolvers],
+//   connectToDevTools: true,
+// })
 
-const render = Component => {
+const MARKETPLACE_CONFIG: ConfigInput = {
+  apiUrl,
+}
+
+const notificationOptions = {
+  position: positions.TOP_RIGHT,
+  timeout: 2500,
+}
+
+const Notifications: FC = () => {
+  const alert = useAlert()
+
+  const { authenticated } = useAuth()
+  const [prevAuthenticated, setPrevAuthenticated] = React.useState<
+    boolean | undefined
+  >()
+
+  React.useEffect(() => {
+    if (prevAuthenticated !== undefined && authenticated !== undefined) {
+      if (!prevAuthenticated && authenticated) {
+        alert.show('You are now logged in', { type: 'success' })
+      } else if (prevAuthenticated && !authenticated) {
+        alert.show('You are now logged out', { type: 'success' })
+      }
+      setPrevAuthenticated(authenticated)
+    } else if (authenticated !== undefined) {
+      setPrevAuthenticated(authenticated)
+    }
+  }, [authenticated])
+
+  return null
+}
+
+const render = (Component) => {
   return ReactDOM.render(
-    <ApolloProvider client={client}>
-      <Component />
-    </ApolloProvider>,
+    <AlertProvider template={AlertTemplate as any} {...notificationOptions}>
+      <MarketplaceProvider config={MARKETPLACE_CONFIG}>
+        <>
+          <Component />
+          <Notifications />
+        </>
+      </MarketplaceProvider>
+    </AlertProvider>,
     document.getElementById('root'),
   )
 }
 
 render(App)
 
+declare const module: any
 if (module.hot) {
   module.hot.accept('./App', () => {
     const NextApp = require('./App').default

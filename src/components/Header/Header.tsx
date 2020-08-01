@@ -1,6 +1,5 @@
 import React, { FC, useState, MouseEvent } from 'react'
 import styled from 'styled-components'
-import logo from '../../assets/images/logo.svg'
 import BaseContainer from '../../uiComponents/atoms/Container'
 import { white, borderColor, darkGrey } from '../../styles/colors'
 import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
@@ -12,6 +11,7 @@ import DropDown from '../../uiComponents/atoms/DropDown'
 import Notifications from './Notifications/Notifications'
 import Icon from '../../uiComponents/atoms/Icon'
 import UpdateIndicator from '../../uiComponents/atoms/UpdateIndicator'
+import Logo from '../../uiComponents/atoms/Logo'
 
 type LinkIdType = 'browse' | 'tasks' | 'updates' | 'messages'
 
@@ -91,9 +91,9 @@ const Header: FC = () => {
     {
       id: 'updates',
       name: 'Updates',
-      onClick: e => {
+      onClick: (e) => {
         e.preventDefault()
-        setDropdownOpen(prev => (prev === 'updates' ? null : 'updates'))
+        setDropdownOpen((prev) => (prev === 'updates' ? null : 'updates'))
       },
       hasDropDown: true,
       renderDropDown: () => <Notifications />,
@@ -115,18 +115,12 @@ const Header: FC = () => {
       <StyledContainer>
         <HeaderStart>
           <StyledLink to="/" style={{ height: '100%' }}>
-            <img
-              alt="Logo"
-              height="100%"
-              width="200px"
-              src={`${logo}#svgView(viewBox(70,20,100,60))`}
-              importance="high"
-            />
+            <Logo />
           </StyledLink>
         </HeaderStart>
         <HeaderEnd>
           <HeaderLinks>
-            {links.map(link => (
+            {links.map((link) => (
               <HeaderItem key={link.name}>
                 <HeaderLink onClick={link.onClick} to={link.href}>
                   <HeaderLinkIcon>

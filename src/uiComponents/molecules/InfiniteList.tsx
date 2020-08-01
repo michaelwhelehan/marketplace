@@ -45,7 +45,7 @@ const InfiniteList: FC<Props> = ({
 }) => {
   const infiniteLoader = useRef<InfiniteLoader>(null)
   const [loadingTop, setLoadingTop] = useState<boolean>(false)
-  const [totalRowCount, setTotalRowCount] = useState<number>(rowCount)
+  const [totalRowCount] = useState<number>(rowCount)
   const [scrollToIndex, setScrollToIndex] = useState<number>(
     direction === 'forward' ? -1 : list.length - 1,
   )
@@ -154,7 +154,7 @@ const InfiniteList: FC<Props> = ({
         <AutoSizer>
           {({ height, width }) => (
             <List
-              onRowsRendered={props => {
+              onRowsRendered={(props) => {
                 if (direction === 'reverse') {
                   loadMoreRowsTop(props)
                 }

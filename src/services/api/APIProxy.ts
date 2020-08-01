@@ -275,21 +275,21 @@ class APIProxy {
             variables: { ...variables, ...extraVariables },
           })
         },
-        refetch: (newVariables?: TVariables) => {
-          if (newVariables) {
-            observable.setVariables(newVariables)
-            const cachedResult = observable.currentResult()
-            const errorHandledData = handleDataErrors(mapFn, cachedResult.data)
-            if (errorHandledData.data) {
-              onUpdate(errorHandledData.data as TResult)
-            }
-          }
+        // refetch: (newVariables?: TVariables) => {
+        //   if (newVariables) {
+        //     observable.setVariables(newVariables)
+        //     const cachedResult = observable.currentResult()
+        //     const errorHandledData = handleDataErrors(mapFn, cachedResult.data)
+        //     if (errorHandledData.data) {
+        //       onUpdate(errorHandledData.data as TResult)
+        //     }
+        //   }
 
-          return APIProxy.firePromise(
-            () => observable.refetch(newVariables),
-            mapFn,
-          )
-        },
+        //   return APIProxy.firePromise(
+        //     () => observable.refetch(newVariables),
+        //     mapFn,
+        //   )
+        // },
         setOptions: (newOptions: TOptions) =>
           APIProxy.firePromise(() => observable.setOptions(newOptions), mapFn),
         unsubscribe: subscription.unsubscribe.bind(subscription),

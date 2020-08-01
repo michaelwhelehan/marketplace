@@ -7,6 +7,7 @@ import {
   ConversationScrollType,
   ConversationMessageType,
 } from '../../types/conversation'
+import ConversationMessage from '../../uiComponents/organisms/Conversation/ConversationMessage'
 
 interface ConversationData {
   conversation: {
@@ -30,19 +31,10 @@ const CREATE_CONVERSATION_MESSAGE = gql`
       conversationId: $conversationId
       message: $message
     ) @client {
-      id
-      member {
-        name
-        profilePictureUrl
-        onlineStatus
-      }
-      message {
-        type
-        text
-        timestamp
-      }
+      ...Message
     }
   }
+  ${ConversationMessage.fragments.message}
 `
 
 const GET_CONVERSATION_MESSAGES = gql`

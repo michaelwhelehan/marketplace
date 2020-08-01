@@ -1,7 +1,5 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { fsXXS } from '../../styles/typography'
-import { primaryFontColor } from '../../styles/colors'
 import Avatar from '../atoms/Avatar'
 import { UserType } from '../../types/user'
 
@@ -24,13 +22,6 @@ const MessageMemberAvatar = styled.div`
 
 const MessageContent = styled.div`
   flex: 1;
-`
-
-const MessageTimestamp = styled.span`
-  padding-left: 10px;
-  padding-top: 2px;
-  font-size: ${fsXXS}px;
-  color: ${primaryFontColor};
 `
 
 interface Props {
