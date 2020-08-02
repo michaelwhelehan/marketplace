@@ -6,9 +6,10 @@ import Button from '../../uiComponents/atoms/Button'
 import TextField from '../../uiComponents/atoms/TextField'
 import { useForm } from 'react-hook-form'
 import { Link, useHistory } from 'react-router-dom'
-import { primaryColor, red } from '../../styles/colors'
-import { useAuth } from '../../services'
-import { ParagraphS } from '../../uiComponents/atoms/Paragraphs'
+import { primaryColor, red, primaryFontColor } from '../../styles/colors'
+import { ParagraphS, ParagraphXS } from '../../uiComponents/atoms/Paragraphs'
+import { fsXS } from '../../styles/typography'
+import { useAccountRegisterMutation } from './mutations'
 
 const StyledContainer = styled(BaseContainer)`
   display: flex;
@@ -44,8 +45,22 @@ const StyledButton = styled(Button)`
   margin-top: 10px;
 `
 
-const StyledLink = styled(Link)`
+const AlreadyHaveAnAccount = styled(ParagraphS)`
+  margin-top: 20px;
+`
+
+const Terms = styled(ParagraphXS)`
+  margin-top: 20px;
+  text-align: center;
+`
+
+const LoginLink = styled(Link)`
   color: ${primaryColor};
+`
+
+const TermsLink = styled(Link)`
+  color: ${primaryFontColor};
+  font-size: ${fsXS}px;
 `
 
 type FormValues = {
@@ -53,19 +68,27 @@ type FormValues = {
   password: string
 }
 
-const LoginPage: FC = () => {
+const SignUpPage: FC = () => {
   const { register, handleSubmit } = useForm<FormValues>()
-  const { signIn } = useAuth()
+  const registerAccount = useAccountRegisterMutation({
+    onCompleted: (data) => {
+      console.log(data)
+    },
+  })
   const [loading, setLoading] = React.useState(false)
   const [errors, setErrors] = React.useState(null)
   const history = useHistory()
 
   const onSubmit = async ({ email, password }) => {
     setLoading(true)
-    const { data, dataError } = await signIn(email, password)
+    const redirectUrl = `${window.location.origin}/confirm-account`
+    const { data } = await registerAccount({
+      variables: { email, password, redirectUrl },
+    })
+    console.log(data)
     setLoading(false)
-    if (dataError?.error) {
-      setErrors(dataError.error)
+    if (data.accountRegister.errors?.length > 0) {
+      setErrors(data.accountRegister.errors)
     } else if (data) {
       setErrors(null)
       history.push('/')
@@ -78,15 +101,20 @@ const LoginPage: FC = () => {
         <Logo />
       </LogoContainer>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
-        <ParagraphS>Don't have an account?</ParagraphS>
-        <StyledLink
-          to="/sign-up"
-          style={{ marginTop: '10px', marginBottom: '10px' }}
-        >
-          Sign up for free
-        </StyledLink>
         {errors?.length > 0 &&
           errors.map((error) => <ErrorMessage>{error.message}</ErrorMessage>)}
+        {/* <StyledTextField
+          name="firstName"
+          ref={register()}
+          fullWidth
+          placeholder="First name"
+        />
+        <StyledTextField
+          name="lastName"
+          ref={register()}
+          fullWidth
+          placeholder="Last name"
+        /> */}
         <StyledTextField
           name="email"
           ref={register()}
@@ -101,14 +129,20 @@ const LoginPage: FC = () => {
           placeholder="Password"
         />
         <StyledButton large fullWidth disabled={loading}>
-          {loading ? 'Signing in...' : 'Sign in'}
+          {loading ? 'Signing up...' : 'Sign up'}
         </StyledButton>
-        <StyledLink to="/forgot-password" style={{ marginTop: '20px' }}>
-          Forgot password?
-        </StyledLink>
+        <AlreadyHaveAnAccount>
+          Do you already have an account?{' '}
+          <LoginLink to="/login">Log in</LoginLink>
+        </AlreadyHaveAnAccount>
+        <Terms>
+          By registering, you agree to the{' '}
+          <TermsLink to="/terms">Terms &amp; Conditions</TermsLink> and{' '}
+          <TermsLink to="/privacy">Privacy Policy.</TermsLink>
+        </Terms>
       </StyledForm>
     </StyledContainer>
   )
 }
 
-export default LoginPage
+export default SignUpPage

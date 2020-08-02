@@ -7,6 +7,7 @@ import ProfilePage from './pages/Profile/ProfilePage'
 import { Switch, Route } from 'react-router-dom'
 import TaskDetailPage from './pages/Dashboard/TaskDetail/TaskDetailPage'
 import LoginPage from './pages/Auth/LoginPage'
+import SignUpPage from './pages/Auth/SignUpPage'
 
 const Routes: FC = () => {
   return (
@@ -27,6 +28,9 @@ const Routes: FC = () => {
           </Route>
           <Route path="/login">
             <LoginPage />
+          </Route>
+          <Route path="/sign-up">
+            <SignUpPage />
           </Route>
           <Route path="/">
             <Marketplace />

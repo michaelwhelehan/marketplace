@@ -3,7 +3,7 @@ module.exports = {
     excludes: ["**/__tests__/**/*"],
     service: {
       name: "marketplace",
-      url: "https://staging.taskdropper.com/graphql/",
+      url: "https://api-staging.taskdropper.com/graphql/",
     },
   },
 };

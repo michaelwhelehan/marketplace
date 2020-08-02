@@ -3,57 +3,57 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { AccountErrorCode } from './../../gqlTypes/globalTypes'
+import { AccountErrorCode } from "./../../../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: TokenAuth
 // ====================================================
 
 export interface TokenAuth_tokenCreate_errors {
-  __typename: 'AccountError'
+  __typename: "AccountError";
   /**
    * The error code.
    */
-  code: AccountErrorCode
+  code: AccountErrorCode;
   /**
    * Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
    */
-  field: string | null
+  field: string | null;
   /**
    * The error message.
    */
-  message: string | null
+  message: string | null;
 }
 
 export interface TokenAuth_tokenCreate_user {
-  __typename: 'User'
+  __typename: "User";
   /**
    * The ID of the object.
    */
-  id: string
+  id: string;
 }
 
 export interface TokenAuth_tokenCreate {
-  __typename: 'CreateToken'
+  __typename: "CreateToken";
   /**
    * JWT token, required to authenticate.
    */
-  token: string | null
-  errors: TokenAuth_tokenCreate_errors[]
+  token: string | null;
+  errors: TokenAuth_tokenCreate_errors[];
   /**
    * A user instance.
    */
-  user: TokenAuth_tokenCreate_user | null
+  user: TokenAuth_tokenCreate_user | null;
 }
 
 export interface TokenAuth {
   /**
    * Create JWT token.
    */
-  tokenCreate: TokenAuth_tokenCreate | null
+  tokenCreate: TokenAuth_tokenCreate | null;
 }
 
 export interface TokenAuthVariables {
-  email: string
-  password: string
+  email: string;
+  password: string;
 }
