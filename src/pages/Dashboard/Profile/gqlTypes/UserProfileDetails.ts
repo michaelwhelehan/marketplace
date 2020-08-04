@@ -4,10 +4,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL fragment: User
+// GraphQL query operation: UserProfileDetails
 // ====================================================
 
-export interface User {
+export interface UserProfileDetails_me {
   __typename: "User";
   /**
    * The ID of the object.
@@ -17,4 +17,11 @@ export interface User {
   firstName: string;
   lastName: string;
   avatarUrl: string | null;
+}
+
+export interface UserProfileDetails {
+  /**
+   * Return the currently authenticated user.
+   */
+  me: UserProfileDetails_me | null;
 }

@@ -6,12 +6,12 @@ import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
 import Avatar from '../../uiComponents/atoms/Avatar'
 import { Link } from 'react-router-dom'
 import { fwBold } from '../../styles/typography'
-import profilePictureUrl from '../../assets/images/profile.png'
 import DropDown from '../../uiComponents/atoms/DropDown'
 import Notifications from './Notifications/Notifications'
 import Icon from '../../uiComponents/atoms/Icon'
 import UpdateIndicator from '../../uiComponents/atoms/UpdateIndicator'
 import Logo from '../../uiComponents/atoms/Logo'
+import { useAuth } from '../../services'
 
 type LinkIdType = 'browse' | 'tasks' | 'updates' | 'messages'
 
@@ -22,7 +22,7 @@ type LinkType = {
   onClick?: (e: MouseEvent<HTMLAnchorElement>) => void
   hasDropDown?: boolean
   renderDropDown?: () => JSX.Element
-  icon: string
+  icon?: string
   hasUpdates?: boolean
 }
 
@@ -50,6 +50,7 @@ const HeaderEnd = styled.div`
 
 const HeaderLinks = styled.ul`
   display: flex;
+  align-items: center;
   margin-right: 20px;
 `
 
@@ -74,21 +75,22 @@ const HeaderLinkIcon = styled.span`
 `
 
 const Header: FC = () => {
+  const { user } = useAuth()
   const [dropdownOpen, setDropdownOpen] = useState<LinkIdType | null>(null)
-  const links: LinkType[] = [
-    {
+  const links = [
+    user && {
       id: 'browse',
       name: 'Browse',
       href: '/',
       icon: 'MdSearch',
     },
-    {
+    user && {
       id: 'tasks',
       name: 'My Tasks',
       href: '/dashboard/my-tasks',
       icon: 'MdBusinessCenter',
     },
-    {
+    user && {
       id: 'updates',
       name: 'Updates',
       onClick: (e) => {
@@ -100,15 +102,24 @@ const Header: FC = () => {
       icon: 'MdNotificationsNone',
       hasUpdates: true,
     },
-    {
+    user && {
       id: 'messages',
       name: 'Messages',
       href: '/dashboard/inbox',
       icon: 'MdMailOutline',
       hasUpdates: true,
     },
-  ]
-  const avatarUrl = profilePictureUrl
+    !user && {
+      id: 'login',
+      name: 'Log in',
+      href: '/login',
+    },
+    !user && {
+      id: 'signup',
+      name: 'Sign up',
+      href: '/sign-up',
+    },
+  ].filter(Boolean)
 
   return (
     <StyledHeader>
@@ -123,10 +134,12 @@ const Header: FC = () => {
             {links.map((link) => (
               <HeaderItem key={link.name}>
                 <HeaderLink onClick={link.onClick} to={link.href}>
-                  <HeaderLinkIcon>
-                    <Icon name={link.icon} size={25} />
-                    {link.hasUpdates && <UpdateIndicator />}
-                  </HeaderLinkIcon>
+                  {link.icon ? (
+                    <HeaderLinkIcon>
+                      <Icon name={link.icon} size={25} />
+                      {link.hasUpdates && <UpdateIndicator />}
+                    </HeaderLinkIcon>
+                  ) : null}
                   <span>{link.name}</span>
                 </HeaderLink>
                 {link.hasDropDown && dropdownOpen === link.id ? (
@@ -135,9 +148,9 @@ const Header: FC = () => {
               </HeaderItem>
             ))}
           </HeaderLinks>
-          {avatarUrl ? (
+          {user ? (
             <StyledLink to="/dashboard">
-              <Avatar src={avatarUrl} size={50} />
+              <Avatar src={user.avatarUrl} size={50} />
             </StyledLink>
           ) : null}
         </HeaderEnd>

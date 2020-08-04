@@ -16,7 +16,7 @@ export interface UserDetails_me {
   email: string;
   firstName: string;
   lastName: string;
-  isStaff: boolean;
+  avatarUrl: string | null;
 }
 
 export interface UserDetails {

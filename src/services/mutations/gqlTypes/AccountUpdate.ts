@@ -34,7 +34,7 @@ export interface AccountUpdate_accountUpdate_user {
   email: string;
   firstName: string;
   lastName: string;
-  isStaff: boolean;
+  avatarUrl: string | null;
 }
 
 export interface AccountUpdate_accountUpdate {

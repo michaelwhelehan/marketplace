@@ -75,7 +75,9 @@ const LoginPage: FC = () => {
   return (
     <StyledContainer>
       <LogoContainer>
-        <Logo />
+        <Link to="/">
+          <Logo />
+        </Link>
       </LogoContainer>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <ParagraphS>Don't have an account?</ParagraphS>

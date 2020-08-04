@@ -9,9 +9,12 @@ import Education from './sections/Education'
 import WorkExperience from './sections/WorkExperience'
 import Portfolio from './sections/Portfolio'
 import Badges from './sections/Badges'
+import { useGetUserProfileDetailsQuery } from './queries'
 
 const ProfilePage: FC = () => {
   const { currentTab, updateTab } = useTabs<TabType>('basicInfo')
+  const { data: User, loading, error } = useGetUserProfileDetailsQuery()
+  console.log(User)
 
   function renderTab() {
     switch (currentTab) {
