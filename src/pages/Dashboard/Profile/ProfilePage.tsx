@@ -19,7 +19,7 @@ const ProfilePage: FC = () => {
   function renderTab() {
     switch (currentTab) {
       case 'basicInfo':
-        return <BasicInfo />
+        return <BasicInfo user={User.me} />
       case 'education':
         return <Education />
       case 'workExperience':

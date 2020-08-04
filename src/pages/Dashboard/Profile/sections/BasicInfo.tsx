@@ -21,8 +21,8 @@ import TextField from '../../../../uiComponents/atoms/TextField'
 import TextAreaField from '../../../../uiComponents/atoms/TextAreaField'
 import SelectField from '../../../../uiComponents/atoms/SelectField'
 import Button from '../../../../uiComponents/atoms/Button'
-import profilePictureUrl from '../../../../assets/images/profile.png'
 import CheckboxField from '../../../../uiComponents/atoms/CheckboxField'
+import { UserProfileDetails_me } from '../gqlTypes/UserProfileDetails'
 
 const StyledForm = styled.form`
   padding-top: 20px;
@@ -99,17 +99,21 @@ type FormValues = {
   skills: String[]
 }
 
-const BasicInfo: FC = () => {
+interface Props {
+  user: UserProfileDetails_me
+}
+
+const BasicInfo: FC<Props> = ({ user }) => {
   const { register, watch, control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      firstName: 'Mike',
-      lastName: 'Wells',
-      email: 'mike@wells.com',
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
       position: 'Software Developer',
     },
   })
   const watchNamePosition = watch(['firstName', 'lastName', 'position'])
-  const onSubmit = data => {
+  const onSubmit = (data) => {
     console.log(data)
   }
 
@@ -119,7 +123,7 @@ const BasicInfo: FC = () => {
         <ProfileSplit>
           <SectionTitle>
             <ChangeAvatar>
-              <Avatar src={profilePictureUrl} size={75} />
+              <Avatar src={user.avatarUrl} size={75} />
               <EditIcon>
                 <Icon name="MdEdit" size={14} color={white} />
               </EditIcon>
