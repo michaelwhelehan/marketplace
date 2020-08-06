@@ -1,5 +1,8 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import styled from 'styled-components'
+import { useAlert } from 'react-alert'
+import { yupResolver } from '@hookform/resolvers'
+import * as yup from 'yup'
 import {
   borderColorDark,
   black,
@@ -23,6 +26,7 @@ import SelectField from '../../../../uiComponents/atoms/SelectField'
 import Button from '../../../../uiComponents/atoms/Button'
 import CheckboxField from '../../../../uiComponents/atoms/CheckboxField'
 import { UserProfileDetails_me } from '../gqlTypes/UserProfileDetails'
+import { useAccountUpdate } from '../../../../services'
 
 const StyledForm = styled.form`
   padding-top: 20px;
@@ -92,29 +96,62 @@ const EditIcon = styled.div`
 `
 
 type FormValues = {
-  firstName: String
-  lastName: String
-  email: String
-  position: String
-  skills: String[]
+  firstName: string
+  lastName: string
+  email: string
+  jobTitle: string
+  skills: string[]
+  mobile: string
+  bio: string
 }
 
 interface Props {
   user: UserProfileDetails_me
 }
 
+const schema = yup.object().shape({
+  firstName: yup.string().required('First name is required'),
+  lastName: yup.string().required('Last name is required'),
+  jobTitle: yup.string().required('Position is required'),
+})
+
 const BasicInfo: FC<Props> = ({ user }) => {
-  const { register, watch, control, handleSubmit } = useForm<FormValues>({
+  const [setAccountUpdate, { data, error }] = useAccountUpdate()
+  const alert = useAlert()
+  const { register, setError, errors, watch, control, handleSubmit } = useForm<
+    FormValues
+  >({
     defaultValues: {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      position: 'Software Developer',
+      jobTitle: user.jobTitle,
+      mobile: user.mobile,
+      bio: user.bio,
     },
+    resolver: yupResolver(schema),
   })
-  const watchNamePosition = watch(['firstName', 'lastName', 'position'])
+  const watchNamePosition = watch(['firstName', 'lastName', 'jobTitle'])
+  useEffect(() => {
+    console.log(error?.extraInfo)
+    if (data && !error) {
+      alert.show('Profile successfully updated.', {
+        type: 'success',
+      })
+    } else if (error) {
+      error.extraInfo.userInputErrors.forEach((err) =>
+        setError(err.field, { type: 'manual', message: err.message }),
+      )
+    }
+  }, [data, error])
+
   const onSubmit = (data) => {
     console.log(data)
+    delete data.email
+    delete data.skills
+    delete data.transport
+    delete data.languages
+    setAccountUpdate({ input: data })
   }
 
   return (
@@ -132,24 +169,26 @@ const BasicInfo: FC<Props> = ({ user }) => {
               <StyledName>
                 {watchNamePosition.firstName} {watchNamePosition.lastName}
               </StyledName>
-              <ParagraphXS>{watchNamePosition.position}</ParagraphXS>
+              <ParagraphXS>{watchNamePosition.jobTitle}</ParagraphXS>
             </SectionValue>
           </SectionTitle>
           <FieldContainer split spacingTop>
-            <FormField label="First Name">
+            <FormField label="First Name" name="firstName" errors={errors}>
               <TextField
                 name="firstName"
                 placeholder="Enter your first name"
                 ref={register()}
                 fullWidth
+                hasError={Boolean(errors.firstName)}
               />
             </FormField>
-            <FormField label="Last Name">
+            <FormField label="Last Name" name="lastName" errors={errors}>
               <TextField
                 name="lastName"
                 placeholder="Enter your last name"
                 ref={register()}
                 fullWidth
+                hasError={Boolean(errors.lastName)}
               />
             </FormField>
             <FormField label="Email">
@@ -158,22 +197,25 @@ const BasicInfo: FC<Props> = ({ user }) => {
                 placeholder="Enter your email address"
                 ref={register()}
                 fullWidth
+                readOnly
               />
             </FormField>
-            <FormField label="Position">
+            <FormField label="Position" name="jobTitle" errors={errors}>
               <TextField
-                name="position"
+                name="jobTitle"
                 placeholder="eg. Software Developer"
                 ref={register()}
                 fullWidth
+                hasError={Boolean(errors.jobTitle)}
               />
             </FormField>
-            <FormField label="Mobile">
+            <FormField label="Mobile" name="mobile" errors={errors}>
               <TextField
                 name="mobile"
                 placeholder="Enter your mobile number"
                 ref={register()}
                 fullWidth
+                hasError={Boolean(errors.mobile)}
               />
             </FormField>
             <div style={{ gridColumn: 'span 2' }}>

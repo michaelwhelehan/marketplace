@@ -41,6 +41,9 @@ export enum AccountErrorCode {
 export interface AccountInput {
   firstName?: string | null;
   lastName?: string | null;
+  jobTitle?: string | null;
+  mobile?: string | null;
+  bio?: string | null;
 }
 
 //==============================================================

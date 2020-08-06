@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-import { userFragment } from '../fragments/auth'
+import { userFragment } from '../../pages/Dashboard/Profile/queries'
 import { accountErrorFragment } from '../fragments/errors'
 
 export const changeUserPassword = gql`
@@ -23,7 +23,7 @@ export const accountUpdate = gql`
         ...AccountError
       }
       user {
-        ...User
+        ...UserDetails
       }
     }
   }

@@ -3,8 +3,9 @@ import styled, { css } from 'styled-components'
 import { ParagraphS, ParagraphXS } from '../atoms/Paragraphs'
 import DropDown from '../atoms/DropDown'
 import { fwBold } from '../../styles/typography'
-import { black, primaryColor } from '../../styles/colors'
+import { black, primaryColor, red } from '../../styles/colors'
 import Icon from '../atoms/Icon'
+import { DeepMap } from 'react-hook-form/dist/types/utils'
 
 const FormFieldWrapper = styled.div<{
   spacingTop?: boolean
@@ -58,14 +59,21 @@ const HelpText = styled(ParagraphXS)`
   margin-top: 5px;
 `
 
+const ErrorMessage = styled(ParagraphS)`
+  color: ${red};
+  margin-top: 5px;
+`
+
 const Container = styled.div`
   margin-top: 10px;
 `
 
 interface Props {
   label?: string
+  name?: string
   helpText?: string
   required?: boolean
+  errors?: DeepMap<any, any>
   spacingTop?: boolean
   spacingBottom?: boolean
   renderHelpPopup?: () => JSX.Element
@@ -73,14 +81,17 @@ interface Props {
 
 const FormField: FC<Props> = ({
   label,
+  name,
   helpText,
   required,
+  errors,
   spacingTop,
   spacingBottom,
   renderHelpPopup,
   children,
 }) => {
   const [popupOpen, setPopupOpen] = useState<boolean>(false)
+  console.log(errors)
 
   return (
     <FormFieldWrapper spacingTop={spacingTop} spacingBottom={spacingBottom}>
@@ -92,7 +103,7 @@ const FormField: FC<Props> = ({
         ) : null}
         {renderHelpPopup ? (
           <HelpPopup>
-            <span onClick={() => setPopupOpen(prev => !prev)}>
+            <span onClick={() => setPopupOpen((prev) => !prev)}>
               Want help?{' '}
               <Icon
                 name="MdErrorOutline"
@@ -111,6 +122,7 @@ const FormField: FC<Props> = ({
       </LabelWrapper>
       {helpText ? <HelpText>{helpText}</HelpText> : null}
       <Container>{children}</Container>
+      {errors ? <ErrorMessage>{errors[name]?.message}</ErrorMessage> : null}
     </FormFieldWrapper>
   )
 }

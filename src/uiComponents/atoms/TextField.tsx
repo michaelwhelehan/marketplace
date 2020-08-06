@@ -1,11 +1,12 @@
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
-import { borderColorDark, white } from '../../styles/colors'
+import { borderColorDark, white, red } from '../../styles/colors'
 import { fsS, fontFamilyPrimary } from '../../styles/typography'
 
 interface StyledProps {
   fullWidth?: boolean
   paddingStart?: number
+  hasError?: boolean
 }
 
 export const TextFieldStyles = css`
@@ -29,6 +30,12 @@ const StyledTextField = styled.input<StyledProps>`
     css`
       width: 100%;
     `}
+  ${({ hasError }) =>
+    hasError &&
+    css`
+      border-color: ${red};
+    `}
+  }
 `
 
 export interface TextProps extends StyledProps {
@@ -38,7 +45,9 @@ export interface TextProps extends StyledProps {
   value?: string
   defaultValue?: string
   name?: string
+  hasError?: boolean
   ref?: any
+  readOnly?: boolean
 }
 
 export interface TextFieldProps extends TextProps {
