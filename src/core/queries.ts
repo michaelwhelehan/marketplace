@@ -3,8 +3,14 @@ import {
   ErrorPolicy,
   FetchPolicy,
   DocumentNode,
+  gql,
 } from '@apollo/client'
 import { RequireAtLeastOne } from '../services/tsHelpers'
+
+import {
+  PreSignedUploadParams,
+  PreSignedUploadParamsVariables,
+} from './gqlTypes/PreSignedUploadParams'
 
 interface Config<TData, TVariables> {
   variables?: TVariables
@@ -15,11 +21,22 @@ interface Config<TData, TVariables> {
 
 export function useQuery<TData, TVariables>(
   query: DocumentNode,
-  config?: Config<TData, TVariables>,
+  config: Config<TData, TVariables> = {},
 ) {
+  const {
+    fetchPolicy = 'cache-and-network',
+    variables,
+    onCompleted,
+    errorPolicy,
+  } = config
   const { error, loading, data, fetchMore } = useApolloQuery<TData, TVariables>(
     query,
-    config,
+    {
+      fetchPolicy,
+      variables,
+      onCompleted,
+      errorPolicy,
+    },
   )
   const loadMore = (
     mergeFunc: (previousResults: TData, fetchMoreResult: TData) => TData,
@@ -36,4 +53,31 @@ export function useQuery<TData, TVariables>(
       variables: { ...config.variables, ...extraVariables },
     })
   return { error, loading, data, loadMore }
+}
+
+const preSignedUploadParamsQuery = gql`
+  query PreSignedUploadParams($directory: String!, $fileName: String!) {
+    preSignedUploadParams(directory: $directory, fileName: $fileName) {
+      fields
+      uploadUrl
+      fileUrl
+    }
+  }
+`
+
+export const usePreSignedUploadParamsQuery = () => {
+  const { refetch } = useApolloQuery<
+    PreSignedUploadParams,
+    PreSignedUploadParamsVariables
+  >(preSignedUploadParamsQuery, { skip: true })
+
+  const imperativelyCallQuery = ({
+    variables,
+  }: {
+    variables: PreSignedUploadParamsVariables
+  }) => {
+    return refetch(variables)
+  }
+
+  return imperativelyCallQuery
 }

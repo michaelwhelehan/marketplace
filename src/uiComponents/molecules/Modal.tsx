@@ -26,12 +26,19 @@ const ModalCurtain = styled.div`
   overflow-x: hidden;
 `
 
-const ModalContainer = styled.div<{ large?: boolean }>`
+const ModalContainer = styled.div<{ large?: boolean; autoHeight: boolean }>`
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  min-height: 580px;
+  ${({ autoHeight }) =>
+    autoHeight
+      ? css`
+          height: auto;
+        `
+      : css`
+          min-height: 580px;
+        `}
   max-height: 90vh;
   display: flex;
   flex-direction: column;
@@ -83,8 +90,9 @@ interface Props {
   title?: string
   overflowContent?: boolean
   large?: boolean
+  autoHeight?: boolean
   onClose: (event: MouseEvent) => void
-  renderFooter: () => JSX.Element
+  renderFooter?: () => JSX.Element
 }
 
 const Modal: FC<Props> = ({
@@ -93,6 +101,7 @@ const Modal: FC<Props> = ({
   onClose,
   renderFooter,
   large = false,
+  autoHeight = false,
   overflowContent = true,
 }) => {
   const el = useMemo(() => document.createElement('div'), [])
@@ -112,7 +121,7 @@ const Modal: FC<Props> = ({
 
   return ReactDOM.createPortal(
     <ModalCurtain>
-      <ModalContainer large={large}>
+      <ModalContainer large={large} autoHeight={autoHeight}>
         <ModalHeaderContainer>
           {title ? <StyledHeading>{title}</StyledHeading> : null}
           <StyledIcon onClick={onClose} name="MdClose" size={30}></StyledIcon>

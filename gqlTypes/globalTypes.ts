@@ -38,12 +38,59 @@ export enum AccountErrorCode {
   UNIQUE = "UNIQUE",
 }
 
+/**
+ * An enumeration.
+ */
+export enum UserLanguageLevel {
+  BEGINNER = "BEGINNER",
+  FLUENT = "FLUENT",
+  PROFESSIONAL = "PROFESSIONAL",
+}
+
 export interface AccountInput {
+  avatarUrl?: string | null;
   firstName?: string | null;
   lastName?: string | null;
   jobTitle?: string | null;
   mobile?: string | null;
   bio?: string | null;
+  skills?: (string | null)[] | null;
+  educations?: (EducationInput | null)[] | null;
+  deleteEducation?: string | null;
+  workExperiences?: (WorkExperienceInput | null)[] | null;
+  deleteWorkExperience?: string | null;
+  portfolios?: (PortfolioInput | null)[] | null;
+  deletePortfolio?: string | null;
+}
+
+export interface EducationInput {
+  id?: string | null;
+  school: string;
+  degree: string;
+  startYear: string;
+  endYear: string;
+  description?: string | null;
+}
+
+export interface PortfolioInput {
+  id?: string | null;
+  title: string;
+  description?: string | null;
+  imageUrl?: string | null;
+}
+
+export interface WorkExperienceInput {
+  id?: string | null;
+  title: string;
+  company: string;
+  location?: string | null;
+  startMonth: string;
+  startYear: string;
+  endMonth?: string | null;
+  endYear?: string | null;
+  startDate?: any | null;
+  endDate?: any | null;
+  description?: string | null;
 }
 
 //==============================================================

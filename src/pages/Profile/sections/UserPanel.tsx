@@ -2,10 +2,10 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { DashboardPanelContainer } from '../../Dashboard/Panels/DashboardPanel'
 import { UserType, OnlineStatusType } from '../../../types/user'
-import faker from 'faker'
 import UserCard from '../../../uiComponents/molecules/UserCard'
 import UserStats from '../../../uiComponents/molecules/UserStats'
 import Button from '../../../uiComponents/atoms/Button'
+import { PublicUserProfile_publicUser } from '../gqlTypes/PublicUserProfile'
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -18,26 +18,26 @@ const ButtonContainer = styled.div`
   }
 `
 
-interface Props {}
+interface Props {
+  user: PublicUserProfile_publicUser
+}
 
-const UserPanel: FC<Props> = () => {
-  const user: UserType = {
-    profilePictureUrl: faker.image.avatar(),
-    name: `${faker.name.firstName()} ${faker.name.lastName().charAt(0)}.`,
-    onlineStatus: 'online' as OnlineStatusType,
+const UserPanel: FC<Props> = ({ user }) => {
+  const userData: UserType = {
+    profilePictureUrl: user.avatarUrl,
+    name: `${user.firstName} ${user.lastName}`,
+    onlineStatus: 'offline' as OnlineStatusType,
     lastSeen: new Date(),
-    jobTitle: 'Web Developer',
-    rating: 4.8,
-    numRatings: 10,
+    jobTitle: user.jobTitle,
   }
   return (
     <DashboardPanelContainer padded>
-      <UserCard user={user} />
-      <ButtonContainer>
+      <UserCard user={userData} />
+      {/* <ButtonContainer>
         <Button styleType="primary-outline">Message</Button>
         <Button>Request a Quote</Button>
       </ButtonContainer>
-      <UserStats />
+      <UserStats /> */}
     </DashboardPanelContainer>
   )
 }

@@ -5,7 +5,7 @@ import DropDown from '../atoms/DropDown'
 import { fwBold } from '../../styles/typography'
 import { black, primaryColor, red } from '../../styles/colors'
 import Icon from '../atoms/Icon'
-import { DeepMap } from 'react-hook-form/dist/types/utils'
+import { FieldError } from 'react-hook-form'
 
 const FormFieldWrapper = styled.div<{
   spacingTop?: boolean
@@ -70,10 +70,9 @@ const Container = styled.div`
 
 interface Props {
   label?: string
-  name?: string
   helpText?: string
   required?: boolean
-  errors?: DeepMap<any, any>
+  error?: FieldError
   spacingTop?: boolean
   spacingBottom?: boolean
   renderHelpPopup?: () => JSX.Element
@@ -81,17 +80,15 @@ interface Props {
 
 const FormField: FC<Props> = ({
   label,
-  name,
   helpText,
   required,
-  errors,
+  error,
   spacingTop,
   spacingBottom,
   renderHelpPopup,
   children,
 }) => {
   const [popupOpen, setPopupOpen] = useState<boolean>(false)
-  console.log(errors)
 
   return (
     <FormFieldWrapper spacingTop={spacingTop} spacingBottom={spacingBottom}>
@@ -122,7 +119,7 @@ const FormField: FC<Props> = ({
       </LabelWrapper>
       {helpText ? <HelpText>{helpText}</HelpText> : null}
       <Container>{children}</Container>
-      {errors ? <ErrorMessage>{errors[name]?.message}</ErrorMessage> : null}
+      {error ? <ErrorMessage>{error.message}</ErrorMessage> : null}
     </FormFieldWrapper>
   )
 }

@@ -3,13 +3,13 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { UserLanguageLevel } from "./../../../../../gqlTypes/globalTypes";
+import { UserLanguageLevel } from "./../../../../gqlTypes/globalTypes";
 
 // ====================================================
-// GraphQL fragment: UserDetails
+// GraphQL query operation: PublicUserProfile
 // ====================================================
 
-export interface UserDetails_skills {
+export interface PublicUserProfile_publicUser_skills {
   __typename: "SkillTag";
   /**
    * The ID of the object.
@@ -18,22 +18,22 @@ export interface UserDetails_skills {
   name: string;
 }
 
-export interface UserDetails_languages_language {
+export interface PublicUserProfile_publicUser_languages_language {
   __typename: "Language";
   name: string;
 }
 
-export interface UserDetails_languages {
+export interface PublicUserProfile_publicUser_languages {
   __typename: "UserLanguage";
   /**
    * The ID of the object.
    */
   id: string;
   level: UserLanguageLevel | null;
-  language: UserDetails_languages_language;
+  language: PublicUserProfile_publicUser_languages_language;
 }
 
-export interface UserDetails_educations {
+export interface PublicUserProfile_publicUser_educations {
   __typename: "Education";
   /**
    * The ID of the object.
@@ -46,7 +46,7 @@ export interface UserDetails_educations {
   description: string | null;
 }
 
-export interface UserDetails_workExperiences {
+export interface PublicUserProfile_publicUser_workExperiences {
   __typename: "WorkExperience";
   /**
    * The ID of the object.
@@ -60,7 +60,7 @@ export interface UserDetails_workExperiences {
   description: string;
 }
 
-export interface UserDetails_portfolios {
+export interface PublicUserProfile_publicUser_portfolios {
   __typename: "Portfolio";
   /**
    * The ID of the object.
@@ -71,7 +71,7 @@ export interface UserDetails_portfolios {
   imageUrl: string | null;
 }
 
-export interface UserDetails {
+export interface PublicUserProfile_publicUser {
   __typename: "User";
   /**
    * The ID of the object.
@@ -88,21 +88,32 @@ export interface UserDetails {
   /**
    * List of user's skills.
    */
-  skills: (UserDetails_skills | null)[] | null;
+  skills: (PublicUserProfile_publicUser_skills | null)[] | null;
   /**
    * List of user's languages.
    */
-  languages: (UserDetails_languages | null)[] | null;
+  languages: (PublicUserProfile_publicUser_languages | null)[] | null;
   /**
    * List of user's education.
    */
-  educations: (UserDetails_educations | null)[] | null;
+  educations: (PublicUserProfile_publicUser_educations | null)[] | null;
   /**
    * List of user's work experience.
    */
-  workExperiences: (UserDetails_workExperiences | null)[] | null;
+  workExperiences: (PublicUserProfile_publicUser_workExperiences | null)[] | null;
   /**
    * List of user's portfolios.
    */
-  portfolios: (UserDetails_portfolios | null)[] | null;
+  portfolios: (PublicUserProfile_publicUser_portfolios | null)[] | null;
+}
+
+export interface PublicUserProfile {
+  /**
+   * Look up a public user profiles by Username.
+   */
+  publicUser: PublicUserProfile_publicUser | null;
+}
+
+export interface PublicUserProfileVariables {
+  username: string;
 }
