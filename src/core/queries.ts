@@ -16,6 +16,7 @@ interface Config<TData, TVariables> {
   variables?: TVariables
   onCompleted?: (data: TData) => void
   fetchPolicy?: FetchPolicy
+  nextFetchPolicy?: FetchPolicy
   errorPolicy?: ErrorPolicy
 }
 
@@ -25,6 +26,7 @@ export function useQuery<TData, TVariables>(
 ) {
   const {
     fetchPolicy = 'cache-and-network',
+    nextFetchPolicy = 'cache-first',
     variables,
     onCompleted,
     errorPolicy,
@@ -33,6 +35,7 @@ export function useQuery<TData, TVariables>(
     query,
     {
       fetchPolicy,
+      nextFetchPolicy,
       variables,
       onCompleted,
       errorPolicy,

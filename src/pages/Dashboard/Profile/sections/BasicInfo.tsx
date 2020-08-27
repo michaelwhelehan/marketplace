@@ -31,6 +31,7 @@ import { UserProfileDetails_me } from '../gqlTypes/UserProfileDetails'
 import { useAccountUpdate } from '../../../../services'
 import { useGetSkillTagsQuery } from '../queries'
 import ChangeAvatar from './ChangeAvatar'
+import { titleCase } from '../../../../utils/format'
 
 const StyledForm = styled.form`
   padding-top: 20px;
@@ -154,7 +155,7 @@ const BasicInfo: FC<Props> = ({ user }) => {
             value: language.name,
           },
           level: {
-            label: level,
+            label: titleCase(level),
             value: level,
           },
         }
@@ -333,9 +334,9 @@ const BasicInfo: FC<Props> = ({ user }) => {
                     control={control}
                     placeholder="Language"
                     options={[
-                      { label: 'English', value: 'english' },
-                      { label: 'Afrikaans', value: 'afrikaans' },
-                      { label: 'Xhosa', value: 'xhosa' },
+                      { label: 'English', value: 'English' },
+                      { label: 'Afrikaans', value: 'Afrikaans' },
+                      { label: 'Xhosa', value: 'Xhosa' },
                     ]}
                   />
                 </FormField>

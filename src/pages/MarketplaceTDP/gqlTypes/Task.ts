@@ -7,30 +7,37 @@
 // GraphQL query operation: Task
 // ====================================================
 
-export interface Task_task_creator {
+export interface Task_task_owner {
   __typename: "User";
   profilePictureUrl: string | null;
   name: string;
 }
 
-export interface Task_task_currency {
-  __typename: "Currency";
-  code: string;
-  iso: string;
+export interface Task_task_budget {
+  __typename: "Money";
+  /**
+   * Currency code.
+   */
+  currency: string;
+  /**
+   * Amount of money.
+   */
+  amount: number;
 }
 
 export interface Task_task {
   __typename: "Task";
+  /**
+   * The ID of the object.
+   */
   id: string;
-  creator: Task_task_creator;
+  owner: Task_task_owner | null;
   title: string;
   slug: string;
-  budget: number;
-  currency: Task_task_currency;
-  location: string;
-  dueDate: any;
-  details: string | null;
-  numOffers: number;
+  budget: Task_task_budget | null;
+  location: string | null;
+  dueDate: any | null;
+  details: string;
 }
 
 export interface Task {

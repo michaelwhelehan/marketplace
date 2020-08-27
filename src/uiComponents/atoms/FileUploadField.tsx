@@ -91,8 +91,10 @@ const FileUploadField: FC<Props> = ({
       loadImageIntoFile(
         Array.isArray(initialFileUrls) ? initialFileUrls : [initialFileUrls],
       )
+    } else if (initialFiles) {
+      setInitialFiles(initialFiles)
     }
-  }, [initialFileUrls])
+  }, [initialFileUrls, initialFiles])
 
   return (
     <Dropzone

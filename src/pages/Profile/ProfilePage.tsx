@@ -8,9 +8,14 @@ import ReviewPanel from './sections/ReviewPanel'
 import { useGetPublicUserProfileQuery } from './queries'
 import { useRouteMatch } from 'react-router-dom'
 import { Facebook as FacebookLoader } from 'react-content-loader'
+import { toXL } from '../../constants/breakpoints'
 
 const StyledContainer = styled(BaseContainer)`
   display: flex;
+
+  @media (${toXL}) {
+    padding: 0 20px;
+  }
 `
 
 const StartContainer = styled.div`

@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import SideListCard from './SideListCard'
 import InfiniteList from '../../../uiComponents/molecules/InfiniteList'
-import { TaskType } from '../../../types/task'
+import { Tasks_tasks_edges } from '../gqlTypes/Tasks'
 
 const StyledSideList = styled.div`
   background: #f5f5f5;
@@ -12,7 +12,7 @@ const StyledSideList = styled.div`
 const ROW_HEIGHT = 160
 
 interface Props {
-  tasks: TaskType[]
+  tasks: Tasks_tasks_edges[]
   tasksLoadAmount: number
   tasksLoading: boolean
   onLoadMoreTasks: (loadAmount: number) => Promise<any>
@@ -34,7 +34,9 @@ const SideList: FC<Props> = ({
         loading={tasksLoading}
         list={tasks}
         loadAmount={tasksLoadAmount}
-        renderListItem={listItem => <SideListCard task={listItem} />}
+        renderListItem={(listItem: Tasks_tasks_edges) => (
+          <SideListCard task={listItem.node} />
+        )}
         onLoadMore={onLoadMoreTasks}
         rowHeight={ROW_HEIGHT}
       />

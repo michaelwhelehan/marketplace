@@ -60,21 +60,19 @@ export const GET_TASK = gql`
   query Task($slug: String!) {
     task(slug: $slug) @client {
       id
-      creator {
+      owner {
         profilePictureUrl
         name
       }
       title
       slug
-      budget
-      currency {
-        code
-        iso
+      budget {
+        currency
+        amount
       }
       location
       dueDate
       details
-      numOffers
     }
   }
 `

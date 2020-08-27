@@ -12,6 +12,7 @@ import Icon from '../../uiComponents/atoms/Icon'
 import UpdateIndicator from '../../uiComponents/atoms/UpdateIndicator'
 import Logo from '../../uiComponents/atoms/Logo'
 import { useAuth } from '../../services'
+import { toXL } from '../../constants/breakpoints'
 
 type LinkIdType = 'browse' | 'tasks' | 'updates' | 'messages'
 
@@ -35,6 +36,10 @@ const StyledHeader = styled.header`
 const StyledContainer = styled(BaseContainer)`
   display: flex;
   justify-content: space-between;
+
+  @media (${toXL}) {
+    padding: 0 20px;
+  }
 `
 
 const StyledLink = styled(Link)`

@@ -7,32 +7,6 @@ import { ConfigInput } from './services/types'
 import { apiUrl } from './constants/app'
 import { positions, Provider as AlertProvider, useAlert } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
-// import {
-//   typeDefs as conversationTypeDefs,
-//   resolvers as conversationResolvers,
-// } from './graphql/conversation'
-// import {
-//   typeDefs as taskTypeDefs,
-//   resolvers as taskResolvers,
-// } from './graphql/tasks'
-
-// const cache = new InMemoryCache({
-//   possibleTypes: {
-//     ConversationFeed: [],
-//     TaskFeed: [],
-//     ConversationMessage: [
-//       'ConversationMessageText',
-//       'ConversationMessageImage',
-//       'ConversationMessageVideo',
-//     ],
-//   },
-// })
-// const client = new ApolloClient({
-//   cache,
-//   typeDefs: [conversationTypeDefs, taskTypeDefs],
-//   resolvers: [conversationResolvers, taskResolvers],
-//   connectToDevTools: true,
-// })
 
 const MARKETPLACE_CONFIG: ConfigInput = {
   apiUrl,

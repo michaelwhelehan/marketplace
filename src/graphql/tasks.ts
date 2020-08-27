@@ -41,13 +41,7 @@ export const typeDefs = gql`
     makeOfferVisible: Boolean
     rejectOfferVisible: Boolean
     hireVisible: Boolean
-    taskFeed(cursor: String, loadAmount: Int): TaskFeed
     task(slug: String): Task
-  }
-
-  type TaskFeed {
-    cursor: String!
-    tasks: [Task]!
   }
 
   extend type User {
@@ -56,45 +50,10 @@ export const typeDefs = gql`
     onlineStatus: String!
     lastSeen: Date
   }
-
-  type Currency {
-    code: String!
-    iso: String!
-  }
-
-  type Task {
-    id: ID!
-    creator: User!
-    title: String!
-    slug: String!
-    budget: Float!
-    currency: Currency!
-    location: String!
-    dueDate: Date!
-    details: String
-    numOffers: Int!
-  }
 `
 
 export const resolvers = {
   Query: {
-    taskFeed: (root, { cursor, loadAmount }) => {
-      if (!cursor) {
-        return {
-          cursor: '2cf2a616-56fd-4d54-9585-a48666549102',
-          tasks,
-          __typename: 'TaskFeed',
-        }
-      }
-
-      if (cursor && loadAmount) {
-        return {
-          cursor: '2cf2a616-56fd-4d54-9585-a48666549102',
-          tasks: generateItems(loadAmount),
-          __typename: 'TaskFeed',
-        }
-      }
-    },
     task: (root, { slug }) => {
       return tasks.find((task: any) => task.slug === slug)
     },

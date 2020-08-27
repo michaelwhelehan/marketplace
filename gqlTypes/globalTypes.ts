@@ -41,6 +41,14 @@ export enum AccountErrorCode {
 /**
  * An enumeration.
  */
+export enum TaskLocationType {
+  IN_PERSON = "IN_PERSON",
+  REMOTE = "REMOTE",
+}
+
+/**
+ * An enumeration.
+ */
 export enum UserLanguageLevel {
   BEGINNER = "BEGINNER",
   FLUENT = "FLUENT",

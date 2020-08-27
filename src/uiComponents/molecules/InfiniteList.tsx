@@ -8,6 +8,7 @@ import {
 } from 'react-virtualized'
 import { deepEquals } from '../../utils/compare'
 import usePrevious from '../../hooks/usePrevious'
+import Loader from '../atoms/Loader/Loader'
 
 type CellSizeGetter = (params: { index: number }) => number
 
@@ -95,12 +96,12 @@ const InfiniteList: FC<Props> = ({
   }
 
   async function loadMoreRowsTop({ startIndex }) {
-    if (ready && startIndex === 0 && !loadingTop) {
-      setLoadingTop(true)
-      //setScrollToIndex(0)
-      await onLoadMore(loadAmount)
-      setLoadingTop(false)
-    }
+    // if (ready && startIndex === 0 && !loadingTop) {
+    //   setLoadingTop(true)
+    //   //setScrollToIndex(0)
+    //   await onLoadMore(loadAmount)
+    //   setLoadingTop(false)
+    // }
   }
 
   function rowRenderer({ key, index, parent, style }) {
@@ -137,12 +138,19 @@ const InfiniteList: FC<Props> = ({
     heightProps.rowHeight = rowHeight
   }
 
+  if (loading) {
+    return <Loader name="List" />
+  }
+
   return (
     <InfiniteLoader
       ref={infiniteLoader}
       isRowLoaded={isRowLoaded}
-      loadMoreRows={() => {
-        if (direction === 'forward') {
+      loadMoreRows={({ startIndex, stopIndex }) => {
+        if (
+          direction === 'forward' &&
+          stopIndex === startIndex + loadAmount - 1
+        ) {
           return loadMoreRowsBottom()
         }
         return Promise.resolve()
