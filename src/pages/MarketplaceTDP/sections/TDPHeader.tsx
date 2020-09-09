@@ -1,9 +1,9 @@
 import React, { FC, MouseEvent } from 'react'
 import styled, { css } from 'styled-components'
-import { TaskType } from '../../../types/task'
 import { borderColor, black, white } from '../../../styles/colors'
 import { HeadingM } from '../../../uiComponents/atoms/Headings'
 import Button from '../../../uiComponents/atoms/Button'
+import { Task_task } from '../gqlTypes/Task'
 
 const Container = styled.section<{ scrolling?: boolean }>`
   height: 80px;
@@ -33,7 +33,7 @@ const StyledButton = styled(Button)`
 `
 
 interface Props {
-  task: TaskType
+  task: Task_task
   onMakeOfferClick: (event: MouseEvent) => void
 }
 
@@ -42,8 +42,8 @@ const TDPHeader: FC<Props> = ({ task, onMakeOfferClick }) => {
     <Container>
       <StyledHeading>{task.title}</StyledHeading>
       <StyledButton large onClick={onMakeOfferClick}>
-        Make offer on {task.currency.iso}
-        {task.budget}
+        Make offer on {task.budget.currency}
+        {task.budget.amount}
       </StyledButton>
     </Container>
   )

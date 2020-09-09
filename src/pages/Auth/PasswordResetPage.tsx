@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom'
 import { primaryColor, red } from '../../styles/colors'
 import { ParagraphS } from '../../uiComponents/atoms/Paragraphs'
 import { usePasswordResetRequestMutation } from './mutations'
+import { yupResolver } from '@hookform/resolvers'
+import * as yup from 'yup'
 
 const StyledContainer = styled(BaseContainer)`
   display: flex;
@@ -52,13 +54,18 @@ const LoginLink = styled(Link)`
   color: ${primaryColor};
 `
 
+const schema = yup.object().shape({
+  email: yup.string().required('Email is required'),
+})
+
 type FormValues = {
   email: string
-  password: string
 }
 
 const PasswordResetPage: FC = () => {
-  const { register, handleSubmit } = useForm<FormValues>()
+  const { register, handleSubmit, errors: formErrors } = useForm<FormValues>({
+    resolver: yupResolver(schema),
+  })
   const requestPasswordReset = usePasswordResetRequestMutation()
   const [loading, setLoading] = React.useState(false)
   const [errors, setErrors] = React.useState(null)
@@ -96,6 +103,7 @@ const PasswordResetPage: FC = () => {
           ref={register()}
           fullWidth
           placeholder="Email address"
+          hasError={Boolean(formErrors.email)}
         />
         <StyledButton large fullWidth disabled={loading}>
           {loading ? 'Resetting...' : 'Reset password'}

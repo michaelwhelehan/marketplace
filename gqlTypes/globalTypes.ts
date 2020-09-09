@@ -87,6 +87,15 @@ export interface PortfolioInput {
   imageUrl?: string | null;
 }
 
+export interface PriceRangeInput {
+  gte?: number | null;
+  lte?: number | null;
+}
+
+export interface TaskFilterInput {
+  budget?: PriceRangeInput | null;
+}
+
 export interface WorkExperienceInput {
   id?: string | null;
   title: string;

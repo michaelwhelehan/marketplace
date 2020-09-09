@@ -109,7 +109,7 @@ export interface PublicUserProfile_publicUser {
 
 export interface PublicUserProfile {
   /**
-   * Look up a public user profiles by Username.
+   * Look up a public user profile by username.
    */
   publicUser: PublicUserProfile_publicUser | null;
 }

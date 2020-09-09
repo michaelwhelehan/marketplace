@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { TaskLocationType } from "./../../../../gqlTypes/globalTypes";
+import { TaskFilterInput, TaskLocationType } from "./../../../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL query operation: Tasks
@@ -98,4 +98,5 @@ export interface Tasks {
 export interface TasksVariables {
   after?: string | null;
   pageSize?: number | null;
+  filter?: TaskFilterInput | null;
 }

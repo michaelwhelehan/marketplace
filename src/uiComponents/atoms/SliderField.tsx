@@ -9,6 +9,7 @@ import {
   primaryFontColor,
 } from '../../styles/colors'
 import { fwBold } from '../../styles/typography'
+import { percentToValue } from '../../utils/helpers'
 
 const SliderContainer = styled.div`
   margin-bottom: 20px;
@@ -34,7 +35,7 @@ const StyledThumb = styled.div`
 const StyledTrack = styled.div<{ index: number; multiple: boolean }>`
   top: 10px;
   bottom: 10px;
-  background: ${props =>
+  background: ${(props) =>
     !props.multiple
       ? props.index === 0
         ? primaryColor
@@ -53,7 +54,7 @@ const StyledTrackValue = styled.div`
   ${fwBold};
 `
 
-const Thumb = props => <StyledThumb {...props} />
+const Thumb = (props) => <StyledThumb {...props} />
 
 const Track = (props, state) => (
   <StyledTrack
@@ -66,11 +67,11 @@ const Track = (props, state) => (
         {Array.isArray(state.value) ? (
           <>
             {props.unit}
-            {Math.round((state.value[0] / 100) * props.range).toString()}
+            {percentToValue(state.value[0], props.range).toString()}
           </>
         ) : (
           <>
-            {Math.round((state.value / 100) * props.range).toString()}
+            {percentToValue(state.value, props.range).toString()}
             {props.unit}
           </>
         )}
@@ -81,11 +82,11 @@ const Track = (props, state) => (
         {Array.isArray(state.value) ? (
           <>
             {props.unit}
-            {Math.round((state.value[1] / 100) * props.range).toString()}
+            {percentToValue(state.value[1], props.range).toString()}
           </>
         ) : (
           <>
-            {Math.round((state.value / 100) * props.range).toString()}
+            {percentToValue(state.value, props.range).toString()}
             {props.unit}
           </>
         )}
@@ -98,9 +99,10 @@ interface Props {
   range: number
   value: number | number[]
   unit: 'km' | 'R'
+  onChange: (value: number) => void
 }
 
-const SliderField: FC<Props> = ({ value, unit, range }) => {
+const SliderField: FC<Props> = ({ value, unit, range, onChange }) => {
   return (
     <SliderContainer>
       <StyledSlider
@@ -108,6 +110,7 @@ const SliderField: FC<Props> = ({ value, unit, range }) => {
         renderTrack={(props, state) => Track({ ...props, range, unit }, state)}
         renderThumb={Thumb}
         minDistance={8}
+        onChange={onChange}
       />
     </SliderContainer>
   )

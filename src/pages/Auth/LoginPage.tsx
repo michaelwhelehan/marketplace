@@ -9,6 +9,8 @@ import { Link, useHistory } from 'react-router-dom'
 import { primaryColor, red } from '../../styles/colors'
 import { useAuth } from '../../services'
 import { ParagraphS } from '../../uiComponents/atoms/Paragraphs'
+import { yupResolver } from '@hookform/resolvers'
+import * as yup from 'yup'
 
 const StyledContainer = styled(BaseContainer)`
   display: flex;
@@ -48,13 +50,20 @@ const StyledLink = styled(Link)`
   color: ${primaryColor};
 `
 
+const schema = yup.object().shape({
+  email: yup.string().required('Email is required'),
+  password: yup.string().required('Password is required'),
+})
+
 type FormValues = {
   email: string
   password: string
 }
 
 const LoginPage: FC = () => {
-  const { register, handleSubmit } = useForm<FormValues>()
+  const { register, handleSubmit, errors: formErrors } = useForm<FormValues>({
+    resolver: yupResolver(schema),
+  })
   const { signIn } = useAuth()
   const [loading, setLoading] = React.useState(false)
   const [errors, setErrors] = React.useState(null)
@@ -94,6 +103,7 @@ const LoginPage: FC = () => {
           ref={register()}
           fullWidth
           placeholder="Email address"
+          hasError={Boolean(formErrors.email)}
         />
         <StyledTextField
           name="password"
@@ -101,6 +111,7 @@ const LoginPage: FC = () => {
           ref={register()}
           fullWidth
           placeholder="Password"
+          hasError={Boolean(formErrors.password)}
         />
         <StyledButton large fullWidth disabled={loading}>
           {loading ? 'Signing in...' : 'Sign in'}

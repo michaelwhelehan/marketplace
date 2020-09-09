@@ -18,10 +18,6 @@ const StyledHeader = styled.header`
   ${featherShadow};
   position: relative;
   z-index: 997;
-
-  @media (${toXL}) {
-    padding: 0 20px;
-  }
 `
 
 const StyledContainer = styled(BaseContainer)`

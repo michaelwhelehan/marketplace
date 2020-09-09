@@ -30,8 +30,8 @@ export const taskFragment = gql`
 
 export const getTasksQuery = gql`
   ${taskFragment}
-  query Tasks($after: String, $pageSize: Int) {
-    tasks(first: $pageSize, after: $after) {
+  query Tasks($after: String, $pageSize: Int, $filter: TaskFilterInput) {
+    tasks(first: $pageSize, after: $after, filter: $filter) {
       edges {
         node {
           ...Task

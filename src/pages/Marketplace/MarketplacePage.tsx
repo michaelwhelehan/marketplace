@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import styled from 'styled-components'
 import FilterHeader from '../../components/FilterHeader/FilterHeader'
 import BaseContainer from '../../uiComponents/atoms/Container'
@@ -10,6 +10,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { MAIN_HEADER_HEIGHT, FILTER_HEADER_HEIGHT } from '../../constants/sizes'
 import { useGetTasksQuery } from './queries'
 import { fromXL } from '../../constants/breakpoints'
+import useUrlQueries from '../../hooks/useUrlQueries'
 
 const StyledContainer = styled(BaseContainer)`
   border-left: 1px solid #eee;
@@ -38,8 +39,17 @@ const MainContainer = styled.article`
 const MarketplacePage: FC = () => {
   const match = useRouteMatch()
   const location = useLocation()
+  const { params } = useUrlQueries({
+    allowedParams: ['budget_gte', 'budget_lte'],
+  })
   const { data, loading, loadMore } = useGetTasksQuery({
     pageSize: 20,
+    filter: {
+      budget: {
+        gte: params.budget_gte,
+        lte: params.budget_lte,
+      },
+    },
   })
   const hasData = data?.tasks?.edges?.length > 0
 
