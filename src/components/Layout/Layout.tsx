@@ -43,9 +43,12 @@ const Layout: FC = ({ children }) => {
     GET_REJECT_OFFER_VISIBLE,
   )
   const location = useLocation()
-  const showHeader = !['/login', '/sign-up', '/forgot-password'].includes(
-    location.pathname,
-  )
+  const showHeader = ![
+    '/login',
+    '/sign-up',
+    '/forgot-password',
+    '/reset-password',
+  ].includes(location.pathname)
 
   return (
     <>

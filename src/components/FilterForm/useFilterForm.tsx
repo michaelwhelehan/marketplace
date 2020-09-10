@@ -7,7 +7,6 @@ import styled from 'styled-components'
 import { useForm, Controller } from 'react-hook-form'
 import useUrlQueries from '../../hooks/useUrlQueries'
 import { valueToPercent } from '../../utils/helpers'
-import usePrevious from '../../hooks/usePrevious'
 
 const WhereWrapper = styled.div`
   display: flex;

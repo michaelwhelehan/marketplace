@@ -45,6 +45,7 @@ export class MarketplaceState extends NamedObservable<StateItems> {
     this.jobsManager = jobsManager
 
     this.loaded = defaultMarketplaceStateLoaded
+    this.onSignInTokenUpdate(LocalStorageHandler.getSignInToken())
 
     this.subscribeStateToChanges()
     this.initializeState(config)

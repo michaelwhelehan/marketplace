@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client'
 
 import { userFragment } from '../../pages/Dashboard/Profile/queries'
+import { userFragment as basicUserFragment } from '../fragments/auth'
 import { accountErrorFragment } from '../fragments/errors'
 
 export const changeUserPassword = gql`
@@ -30,7 +31,7 @@ export const accountUpdate = gql`
 `
 
 export const setPassword = gql`
-  ${userFragment}
+  ${basicUserFragment}
   ${accountErrorFragment}
   mutation SetPassword($token: String!, $email: String!, $password: String!) {
     setPassword(token: $token, email: $email, password: $password) {

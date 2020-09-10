@@ -27,6 +27,12 @@ const SignUpPage = lazy(() =>
   import(/* webpackChunkName: "sign-up-page" */ './pages/Auth/SignUpPage'),
 )
 
+const RequestPasswordResetPage = lazy(() =>
+  import(
+    /* webpackChunkName: "request-password-reset-page" */ './pages/Auth/RequestPasswordResetPage'
+  ),
+)
+
 const PasswordResetPage = lazy(() =>
   import(
     /* webpackChunkName: "password-reset-page" */ './pages/Auth/PasswordResetPage'
@@ -68,6 +74,9 @@ const Routes: FC = () => {
               <SignUpPage />
             </Route>
             <Route path="/forgot-password">
+              <RequestPasswordResetPage />
+            </Route>
+            <Route path="/reset-password">
               <PasswordResetPage />
             </Route>
             <Route path="/">
