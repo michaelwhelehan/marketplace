@@ -18,7 +18,7 @@ interface Props {
 const TaskDetailTabs: FC<Props> = ({ currentTab, updateTab }) => {
   const tabs: Tabs<TabType>[] = [
     {
-      title: 'Task Details',
+      title: 'Job Details',
       active: currentTab === 'taskDetails',
       type: 'taskDetails',
     },
@@ -33,7 +33,7 @@ const TaskDetailTabs: FC<Props> = ({ currentTab, updateTab }) => {
       type: 'hires',
     },
     {
-      title: 'Task Progress',
+      title: 'Job Progress',
       active: currentTab === 'taskProgress',
       type: 'taskProgress',
       hasUpdates: true,

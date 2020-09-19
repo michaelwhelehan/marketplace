@@ -59,7 +59,7 @@ const FilterHeader: FC = () => {
               })
             }
           >
-            Create Task
+            Create Job
           </StyledButton>
           <FilterDropdown
             name="Filters"
@@ -72,7 +72,7 @@ const FilterHeader: FC = () => {
         <FilterEnd>
           <TextFieldIcon
             iconName="MdSearch"
-            placeholder="Search for a task"
+            placeholder="Search for a job"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             fullWidth

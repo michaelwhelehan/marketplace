@@ -164,7 +164,7 @@ const TDPInfo: FC<Props> = ({ task, editable = false }) => {
         </InfoContainer>
         <InfoContainer>
           <InfoSection>
-            <InfoValueTitle>Task Budget</InfoValueTitle>
+            <InfoValueTitle>Job Budget</InfoValueTitle>
             <InfoBudgetValue>
               {task.budget.currency}
               {task.budget.amount}
@@ -199,7 +199,7 @@ const TDPInfo: FC<Props> = ({ task, editable = false }) => {
                 <Icon name="MdCode" size={20} color={primaryFontColor} />
               </InfoShare>
               <ReportLink to="">
-                <Icon name="MdFlag" size={10} /> Report this task
+                <Icon name="MdFlag" size={10} /> Report this job
               </ReportLink>
             </InfoSection>
           )}

@@ -44,7 +44,7 @@ const ProgressSummary: FC<Props> = () => {
       </SummaryValue>
       <SummaryValue>
         <Icon name="MdCheckCircle" color={primaryColor} size={30} />
-        <span>Task Complete</span>
+        <span>Job Complete</span>
       </SummaryValue>
     </Container>
   )

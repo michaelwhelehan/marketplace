@@ -82,7 +82,7 @@ const DashboardPage: FC = () => {
               })
             }
           >
-            Create Task
+            Create Job
           </Button>
           <Navigation />
         </SideListContainer>
@@ -94,7 +94,7 @@ const DashboardPage: FC = () => {
             <Route path={`${match.path}/settings`}>
               <SettingsPage />
             </Route>
-            <Route path={`${match.path}/my-tasks`}>
+            <Route path={`${match.path}/my-jobs`}>
               <TasksPage />
             </Route>
             <Route path={`${match.path}/payment-history`}>

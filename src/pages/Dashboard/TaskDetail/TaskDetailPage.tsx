@@ -14,6 +14,13 @@ import HiresSummary from './sections/Hires/HiresSummary'
 import ProgressMain from './sections/Progress/ProgressMain'
 import ProgressSummary from './sections/Progress/ProgressSummary'
 import { DashboardPanelContainer } from '../Panels/DashboardPanel'
+import { toXL } from '../../../constants/breakpoints'
+
+const Container = styled(BaseContainer)`
+  @media (${toXL}) {
+    padding: 0 20px;
+  }
+`
 
 const TopContainer = styled(DashboardPanelContainer)`
   margin-top: 20px;
@@ -69,7 +76,7 @@ const TaskDetailPage: FC<Props> = () => {
   }
 
   return (
-    <BaseContainer>
+    <Container>
       <TopContainer>
         <TaskDetailHeader />
         <TaskDetailTabs currentTab={currentTab} updateTab={updateTab} />
@@ -78,7 +85,7 @@ const TaskDetailPage: FC<Props> = () => {
         <BottomContainerStart>{renderTabStart()}</BottomContainerStart>
         <BottomContainerEnd>{renderTabEnd()}</BottomContainerEnd>
       </BottomContainer>
-    </BaseContainer>
+    </Container>
   )
 }
 

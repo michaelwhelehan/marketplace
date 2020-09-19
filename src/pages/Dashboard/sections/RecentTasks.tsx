@@ -32,67 +32,52 @@ const StyledLink = styled(Link)`
 const list = [
   {
     avatar: faker.image.avatar(),
-    title: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/tasks/abc',
+    href: '/jobs/abc',
     status: 'Open',
   },
   {
     avatar: faker.image.avatar(),
-    title: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/tasks/abc',
+    href: '/jobs/abc',
     status: 'Open',
   },
   {
     avatar: faker.image.avatar(),
-    title: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/tasks/abc',
+    href: '/jobs/abc',
     status: 'Open',
   },
   {
     avatar: faker.image.avatar(),
-    title: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/tasks/abc',
+    href: '/jobs/abc',
     status: 'Open',
   },
   {
     avatar: faker.image.avatar(),
-    title: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/tasks/abc',
+    href: '/jobs/abc',
     status: 'Open',
   },
 ]
@@ -103,7 +88,7 @@ const RecentTasks: FC = () => {
       dataKey: 'title',
       width: 100,
       flexGrow: 1,
-      label: 'Task',
+      label: 'Job',
       cellRenderer: ({ rowData }) => {
         return <TaskLink to={rowData.href}>{rowData.title}</TaskLink>
       },
@@ -138,9 +123,9 @@ const RecentTasks: FC = () => {
 
   return (
     <DashboardPanel
-      title="Recent Tasks"
+      title="Recent Jobs"
       footerContent={
-        <StyledLink to={'/dashboard/my-tasks'}>View All</StyledLink>
+        <StyledLink to={'/dashboard/my-jobs'}>View All</StyledLink>
       }
     >
       <GridContainer>

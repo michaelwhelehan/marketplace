@@ -31,111 +31,84 @@ const StyledHeading = styled(HeadingM)`
 const list = [
   {
     avatar: faker.image.avatar(),
-    title: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/tasks/abc',
+    href: '/jobs/abc',
   },
   {
     avatar: faker.image.avatar(),
-    title: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/tasks/abc',
+    href: '/jobs/abc',
   },
   {
     avatar: faker.image.avatar(),
-    title: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/tasks/abc',
+    href: '/jobs/abc',
   },
   {
     avatar: faker.image.avatar(),
-    title: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/tasks/abc',
+    href: '/jobs/abc',
   },
   {
     avatar: faker.image.avatar(),
-    title: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/tasks/abc',
+    href: '/jobs/abc',
   },
   {
     avatar: faker.image.avatar(),
-    title: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/tasks/abc',
+    href: '/jobs/abc',
   },
   {
     avatar: faker.image.avatar(),
-    title: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/tasks/abc',
+    href: '/jobs/abc',
   },
   {
     avatar: faker.image.avatar(),
-    title: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/tasks/abc',
+    href: '/jobs/abc',
   },
   {
     avatar: faker.image.avatar(),
-    title: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
     numOffers: Math.round(Math.random() * 10),
     averageOffer: Math.round(Math.random() * 1000),
-    href: '/tasks/abc',
+    href: '/jobs/abc',
   },
 ]
 
@@ -209,7 +182,7 @@ const TasksPage: FC = () => {
     <main ref={scrollElement}>
       <FilterPanel currentTab={currentTab} updateTab={updateTab} />
       <PageContainer>
-        <StyledHeading>Active Tasks</StyledHeading>
+        <StyledHeading>Active Jobs</StyledHeading>
         <GridContainer>
           <WindowedTable
             columns={columns}

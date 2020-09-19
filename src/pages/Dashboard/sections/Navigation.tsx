@@ -32,8 +32,8 @@ const Navigation: FC = () => {
     { icon: 'MdEmail', title: 'Messages', link: '/dashboard/inbox' },
     {
       icon: 'MdBusinessCenter',
-      title: 'My Tasks',
-      link: '/dashboard/my-tasks',
+      title: 'My Jobs',
+      link: '/dashboard/my-jobs',
     },
     { icon: 'MdPerson', title: 'Profile', link: '/dashboard/profile' },
     { icon: 'MdSettings', title: 'Settings', link: '/dashboard/settings' },

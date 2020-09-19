@@ -58,7 +58,7 @@ const Routes: FC = () => {
             <Route path="/dashboard/inbox">
               <Inbox />
             </Route>
-            <Route path="/tasks/:taskSlug">
+            <Route path="/jobs/:taskSlug">
               <TaskDetailPage />
             </Route>
             <Route path="/dashboard">

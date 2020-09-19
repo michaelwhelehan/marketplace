@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import logo from '../../assets/images/logo.svg'
+import logo from '../../assets/images/bnilogo.svg'
 
 const Logo: FC = () => {
   return (
@@ -7,7 +7,7 @@ const Logo: FC = () => {
       alt="Logo"
       height="100%"
       width="200px"
-      src={`${logo}#svgView(viewBox(70,20,100,60))`}
+      src={`${logo}#svgView(viewBox(170,-25,280,200))`}
       importance="high"
     />
   )

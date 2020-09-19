@@ -7,6 +7,8 @@ import styled from 'styled-components'
 import { useForm, Controller } from 'react-hook-form'
 import useUrlQueries from '../../hooks/useUrlQueries'
 import { valueToPercent } from '../../utils/helpers'
+import SelectField from '../../uiComponents/atoms/SelectField'
+import { useGetSkillTagsQuery } from '../../pages/Dashboard/Profile/queries'
 
 const WhereWrapper = styled.div`
   display: flex;
@@ -46,6 +48,7 @@ const useFilterForm = () => {
   const { register, control, handleSubmit, reset } = useForm<FormValues>({
     defaultValues: formValues,
   })
+  const { data: SkillTags } = useGetSkillTagsQuery()
 
   useEffect(() => {
     reset(formValues)
@@ -70,6 +73,19 @@ const useFilterForm = () => {
           <RadioField name="where" ref={register()} label="All" value="all" />
         </WhereWrapper>
       </FormField>
+      <FormField label="Skills" spacingTop>
+        <Controller
+          as={SelectField}
+          name="skills"
+          control={control}
+          placeholder="Select skills"
+          isMulti
+          options={SkillTags?.skillTags.edges.map((edge) => ({
+            label: edge.node.name,
+            value: edge.node.id,
+          }))}
+        />
+      </FormField>
       <FormField label="Suburb" spacingTop>
         <TextFieldIcon
           ref={register()}
@@ -93,7 +109,7 @@ const useFilterForm = () => {
           )}
         />
       </FormField>
-      <FormField label="Task Budget" spacingTop spacingBottom>
+      <FormField label="Job Budget" spacingTop spacingBottom>
         <Controller
           name="budget"
           control={control}

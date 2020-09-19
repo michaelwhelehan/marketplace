@@ -90,9 +90,15 @@ const Header: FC = () => {
       icon: 'MdSearch',
     },
     user && {
+      id: 'marketplace',
+      name: 'Marketplace',
+      href: '/',
+      icon: 'MdLanguage',
+    },
+    user && {
       id: 'tasks',
-      name: 'My Tasks',
-      href: '/dashboard/my-tasks',
+      name: 'My Jobs',
+      href: '/dashboard/my-jobs',
       icon: 'MdBusinessCenter',
     },
     user && {
