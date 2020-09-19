@@ -33,7 +33,7 @@ const TaskDetailsMain: FC<Props> = () => {
 
   return (
     <DashboardPanelContainer padded>
-      <TDPInfo task={task} editable />
+      {/* <TDPInfo task={task} editable /> */}
       <LineBreak />
       <TDPDetails details={details} />
       <TDPAttachments />

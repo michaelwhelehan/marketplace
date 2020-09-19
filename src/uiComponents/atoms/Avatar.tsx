@@ -20,6 +20,7 @@ const StyledImage = styled.img<Props>`
   border: 1px solid ${borderColorDark};
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
+  object-fit: cover;
 `
 
 const StyledStatusIndicator = styled(StatusIndicator)`
@@ -31,7 +32,13 @@ const StyledStatusIndicator = styled(StatusIndicator)`
 const Avatar: FC<Props> = ({ src, size, onlineStatus, ...props }) => {
   return (
     <StyledAvatar {...props}>
-      <StyledImage src={src} size={size} loading="lazy" importance="low" />
+      <StyledImage
+        src={src}
+        size={size}
+        loading="lazy"
+        importance="low"
+        crossOrigin="anonymous"
+      />
       {onlineStatus ? (
         <StyledStatusIndicator onlineStatus={onlineStatus} />
       ) : null}

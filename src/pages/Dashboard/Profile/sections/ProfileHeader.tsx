@@ -5,6 +5,7 @@ import Button from '../../../../uiComponents/atoms/Button'
 import { borderColor, black } from '../../../../styles/colors'
 import { Link } from 'react-router-dom'
 import ProgressBar from '../../../../uiComponents/atoms/ProgressBar'
+import { UserProfileDetails_me } from '../gqlTypes/UserProfileDetails'
 
 const HeaderContainer = styled.div`
   padding: 20px;
@@ -27,7 +28,11 @@ const EndContainer = styled.div`
   display: flex;
 `
 
-const ProfileHeader: FC = () => {
+interface Props {
+  user: UserProfileDetails_me
+}
+
+const ProfileHeader: FC<Props> = ({ user }) => {
   const percentComplete = 40
   return (
     <HeaderContainer>
@@ -40,7 +45,7 @@ const ProfileHeader: FC = () => {
         <Button
           styleType="primary-outline"
           as={StyledLink}
-          to="/profile/me"
+          to={`/profile/${user.username}`}
           style={{ marginLeft: '20px' }}
         >
           View Public Profile

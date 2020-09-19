@@ -59,20 +59,20 @@ const SelectConversation = styled.div`
 `
 
 const filterStyles = {
-  control: styles => ({
+  control: (styles) => ({
     ...styles,
     border: 'none',
     cursor: 'pointer',
     width: '180px',
     padding: 0,
   }),
-  indicatorSeparator: styles => ({ ...styles, backgroundColor: white }),
-  dropdownIndicator: styles => ({ ...styles, color: primaryFontColor }),
-  placeholder: styles => ({ ...styles, color: primaryFontColor }),
+  indicatorSeparator: (styles) => ({ ...styles, backgroundColor: white }),
+  dropdownIndicator: (styles) => ({ ...styles, color: primaryFontColor }),
+  placeholder: (styles) => ({ ...styles, color: primaryFontColor }),
 }
 
 const GET_CONVERSATION_LIST = gql`
-  query ConversationList($cursor: String, $loadAmount: Integer) {
+  query ConversationList($cursor: String, $loadAmount: Int) {
     conversationList(cursor: $cursor, loadAmount: $loadAmount) @client {
       cursor
       conversations {
@@ -127,7 +127,7 @@ const InboxPage: FC = () => {
           <InboxConversationList
             conversationList={data?.conversationList?.conversations}
             conversationListLoading={loading}
-            onLoadMoreConversations={async loadAmount => {
+            onLoadMoreConversations={async (loadAmount) => {
               await sleep(Math.floor(Math.random() * 1000) + 500)
               await fetchMore({
                 query: GET_CONVERSATION_LIST,
@@ -180,7 +180,7 @@ const InboxPage: FC = () => {
 }
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 export default InboxPage

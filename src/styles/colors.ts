@@ -1,4 +1,4 @@
-export const primaryColor = '#45BF55'
+export const primaryColor = '#CE202F'
 export const borderColor = '#e7e7e7'
 export const borderColorDark = '#D0D0D0'
 export const white = '#ffffff'

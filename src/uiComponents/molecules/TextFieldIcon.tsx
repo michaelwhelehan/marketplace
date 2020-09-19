@@ -29,16 +29,18 @@ interface Props extends TextFieldProps {
   customIcon?: string
 }
 
-const TextFieldIcon: FC<Props> = ({ iconName, customIcon, ...props }) => {
-  return (
-    <TextFieldContainer>
-      {iconName ? (
-        <StyledIcon name={iconName} size={25} color={primaryFontColor} />
-      ) : null}
-      {customIcon ? <CustomIcon>{customIcon}</CustomIcon> : null}
-      <TextField paddingStart={40} {...props} />
-    </TextFieldContainer>
-  )
-}
+const TextFieldIcon: FC<Props> = React.forwardRef<any, Props>(
+  ({ iconName, customIcon, ...props }, ref) => {
+    return (
+      <TextFieldContainer>
+        {iconName ? (
+          <StyledIcon name={iconName} size={25} color={primaryFontColor} />
+        ) : null}
+        {customIcon ? <CustomIcon>{customIcon}</CustomIcon> : null}
+        <TextField paddingStart={40} ref={ref} {...props} />
+      </TextFieldContainer>
+    )
+  },
+)
 
 export default TextFieldIcon

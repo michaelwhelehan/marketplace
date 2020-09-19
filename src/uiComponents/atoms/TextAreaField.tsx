@@ -1,10 +1,12 @@
 import React, { FC } from 'react'
 import { TextProps, TextFieldStyles } from './TextField'
 import styled, { css } from 'styled-components'
+import { red } from '../../styles/colors'
 
 interface StyledProps {
   fullWidth?: boolean
   short?: boolean
+  hasError?: boolean
 }
 
 const StyledTextField = styled.textarea<StyledProps>`
@@ -16,6 +18,11 @@ const StyledTextField = styled.textarea<StyledProps>`
     `}
   height: ${({ short }) => (short ? '100px' : '200px')};
   resize: vertical;
+  ${({ hasError }) =>
+    hasError &&
+    css`
+      border-color: ${red};
+    `}
 `
 
 const StyledTextAreaField = styled(StyledTextField)``

@@ -31,9 +31,12 @@ const StyledHeading = styled(HeadingS)`
   margin-bottom: 20px;
 `
 
-const ButtonContainer = styled.div`
-  margin-top: 10px;
-`
+type FormValues = {
+  where: String
+  budgetType: String
+  amount: Number
+  dueDate: Date
+}
 
 interface CreateTaskProps {
   onClose: (event: MouseEvent) => void
@@ -51,14 +54,14 @@ const HireFooter: FC<HireFooterProps> = ({ onHireClick, name }) => (
 )
 
 const Hire: FC<CreateTaskProps> = ({ onClose }) => {
-  const { register, watch, control, handleSubmit } = useForm({
+  const { register, control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       where: 'in-person',
       budgetType: 'total',
     },
   })
 
-  const handleHireSubmit = useCallback(data => {
+  const handleHireSubmit = useCallback((data) => {
     console.log(data)
   }, [])
 
@@ -113,7 +116,7 @@ const Hire: FC<CreateTaskProps> = ({ onClose }) => {
             fullWidth
             control={control}
             placeholder="Select a date"
-            onChange={day => {
+            onChange={(day) => {
               // React Select return object instead of value for selection
               return day[0]
             }}

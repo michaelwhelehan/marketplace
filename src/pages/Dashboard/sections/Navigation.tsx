@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { primaryFontColor, primaryColor } from '../../../styles/colors'
 import { NavLink } from 'react-router-dom'
 import Icon from '../../../uiComponents/atoms/Icon'
+import { useAuth } from '../../../services'
 
 const StyledNavigation = styled.ul`
   margin-top: 20px;
@@ -31,8 +32,8 @@ const Navigation: FC = () => {
     { icon: 'MdEmail', title: 'Messages', link: '/dashboard/inbox' },
     {
       icon: 'MdBusinessCenter',
-      title: 'My Tasks',
-      link: '/dashboard/my-tasks',
+      title: 'My Jobs',
+      link: '/dashboard/my-jobs',
     },
     { icon: 'MdPerson', title: 'Profile', link: '/dashboard/profile' },
     { icon: 'MdSettings', title: 'Settings', link: '/dashboard/settings' },
@@ -46,12 +47,12 @@ const Navigation: FC = () => {
       title: 'Payment Methods',
       link: '/dashboard/payment-methods',
     },
-    { icon: 'MdExitToApp', title: 'Logout', link: '' },
   ]
+  const { signOut } = useAuth()
 
   return (
     <StyledNavigation>
-      {navigationItems.map(navItem => (
+      {navigationItems.map((navItem) => (
         <NavigationItem key={navItem.title}>
           <NavLink
             to={navItem.link}
@@ -62,6 +63,11 @@ const Navigation: FC = () => {
           </NavLink>
         </NavigationItem>
       ))}
+      <NavigationItem>
+        <NavLink to="/" onClick={() => signOut()}>
+          <Icon size={20} name="MdExitToApp" spacingEnd /> Logout
+        </NavLink>
+      </NavigationItem>
     </StyledNavigation>
   )
 }

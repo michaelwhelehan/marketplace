@@ -6,11 +6,10 @@ import { primaryColor, transparentCurtain } from '../../styles/colors'
 import { ParagraphS } from '../../uiComponents/atoms/Paragraphs'
 import { fwBold } from '../../styles/typography'
 import DropDown from '../../uiComponents/atoms/DropDown'
-import FormField from '../../uiComponents/molecules/FormField'
-import TextFieldIcon from '../../uiComponents/molecules/TextFieldIcon'
 import { MAIN_HEADER_HEIGHT, FILTER_HEADER_HEIGHT } from '../../constants/sizes'
-import SliderField from '../../uiComponents/atoms/SliderField'
-import RadioField from '../../uiComponents/atoms/RadioField'
+import useFilterForm from '../FilterForm/useFilterForm'
+import useUrlQueries from '../../hooks/useUrlQueries'
+import { percentToValue } from '../../utils/helpers'
 
 const FilterCurtain = styled.div`
   position: fixed;
@@ -54,14 +53,6 @@ const StyledCancel = styled(ParagraphS)`
   cursor: pointer;
 `
 
-const WhereWrapper = styled.div`
-  display: flex;
-
-  > * {
-    margin-right: 10px;
-  }
-`
-
 interface Props {
   name: string
   dropdownOpen: boolean
@@ -69,6 +60,11 @@ interface Props {
 }
 
 const FilterDropdown: FC<Props> = ({ name, dropdownOpen, onToggle }) => {
+  const { renderedFilterForm, onFilterFormSubmit } = useFilterForm()
+  const { updateQueries } = useUrlQueries({
+    allowedParams: ['budget_gte', 'budget_lte'],
+  })
+
   return (
     <>
       {dropdownOpen && <FilterCurtain />}
@@ -82,33 +78,24 @@ const FilterDropdown: FC<Props> = ({ name, dropdownOpen, onToggle }) => {
             overflowContent={false}
             renderFooter={() => (
               <DropdownFooter>
-                <StyledCancel onClick={e => onToggle(e, false)}>
+                <StyledCancel onClick={(e) => onToggle(e, false)}>
                   Cancel
                 </StyledCancel>
-                <Button onClick={e => onToggle(e, false)}>Apply</Button>
+                <Button
+                  onClick={onFilterFormSubmit((data) => {
+                    updateQueries({
+                      budget_gte: percentToValue(data.budget[0], 20000),
+                      budget_lte: percentToValue(data.budget[1], 20000),
+                    })
+                    onToggle(null, false)
+                  })}
+                >
+                  Apply
+                </Button>
               </DropdownFooter>
             )}
           >
-            <FormField label="Where">
-              <WhereWrapper>
-                <RadioField name="where" label="In Person" value="in-person" />
-                <RadioField name="where" label="Online" value="online" />
-                <RadioField name="where" label="All" value="all" />
-              </WhereWrapper>
-            </FormField>
-            <FormField label="Suburb" spacingTop>
-              <TextFieldIcon
-                iconName="MdPlace"
-                placeholder="Enter a surburb"
-                fullWidth
-              />
-            </FormField>
-            <FormField label="Distance" spacingTop spacingBottom>
-              <SliderField value={30} range={100} unit="km" />
-            </FormField>
-            <FormField label="Task Price" spacingTop spacingBottom>
-              <SliderField value={[5, 80]} range={20000} unit="R" />
-            </FormField>
+            {renderedFilterForm}
           </DropDown>
         )}
       </FilterDropdownContainer>

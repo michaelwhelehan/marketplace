@@ -5,27 +5,28 @@ import { gql, useQuery } from '@apollo/client'
 import MakeOffer from '../MakeOffer/MakeOffer'
 import Hire from '../Hire/Hire'
 import RejectOffer from '../RejectOffer/RejectOffer'
+import { useLocation } from 'react-router-dom'
 
 export const GET_CREATE_TASK_VISIBLE = gql`
-  {
+  query CreateTask {
     createTaskVisible @client
   }
 `
 
 export const GET_MAKE_OFFER_VISIBLE = gql`
-  {
+  query MakeOffer {
     makeOfferVisible @client
   }
 `
 
 export const GET_REJECT_OFFER_VISIBLE = gql`
-  {
+  query RejectOffer {
     rejectOfferVisible @client
   }
 `
 
 export const GET_HIRE_VISIBLE = gql`
-  {
+  query Hire {
     hireVisible @client
   }
 `
@@ -41,10 +42,17 @@ const Layout: FC = ({ children }) => {
   const { data: rejectOfferData, client: rejectOfferClient } = useQuery(
     GET_REJECT_OFFER_VISIBLE,
   )
+  const location = useLocation()
+  const showHeader = ![
+    '/login',
+    '/sign-up',
+    '/forgot-password',
+    '/reset-password',
+  ].includes(location.pathname)
 
   return (
     <>
-      <Header />
+      {showHeader && <Header />}
       {children}
       {taskData?.createTaskVisible && (
         <CreateTask

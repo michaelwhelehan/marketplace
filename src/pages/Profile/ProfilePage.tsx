@@ -5,9 +5,17 @@ import UserPanel from './sections/UserPanel'
 import InfoPanel, { InfoPanelSelector } from './sections/InfoPanel'
 import MainPanel from './sections/MainPanel'
 import ReviewPanel from './sections/ReviewPanel'
+import { useGetPublicUserProfileQuery } from './queries'
+import { useRouteMatch } from 'react-router-dom'
+import { Facebook as FacebookLoader } from 'react-content-loader'
+import { toXL } from '../../constants/breakpoints'
 
 const StyledContainer = styled(BaseContainer)`
   display: flex;
+
+  @media (${toXL}) {
+    padding: 0 20px;
+  }
 `
 
 const StartContainer = styled.div`
@@ -34,18 +42,27 @@ const EndContainer = styled.div`
 interface Props {}
 
 const ProfilePage: FC<Props> = () => {
+  const match = useRouteMatch<{ username: string }>()
+  const { data: User, loading } = useGetPublicUserProfileQuery(
+    match.params.username,
+  )
+
+  if (loading) {
+    return <FacebookLoader />
+  }
+
   return (
     <StyledContainer>
       <StartContainer>
-        <UserPanel />
-        <InfoPanel />
+        <UserPanel user={User.publicUser} />
+        <InfoPanel user={User.publicUser} />
       </StartContainer>
       <MiddleContainer>
-        <MainPanel />
+        <MainPanel user={User.publicUser} />
       </MiddleContainer>
-      <EndContainer>
+      {/* <EndContainer>
         <ReviewPanel />
-      </EndContainer>
+      </EndContainer> */}
     </StyledContainer>
   )
 }

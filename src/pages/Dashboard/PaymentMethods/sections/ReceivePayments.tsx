@@ -1,12 +1,7 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import { HeadingS } from '../../../../uiComponents/atoms/Headings'
-import {
-  ParagraphS,
-  ParagraphM,
-} from '../../../../uiComponents/atoms/Paragraphs'
-import { fwBold } from '../../../../styles/typography'
-import { black } from '../../../../styles/colors'
+import { ParagraphS } from '../../../../uiComponents/atoms/Paragraphs'
 import FormField from '../../../../uiComponents/molecules/FormField'
 import TextField from '../../../../uiComponents/atoms/TextField'
 import Button from '../../../../uiComponents/atoms/Button'
@@ -15,24 +10,6 @@ import { Controller, useForm } from 'react-hook-form'
 import SelectField from '../../../../uiComponents/atoms/SelectField'
 
 const Container = styled.div``
-
-const CreditContainer = styled.div`
-  margin-top: 20px;
-  display: flex;
-`
-
-const CreditItem = styled.div`
-  margin-right: 20px;
-`
-
-const CreditItemTitle = styled(ParagraphS)`
-  ${fwBold};
-`
-
-const CredititemValue = styled(ParagraphM)`
-  ${fwBold};
-  color: ${black};
-`
 
 const SectionContainer = styled.div`
   margin-top: 20px;
@@ -53,7 +30,7 @@ const ButtonContainer = styled.div`
 `
 
 const ReceivePayments: FC = () => {
-  const { register, control, handleSubmit } = useForm()
+  const { control } = useForm()
 
   return (
     <Container>

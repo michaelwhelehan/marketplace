@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import styled from 'styled-components'
 import FilterHeader from '../../components/FilterHeader/FilterHeader'
 import BaseContainer from '../../uiComponents/atoms/Container'
@@ -8,20 +8,9 @@ import { useRouteMatch, Switch, Route, useLocation } from 'react-router-dom'
 import TaskDetailPage from '../MarketplaceTDP/TaskDetailPage'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { MAIN_HEADER_HEIGHT, FILTER_HEADER_HEIGHT } from '../../constants/sizes'
-import { useQuery, gql } from '@apollo/client'
-import { TaskType } from '../../types/task'
-
-interface TaskData {
-  taskFeed: {
-    cursor: string
-    tasks: TaskType[]
-  }
-}
-
-interface TaskVars {
-  cursor: string
-  loadAmount: number
-}
+import { useGetTasksQuery } from './queries'
+import { fromXL } from '../../constants/breakpoints'
+import useUrlQueries from '../../hooks/useUrlQueries'
 
 const StyledContainer = styled(BaseContainer)`
   border-left: 1px solid #eee;
@@ -32,6 +21,10 @@ const StyledContainer = styled(BaseContainer)`
 
 const SideListContainer = styled.article`
   flex: 3;
+
+  @media (${fromXL}) {
+    flex: 2;
+  }
 `
 
 const MainContainer = styled.article`
@@ -43,38 +36,22 @@ const MainContainer = styled.article`
   }
 `
 
-const GET_TASKS = gql`
-  query Tasks($cursor: String, $loadAmount: Integer) {
-    taskFeed(cursor: $cursor, loadAmount: $loadAmount) @client {
-      cursor
-      tasks {
-        id
-        creator {
-          profilePictureUrl
-          name
-        }
-        title
-        slug
-        budget
-        currency {
-          code
-          iso
-        }
-        location
-        dueDate
-        details
-        numOffers
-      }
-    }
-  }
-`
-
 const MarketplacePage: FC = () => {
   const match = useRouteMatch()
   const location = useLocation()
-  const { data, loading, fetchMore } = useQuery<TaskData, TaskVars>(GET_TASKS, {
-    variables: { cursor: undefined, loadAmount: undefined },
+  const { params } = useUrlQueries({
+    allowedParams: ['budget_gte', 'budget_lte'],
   })
+  const { data, loading, loadMore } = useGetTasksQuery({
+    pageSize: 20,
+    filter: {
+      budget: {
+        gte: params.budget_gte,
+        lte: params.budget_lte,
+      },
+    },
+  })
+  const hasData = data?.tasks?.edges?.length > 0
 
   return (
     <>
@@ -82,39 +59,25 @@ const MarketplacePage: FC = () => {
       <StyledContainer>
         <SideListContainer>
           <SideList
-            tasksLoading={loading}
-            tasks={data?.taskFeed?.tasks}
-            tasksLoadAmount={10}
-            onLoadMoreTasks={async loadAmount => {
-              await sleep(Math.floor(Math.random() * 1000) + 500)
-              await fetchMore({
-                query: GET_TASKS,
-                variables: {
-                  cursor: data.taskFeed.cursor,
-                  loadAmount,
-                },
-                updateQuery: (
-                  previousResult: {
-                    taskFeed: { tasks: any; cursor: string }
+            tasksLoading={loading && !hasData}
+            tasks={data?.tasks?.edges}
+            tasksLoadAmount={20}
+            onLoadMoreTasks={async () => {
+              if (data?.tasks?.pageInfo?.hasNextPage) {
+                loadMore(
+                  (prev, next) => ({
+                    ...prev,
+                    tasks: {
+                      ...prev.tasks,
+                      edges: [...prev.tasks.edges, ...next.tasks.edges],
+                      pageInfo: next.tasks.pageInfo,
+                    },
+                  }),
+                  {
+                    after: data?.tasks?.pageInfo?.endCursor,
                   },
-                  { fetchMoreResult },
-                ) => {
-                  const previousTaskFeed = previousResult.taskFeed
-                  const newTaskFeed = fetchMoreResult.taskFeed
-
-                  const newTaskFeedData = {
-                    ...previousResult.taskFeed,
-                    tasks: [...previousTaskFeed.tasks, ...newTaskFeed.tasks],
-                    cursor: newTaskFeed.cursor,
-                    __typename: 'TaskFeed',
-                  }
-                  const newData = {
-                    ...previousResult,
-                    taskFeed: newTaskFeedData,
-                  }
-                  return newData
-                },
-              })
+                )
+              }
             }}
           />
         </SideListContainer>
@@ -142,7 +105,7 @@ const MarketplacePage: FC = () => {
 }
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 export default MarketplacePage

@@ -5,13 +5,13 @@ import { fsS, fsXS } from '../../styles/typography'
 
 export type ButtonStyleType = 'primary' | 'primary-outline' | 'error'
 
-interface StyledButtonProps {
+interface ButtonProps {
   fullWidth?: boolean
   large?: boolean
   styleType?: ButtonStyleType
 }
 
-const StyledButton = styled.button<StyledButtonProps>`
+const Button = styled.button<ButtonProps>`
   background-color: ${({ styleType = 'primary' }) => {
     switch (styleType) {
       case 'primary':
@@ -69,4 +69,4 @@ const StyledButton = styled.button<StyledButtonProps>`
   }
 `
 
-export default StyledButton
+export default Button

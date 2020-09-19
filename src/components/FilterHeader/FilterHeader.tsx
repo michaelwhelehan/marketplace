@@ -9,6 +9,7 @@ import FilterDropdown from './FilterDropdown'
 import { useQuery } from '@apollo/client'
 import { GET_CREATE_TASK_VISIBLE } from '../Layout/Layout'
 import { featherShadow } from '../../styles/shadows'
+import { toXL } from '../../constants/breakpoints'
 
 const StyledHeader = styled.header`
   height: ${FILTER_HEADER_HEIGHT}px;
@@ -23,6 +24,10 @@ const StyledContainer = styled(BaseContainer)`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media (${toXL}) {
+    padding: 0 20px;
+  }
 `
 
 const FilterStart = styled.div`
@@ -54,22 +59,22 @@ const FilterHeader: FC = () => {
               })
             }
           >
-            Create Task
+            Create Job
           </StyledButton>
           <FilterDropdown
             name="Filters"
             dropdownOpen={filtersOpen}
             onToggle={(_, open) =>
-              setFiltersOpen(prev => open ?? (open || !prev))
+              setFiltersOpen((prev) => open ?? (open || !prev))
             }
           />
         </FilterStart>
         <FilterEnd>
           <TextFieldIcon
             iconName="MdSearch"
-            placeholder="Search for a task"
+            placeholder="Search for a job"
             value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
             fullWidth
           />
         </FilterEnd>

@@ -29,10 +29,7 @@ const list = [
   {
     date: faker.date.past(),
     type: 'Earned',
-    task: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    task: faker.hacker.phrase().slice(0, 50).trim(),
     amount: Math.round(Math.random() * 1000),
     status: 'Successful',
     href: '',
@@ -40,10 +37,7 @@ const list = [
   {
     date: faker.date.past(),
     type: 'Earned',
-    task: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    task: faker.hacker.phrase().slice(0, 50).trim(),
     amount: Math.round(Math.random() * 1000),
     status: 'Successful',
     href: '',
@@ -51,10 +45,7 @@ const list = [
   {
     date: faker.date.past(),
     type: 'Earned',
-    task: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    task: faker.hacker.phrase().slice(0, 50).trim(),
     amount: Math.round(Math.random() * 1000),
     status: 'Successful',
     href: '',
@@ -62,10 +53,7 @@ const list = [
   {
     date: faker.date.past(),
     type: 'Earned',
-    task: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    task: faker.hacker.phrase().slice(0, 50).trim(),
     amount: Math.round(Math.random() * 1000),
     status: 'Successful',
     href: '',
@@ -73,10 +61,7 @@ const list = [
   {
     date: faker.date.past(),
     type: 'Earned',
-    task: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    task: faker.hacker.phrase().slice(0, 50).trim(),
     amount: Math.round(Math.random() * 1000),
     status: 'Successful',
     href: '',
@@ -84,10 +69,7 @@ const list = [
   {
     date: faker.date.past(),
     type: 'Earned',
-    task: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    task: faker.hacker.phrase().slice(0, 50).trim(),
     amount: Math.round(Math.random() * 1000),
     status: 'Successful',
     href: '',
@@ -95,10 +77,7 @@ const list = [
   {
     date: faker.date.past(),
     type: 'Earned',
-    task: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    task: faker.hacker.phrase().slice(0, 50).trim(),
     amount: Math.round(Math.random() * 1000),
     status: 'Successful',
     href: '',
@@ -106,10 +85,7 @@ const list = [
   {
     date: faker.date.past(),
     type: 'Earned',
-    task: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    task: faker.hacker.phrase().slice(0, 50).trim(),
     amount: Math.round(Math.random() * 1000),
     status: 'Successful',
     href: '',
@@ -117,10 +93,7 @@ const list = [
   {
     date: faker.date.past(),
     type: 'Earned',
-    task: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    task: faker.hacker.phrase().slice(0, 50).trim(),
     amount: Math.round(Math.random() * 1000),
     status: 'Successful',
     href: '',
@@ -128,10 +101,7 @@ const list = [
   {
     date: faker.date.past(),
     type: 'Earned',
-    task: faker.hacker
-      .phrase()
-      .slice(0, 50)
-      .trim(),
+    task: faker.hacker.phrase().slice(0, 50).trim(),
     amount: Math.round(Math.random() * 1000),
     status: 'Successful',
     href: '',
@@ -139,7 +109,7 @@ const list = [
 ]
 
 const PaymentHistoryPage: FC = () => {
-  const { register, watch, control, handleSubmit } = useForm({
+  const { control } = useForm({
     defaultValues: { showAmount: { label: '10', value: 10 } },
   })
   const { currentTab, updateTab } = useTabs<TabType>('earned')

@@ -9,20 +9,23 @@ import Education from './sections/Education'
 import WorkExperience from './sections/WorkExperience'
 import Portfolio from './sections/Portfolio'
 import Badges from './sections/Badges'
+import { useGetUserProfileDetailsQuery } from './queries'
+import Loader from '../../../uiComponents/atoms/Loader/Loader'
 
 const ProfilePage: FC = () => {
   const { currentTab, updateTab } = useTabs<TabType>('basicInfo')
+  const { data: User, loading } = useGetUserProfileDetailsQuery()
 
   function renderTab() {
     switch (currentTab) {
       case 'basicInfo':
-        return <BasicInfo />
+        return <BasicInfo user={User.me} />
       case 'education':
-        return <Education />
+        return <Education user={User.me} />
       case 'workExperience':
-        return <WorkExperience />
+        return <WorkExperience user={User.me} />
       case 'portfolio':
-        return <Portfolio />
+        return <Portfolio user={User.me} />
       case 'badges':
         return <Badges />
       default:
@@ -32,9 +35,15 @@ const ProfilePage: FC = () => {
 
   return (
     <DashboardPageContainer>
-      <ProfileHeader />
-      <ProfileTabs currentTab={currentTab} updateTab={updateTab} />
-      {renderTab()}
+      {loading ? (
+        <Loader name="Dashboard" padded />
+      ) : (
+        <>
+          <ProfileHeader user={User.me} />
+          <ProfileTabs currentTab={currentTab} updateTab={updateTab} />
+          {renderTab()}
+        </>
+      )}
     </DashboardPageContainer>
   )
 }

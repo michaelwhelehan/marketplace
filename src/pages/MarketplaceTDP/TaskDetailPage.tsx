@@ -12,6 +12,8 @@ import TDPAttachments from '../../uiComponents/molecules/TaskDetail/TDPAttachmen
 import TDPOffers from './sections/TDPOffers'
 import { GET_MAKE_OFFER_VISIBLE } from '../../components/Layout/Layout'
 import LineBreak from '../../uiComponents/atoms/LineBreak'
+import { useGetTaskQuery } from './queries'
+import Loader from '../../uiComponents/atoms/Loader/Loader'
 
 interface TaskData {
   task: TaskType
@@ -56,34 +58,9 @@ const Container = styled.div`
   }
 `
 
-export const GET_TASK = gql`
-  query Task($slug: String!) {
-    task(slug: $slug) @client {
-      id
-      creator {
-        profilePictureUrl
-        name
-      }
-      title
-      slug
-      budget
-      currency {
-        code
-        iso
-      }
-      location
-      dueDate
-      details
-      numOffers
-    }
-  }
-`
-
 const TaskDetailPage: FC = () => {
   const { taskSlug } = useParams()
-  const { data, loading } = useQuery<TaskData, TaskVars>(GET_TASK, {
-    variables: { slug: taskSlug },
-  })
+  const { data, loading } = useGetTaskQuery({ slug: taskSlug })
   const { client } = useQuery(GET_MAKE_OFFER_VISIBLE)
   const scrollElement = useRef(null)
 
@@ -97,7 +74,7 @@ const TaskDetailPage: FC = () => {
   return (
     <Container ref={scrollElement}>
       {loading ? (
-        <>Loading...</>
+        <Loader name="Dashboard" />
       ) : (
         <>
           <TDPHeader task={data.task} onMakeOfferClick={handleMakeOfferClick} />

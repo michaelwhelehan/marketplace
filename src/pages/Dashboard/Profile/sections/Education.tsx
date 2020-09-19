@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react'
 import styled from 'styled-components'
 import { primaryColor } from '../../../../styles/colors'
-import { useForm, Controller, useFieldArray } from 'react-hook-form'
+import { useForm, Controller, useFieldArray, FieldError } from 'react-hook-form'
 import Icon from '../../../../uiComponents/atoms/Icon'
 import FieldContainer from '../../../../uiComponents/molecules/FieldContainer'
 import FormField from '../../../../uiComponents/molecules/FormField'
@@ -9,6 +9,13 @@ import TextField from '../../../../uiComponents/atoms/TextField'
 import TextAreaField from '../../../../uiComponents/atoms/TextAreaField'
 import SelectField from '../../../../uiComponents/atoms/SelectField'
 import Button from '../../../../uiComponents/atoms/Button'
+import { UserProfileDetails_me } from '../gqlTypes/UserProfileDetails'
+import { useAccountUpdate } from '../../../../services'
+import { useAlert } from 'react-alert'
+import useConfirmDialog from '../../../../hooks/useConfirmDialog'
+import { getYearOptions } from '../../../../utils/date'
+import { yupResolver } from '@hookform/resolvers'
+import * as yup from 'yup'
 
 const StyledForm = styled.form`
   padding: 20px;
@@ -39,75 +46,203 @@ const ButtonContainer = styled.div`
   justify-content: flex-end;
 `
 
-const Education: FC = () => {
-  const { register, control, handleSubmit } = useForm()
+const formSchema = {
+  degree: yup.string().required('Degree is required'),
+  school: yup.string().required('School is required'),
+  startYear: yup
+    .object()
+    .shape({
+      label: yup.string(),
+      value: yup.string(),
+    })
+    .required('Start year is required'),
+  endYear: yup
+    .object()
+    .shape({
+      label: yup.string(),
+      value: yup.string(),
+    })
+    .required('End year is required'),
+}
 
+const fieldsSchema = yup.object().shape({
+  education: yup
+    .array()
+    .of(yup.object().shape(formSchema))
+    .required('Must have fields')
+    .min(1, 'Minimum of 1 field'),
+})
+
+interface Props {
+  user: UserProfileDetails_me
+}
+
+const Education: FC<Props> = ({ user }) => {
+  const [setAccountUpdate, { data, error }] = useAccountUpdate()
+  const alert = useAlert()
+  const { register, control, handleSubmit, setError, errors } = useForm({
+    resolver: yupResolver(fieldsSchema),
+    defaultValues: {
+      education: user.educations.map((education) => {
+        const { startYear, endYear, ...rest } = education
+        return {
+          startYear: { label: startYear, value: startYear },
+          endYear: { label: endYear, value: endYear },
+          ...rest,
+        }
+      }),
+    },
+  })
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'education',
+    keyName: 'identifier',
   })
 
   useEffect(() => {
-    append({})
-  }, [append])
+    if (user.educations.length === 0) {
+      append({})
+    }
+  }, [append, user.educations.length])
 
-  const onSubmit = data => {
-    console.log(data)
+  useEffect(() => {
+    if (data && !error) {
+      alert.show('Profile successfully updated.', {
+        type: 'success',
+      })
+    } else if (error) {
+      error.extraInfo.userInputErrors.forEach((err) =>
+        setError(err.field, { type: 'manual', message: err.message }),
+      )
+    }
+  }, [data, error])
+
+  const onSubmit = (data) => {
+    setAccountUpdate({
+      input: {
+        educations: data.education?.map((education) => {
+          let { id, startYear, endYear, ...rest } = education
+          startYear = startYear.value
+          endYear = endYear.value
+          return id
+            ? { id, startYear, endYear, ...rest }
+            : { startYear, endYear, ...rest }
+        }),
+      },
+    })
   }
+
+  const handleDelete = async (id: number) => {
+    const {
+      data: { errors },
+    } = await setAccountUpdate({
+      input: {
+        deleteEducation: fields[id].id,
+      },
+    })
+    if (errors.length === 0) {
+      remove(id)
+    }
+  }
+
+  const {
+    renderedDialog,
+    setShowConfirmDialog,
+    setConfirmId,
+  } = useConfirmDialog({
+    title: 'Confirm delete education?',
+    onConfirm: handleDelete,
+  })
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <FormField label="Add education">
         {fields.map((item, index) => (
-          <ItemWrapper key={item.id}>
+          <ItemWrapper key={item.identifier}>
             <StartContainer>
-              <FieldContainer>
-                <TextField
-                  name={`education[${index}].school`}
-                  ref={register()}
-                  placeholder="School *"
-                  fullWidth
-                />
-              </FieldContainer>
-              <FieldContainer spacingTop>
+              <input
+                type="hidden"
+                name={`education[${index}].id`}
+                ref={register()}
+              />
+              <FormField
+                label="Degree"
+                error={errors.education?.[index]?.degree}
+                required
+              >
                 <TextField
                   name={`education[${index}].degree`}
                   ref={register()}
-                  placeholder="Degree"
+                  placeholder="Eg. Honor's in Financial Management"
                   fullWidth
+                  hasError={Boolean(errors.education?.[index]?.degree)}
                 />
-              </FieldContainer>
+              </FormField>
+              <FormField
+                label="School"
+                error={errors.education?.[index]?.school}
+                required
+                spacingTop
+              >
+                <TextField
+                  name={`education[${index}].school`}
+                  ref={register()}
+                  placeholder="Eg. University of Cape Town"
+                  fullWidth
+                  hasError={Boolean(errors.education?.[index]?.school)}
+                />
+              </FormField>
               <FieldContainer split spacingTop>
-                <Controller
-                  as={SelectField}
-                  name={`education[${index}].startYear`}
-                  control={control}
-                  placeholder="Start Year"
-                  options={[{ label: '2020', value: '2020' }]}
-                />
-                <Controller
-                  as={SelectField}
-                  name={`education[${index}].endYear`}
-                  control={control}
-                  placeholder="End Year"
-                  options={[{ label: '2020', value: '2020' }]}
-                />
+                <FormField
+                  label="Start Year"
+                  error={errors.education?.[index]?.startYear as FieldError}
+                  required
+                >
+                  <Controller
+                    as={SelectField}
+                    name={`education[${index}].startYear`}
+                    control={control}
+                    placeholder="Start Year"
+                    options={getYearOptions(60)}
+                    hasError={Boolean(errors.education?.[index]?.startYear)}
+                  />
+                </FormField>
+                <FormField
+                  label="End Year"
+                  error={errors.education?.[index]?.endYear as FieldError}
+                  required
+                >
+                  <Controller
+                    as={SelectField}
+                    name={`education[${index}].endYear`}
+                    control={control}
+                    placeholder="End Year"
+                    options={getYearOptions(60)}
+                  />
+                </FormField>
               </FieldContainer>
-              <FieldContainer spacingTop>
+              <FormField label="Description" spacingTop>
                 <TextAreaField
                   name={`education[${index}].description`}
                   ref={register()}
-                  placeholder="Describe your education"
+                  placeholder="Write a brief description of your education here"
                   fullWidth
                 />
-              </FieldContainer>
+              </FormField>
             </StartContainer>
             <StyledIcon
               name="MdClose"
               size={25}
               color={primaryColor}
               spacingStart={5}
-              onClick={() => remove(index)}
+              onClick={() => {
+                if (item.id) {
+                  setConfirmId(index)
+                  setShowConfirmDialog(true)
+                } else {
+                  remove(index)
+                }
+              }}
             />
           </ItemWrapper>
         ))}
@@ -122,6 +257,7 @@ const Education: FC = () => {
       <ButtonContainer>
         <Button>Update Profile</Button>
       </ButtonContainer>
+      {renderedDialog}
     </StyledForm>
   )
 }

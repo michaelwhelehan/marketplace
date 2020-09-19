@@ -1,5 +1,8 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { useAlert } from 'react-alert'
+import { yupResolver } from '@hookform/resolvers'
+import * as yup from 'yup'
 import {
   borderColorDark,
   black,
@@ -12,17 +15,23 @@ import {
   ParagraphXS,
 } from '../../../../uiComponents/atoms/Paragraphs'
 import { fwBold } from '../../../../styles/typography'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import Avatar from '../../../../uiComponents/atoms/Avatar'
 import Icon from '../../../../uiComponents/atoms/Icon'
 import FieldContainer from '../../../../uiComponents/molecules/FieldContainer'
 import FormField from '../../../../uiComponents/molecules/FormField'
 import TextField from '../../../../uiComponents/atoms/TextField'
 import TextAreaField from '../../../../uiComponents/atoms/TextAreaField'
-import SelectField from '../../../../uiComponents/atoms/SelectField'
+import SelectField, {
+  OptionType,
+} from '../../../../uiComponents/atoms/SelectField'
 import Button from '../../../../uiComponents/atoms/Button'
-import profilePictureUrl from '../../../../assets/images/profile.png'
 import CheckboxField from '../../../../uiComponents/atoms/CheckboxField'
+import { UserProfileDetails_me } from '../gqlTypes/UserProfileDetails'
+import { useAccountUpdate } from '../../../../services'
+import { useGetSkillTagsQuery } from '../queries'
+import ChangeAvatar from './ChangeAvatar'
+import { titleCase } from '../../../../utils/format'
 
 const StyledForm = styled.form`
   padding-top: 20px;
@@ -56,7 +65,7 @@ const SectionTitle = styled.div`
   height: 75px;
 `
 
-const ChangeAvatar = styled.div`
+const AvatarContainer = styled.div`
   position: relative;
   cursor: pointer;
 `
@@ -91,18 +100,100 @@ const EditIcon = styled.div`
   justify-content: center;
 `
 
-const BasicInfo: FC = () => {
-  const { register, watch, control, handleSubmit } = useForm({
+type LanguageType = {
+  id: string
+  language: OptionType
+  level: OptionType
+}
+
+type FormValues = {
+  firstName: string
+  lastName: string
+  email: string
+  jobTitle: string
+  skills: OptionType[]
+  mobile: string
+  bio: string
+  language: LanguageType[]
+}
+
+const schema = yup.object().shape({
+  firstName: yup.string().required('First name is required'),
+  lastName: yup.string().required('Last name is required'),
+  jobTitle: yup.string().required('Position is required'),
+})
+
+interface Props {
+  user: UserProfileDetails_me
+}
+
+const BasicInfo: FC<Props> = ({ user }) => {
+  const { data: SkillTags } = useGetSkillTagsQuery()
+  const [setAccountUpdate, { data, error }] = useAccountUpdate()
+  const alert = useAlert()
+  const [showChangeAvatar, setShowChangeAvatar] = useState(false)
+  const { register, setError, errors, watch, control, handleSubmit } = useForm<
+    FormValues
+  >({
     defaultValues: {
-      firstName: 'Mike',
-      lastName: 'Wells',
-      email: 'mike@wells.com',
-      position: 'Software Developer',
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      jobTitle: user.jobTitle,
+      mobile: user.mobile,
+      bio: user.bio,
+      skills: user.skills.map((skill) => ({
+        label: skill.name,
+        value: skill.id,
+      })),
+      language: user.languages.map((userLanguage) => {
+        const { id, language, level } = userLanguage
+        return {
+          id,
+          language: {
+            label: language.name,
+            value: language.name,
+          },
+          level: {
+            label: titleCase(level),
+            value: level,
+          },
+        }
+      }),
     },
+    resolver: yupResolver(schema),
   })
-  const watchNamePosition = watch(['firstName', 'lastName', 'position'])
-  const onSubmit = data => {
-    console.log(data)
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'language',
+    keyName: 'identifier',
+  })
+  const watchNamePosition = watch(['firstName', 'lastName', 'jobTitle'])
+
+  useEffect(() => {
+    if (user.languages.length === 0) {
+      append({})
+    }
+  }, [append, user.languages.length])
+
+  useEffect(() => {
+    if (data && !error) {
+      alert.show('Profile successfully updated.', {
+        type: 'success',
+      })
+    } else if (error) {
+      error.extraInfo.userInputErrors.forEach((err) =>
+        setError(err.field, { type: 'manual', message: err.message }),
+      )
+    }
+  }, [data, error])
+
+  const onSubmit = (data) => {
+    delete data.email
+    delete data.transport
+    delete data.languages
+    data.skills = data.skills.map((skill) => skill.value)
+    setAccountUpdate({ input: data })
   }
 
   return (
@@ -110,34 +201,36 @@ const BasicInfo: FC = () => {
       <ProfileSplitContainer>
         <ProfileSplit>
           <SectionTitle>
-            <ChangeAvatar>
-              <Avatar src={profilePictureUrl} size={75} />
+            <AvatarContainer onClick={() => setShowChangeAvatar(true)}>
+              <Avatar src={user.avatarUrl} size={75} />
               <EditIcon>
                 <Icon name="MdEdit" size={14} color={white} />
               </EditIcon>
-            </ChangeAvatar>
+            </AvatarContainer>
             <SectionValue>
               <StyledName>
                 {watchNamePosition.firstName} {watchNamePosition.lastName}
               </StyledName>
-              <ParagraphXS>{watchNamePosition.position}</ParagraphXS>
+              <ParagraphXS>{watchNamePosition.jobTitle}</ParagraphXS>
             </SectionValue>
           </SectionTitle>
           <FieldContainer split spacingTop>
-            <FormField label="First Name">
+            <FormField label="First Name" error={errors.firstName}>
               <TextField
                 name="firstName"
                 placeholder="Enter your first name"
                 ref={register()}
                 fullWidth
+                hasError={Boolean(errors.firstName)}
               />
             </FormField>
-            <FormField label="Last Name">
+            <FormField label="Last Name" error={errors.lastName}>
               <TextField
                 name="lastName"
                 placeholder="Enter your last name"
                 ref={register()}
                 fullWidth
+                hasError={Boolean(errors.lastName)}
               />
             </FormField>
             <FormField label="Email">
@@ -146,22 +239,25 @@ const BasicInfo: FC = () => {
                 placeholder="Enter your email address"
                 ref={register()}
                 fullWidth
+                readOnly
               />
             </FormField>
-            <FormField label="Position">
+            <FormField label="Position" error={errors.jobTitle}>
               <TextField
-                name="position"
+                name="jobTitle"
                 placeholder="eg. Software Developer"
                 ref={register()}
                 fullWidth
+                hasError={Boolean(errors.jobTitle)}
               />
             </FormField>
-            <FormField label="Mobile">
+            <FormField label="Mobile" error={errors.mobile}>
               <TextField
                 name="mobile"
                 placeholder="Enter your mobile number"
                 ref={register()}
                 fullWidth
+                hasError={Boolean(errors.mobile)}
               />
             </FormField>
             <div style={{ gridColumn: 'span 2' }}>
@@ -195,14 +291,13 @@ const BasicInfo: FC = () => {
                 control={control}
                 placeholder="eg. Accounting, cleaning, web development"
                 isMulti
-                options={[
-                  { label: 'Accounting', value: 'accounting' },
-                  { label: 'Cleaning', value: 'cleaning' },
-                  { label: 'Web Development', value: 'web' },
-                ]}
+                options={SkillTags?.skillTags.edges.map((edge) => ({
+                  label: edge.node.name,
+                  value: edge.node.id,
+                }))}
               />
             </FormField>
-            <FormField label="How do you get around?" spacingTop>
+            {/* <FormField label="How do you get around?" spacingTop>
               <HorizontalAlign>
                 <StyledCheckbox
                   name="transport"
@@ -229,27 +324,50 @@ const BasicInfo: FC = () => {
                   ref={register()}
                 />
               </HorizontalAlign>
-            </FormField>
-            <FormField label="What languages can you speak/write?" spacingTop>
-              <Controller
-                as={SelectField}
-                name="languages"
-                control={control}
-                placeholder="eg. English, Afrikaans, Xhosa"
-                isMulti
-                options={[
-                  { label: 'English', value: 'english' },
-                  { label: 'Afrikaans', value: 'afrikaans' },
-                  { label: 'Xhosa', value: 'xhosa' },
-                ]}
-              />
-            </FormField>
+            </FormField> */}
+            {fields.map((item, index) => (
+              <FieldContainer key={item.identifier} split spacingTop>
+                <FormField label="Language">
+                  <Controller
+                    as={SelectField}
+                    name={`language[${index}].language`}
+                    control={control}
+                    placeholder="Language"
+                    options={[
+                      { label: 'English', value: 'English' },
+                      { label: 'Afrikaans', value: 'Afrikaans' },
+                      { label: 'Xhosa', value: 'Xhosa' },
+                    ]}
+                  />
+                </FormField>
+                <FormField label="Level">
+                  <Controller
+                    as={SelectField}
+                    name={`language[${index}].level`}
+                    control={control}
+                    placeholder="Level"
+                    options={[
+                      { label: 'Beginner', value: 'BEGINNER' },
+                      { label: 'Professional', value: 'PROFESSIONAL' },
+                      { label: 'Fluent', value: 'FLUENT' },
+                    ]}
+                  />
+                </FormField>
+              </FieldContainer>
+            ))}
           </FieldContainer>
         </ProfileSplit>
       </ProfileSplitContainer>
       <ButtonContainer>
         <Button>Update Profile</Button>
       </ButtonContainer>
+      {showChangeAvatar && (
+        <ChangeAvatar
+          currentAvatar={user.avatarUrl}
+          onUpload={(avatarUrl) => setAccountUpdate({ input: { avatarUrl } })}
+          onClose={() => setShowChangeAvatar(false)}
+        />
+      )}
     </StyledForm>
   )
 }

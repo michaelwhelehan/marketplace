@@ -13,6 +13,7 @@ import {
 import Icon from '../../../uiComponents/atoms/Icon'
 import { formatDate } from '../../../utils/date'
 import Avatar from '../../../uiComponents/atoms/Avatar'
+import { Tasks_tasks_edges_node } from '../gqlTypes/Tasks'
 
 const CARD_PADDING = 6
 
@@ -108,7 +109,7 @@ const CardEnd = styled.div`
 `
 
 interface Props {
-  task: TaskType
+  task: Tasks_tasks_edges_node
 }
 
 const SideListCard: FC<Props> = ({ task }) => {
@@ -123,7 +124,9 @@ const SideListCard: FC<Props> = ({ task }) => {
                 <InfoIcon>
                   <Icon name="MdPlace" size={20} color={primaryFontColor} />
                 </InfoIcon>
-                <InfoValue>{task.location}</InfoValue>
+                <InfoValue>
+                  {task.locationType === 'REMOTE' ? 'Remote' : task.location}
+                </InfoValue>
               </InfoRow>
               <InfoRow>
                 <InfoIcon>
@@ -137,10 +140,10 @@ const SideListCard: FC<Props> = ({ task }) => {
           </CardStart>
           <CardEnd>
             <Budget>
-              {task.currency.iso}
-              {task.budget}
+              {task.budget.currency}
+              {task.budget.amount}
             </Budget>
-            <Avatar src={task.creator.profilePictureUrl} size={30} />
+            <Avatar src={task.owner.avatarUrl} size={30} />
           </CardEnd>
         </CardMain>
         <CardFooter>

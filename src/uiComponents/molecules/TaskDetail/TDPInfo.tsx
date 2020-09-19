@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { TaskType } from '../../../types/task'
 import { primaryColor, primaryFontColor } from '../../../styles/colors'
 import Avatar from '../../atoms/Avatar'
 import { fwBold, fsS, fsXXL, fsXXS } from '../../../styles/typography'
@@ -10,6 +9,7 @@ import { formatDate } from '../../../utils/date'
 import { ParagraphXS } from '../../atoms/Paragraphs'
 import Button from '../../atoms/Button'
 import TaskStatusIndicator from '../../atoms/TaskStatusIndicator'
+import { Task_task } from '../../../pages/MarketplaceTDP/gqlTypes/Task'
 
 const Container = styled.article`
   padding: 20px;
@@ -109,7 +109,7 @@ const StatusBar = styled.div`
 `
 
 interface Props {
-  task: TaskType
+  task: Task_task
   editable?: boolean
 }
 
@@ -119,11 +119,13 @@ const TDPInfo: FC<Props> = ({ task, editable = false }) => {
       <InfoStart>
         <InfoRow>
           <InfoIcon>
-            <Avatar src={task.creator.profilePictureUrl} size={50} />
+            <Avatar src={task.owner.avatarUrl} size={50} />
           </InfoIcon>
           <InfoValue>
             <InfoValueTitle>Posted By</InfoValueTitle>
-            <StyledLink to="/">{task.creator.name}</StyledLink>
+            <StyledLink to="/">
+              {task.owner.firstName} {task.owner.lastName}
+            </StyledLink>
           </InfoValue>
         </InfoRow>
         <InfoRow>
@@ -132,7 +134,9 @@ const TDPInfo: FC<Props> = ({ task, editable = false }) => {
           </InfoIcon>
           <InfoValue>
             <InfoValueTitle>Location</InfoValueTitle>
-            <InfoValueValue>{task.location}</InfoValueValue>
+            <InfoValueValue>
+              {task.locationType === 'REMOTE' ? 'Remote' : task.location}
+            </InfoValueValue>
           </InfoValue>
         </InfoRow>
         <InfoRow>
@@ -160,10 +164,10 @@ const TDPInfo: FC<Props> = ({ task, editable = false }) => {
         </InfoContainer>
         <InfoContainer>
           <InfoSection>
-            <InfoValueTitle>Task Budget</InfoValueTitle>
+            <InfoValueTitle>Job Budget</InfoValueTitle>
             <InfoBudgetValue>
-              {task.currency.iso}
-              {task.budget}
+              {task.budget.currency}
+              {task.budget.amount}
             </InfoBudgetValue>
           </InfoSection>
           {editable ? (
@@ -195,7 +199,7 @@ const TDPInfo: FC<Props> = ({ task, editable = false }) => {
                 <Icon name="MdCode" size={20} color={primaryFontColor} />
               </InfoShare>
               <ReportLink to="">
-                <Icon name="MdFlag" size={10} /> Report this task
+                <Icon name="MdFlag" size={10} /> Report this job
               </ReportLink>
             </InfoSection>
           )}
