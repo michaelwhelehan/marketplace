@@ -103,7 +103,7 @@ const RecentTasks: FC = () => {
       width: 75,
       label: 'Avg. Offer',
       cellRenderer: ({ rowData }) => {
-        return `R${rowData.averageOffer}`
+        return `$${rowData.averageOffer}`
       },
     },
     {

@@ -49,7 +49,7 @@ const Step1: FC<Props> & TitleType = ({ register }) => {
           />
         </InnerSectionContainer>
         <TextFieldIcon
-          customIcon="R"
+          customIcon="$"
           name="amount"
           ref={register()}
           fullWidth

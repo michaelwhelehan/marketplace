@@ -54,7 +54,7 @@ const MakePayments: FC = () => {
         <CreditContainer>
           <CreditItem>
             <CreditItemTitle>Balance:</CreditItemTitle>
-            <CredititemValue>R50</CredititemValue>
+            <CredititemValue>$50</CredititemValue>
           </CreditItem>
           <CreditItem>
             <CreditItemTitle>Credits Remaining:</CreditItemTitle>

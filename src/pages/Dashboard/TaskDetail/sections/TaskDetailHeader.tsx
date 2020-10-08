@@ -37,7 +37,7 @@ const TaskDetailHeader: FC<Props> = () => {
       <StyledHeading>Need some tasks done because I can afford</StyledHeading>
       <EndContainer>
         <TaskStatusIndicator status="open" />
-        <Budget>R500</Budget>
+        <Budget>$500</Budget>
       </EndContainer>
     </Container>
   )

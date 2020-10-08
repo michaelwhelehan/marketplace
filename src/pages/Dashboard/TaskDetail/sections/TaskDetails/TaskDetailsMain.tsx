@@ -18,7 +18,7 @@ const TaskDetailsMain: FC<Props> = () => {
       onlineStatus: 'online',
       lastSeen: new Date(),
     },
-    currency: { code: 'ZAR', iso: 'R' },
+    currency: { iso: '$', code: 'USD' },
     details:
       'Fugit velit aut tempora. Iste consequatur et debitis itaque necessitatibus illo nihil ut perspiciatis. Consequatur itaque non. Enim veniam iure dicta debitis ipsam saepe sit commodi. Praesentium ipsa labore iste ipsa nemo nemo ullam id. Nisi dolorum numquam distinctio voluptatem veritatis.',
     dueDate: new Date(),

@@ -114,7 +114,7 @@ const AccountSummary: FC = () => {
               Deposit funds
             </StyledLink>
           </AccountBalanceContainer>
-          <AccountBalanceValue>R50</AccountBalanceValue>
+          <AccountBalanceValue>$50</AccountBalanceValue>
         </div>
       </Body>
     </DashboardPanelContainer>

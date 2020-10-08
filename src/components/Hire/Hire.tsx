@@ -102,7 +102,7 @@ const Hire: FC<CreateTaskProps> = ({ onClose }) => {
       <FieldContainer split>
         <FormField label="Total">
           <TextFieldIcon
-            customIcon="R"
+            customIcon="$"
             name="amount"
             ref={register()}
             fullWidth

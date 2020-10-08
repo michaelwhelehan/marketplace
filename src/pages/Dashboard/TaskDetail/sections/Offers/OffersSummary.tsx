@@ -28,11 +28,11 @@ const OffersSummary: FC<Props> = () => {
   return (
     <DashboardPanelContainer padded>
       <SummaryTitle>Budget</SummaryTitle>
-      <Budget>R500</Budget>
+      <Budget>$500</Budget>
       <SummaryTitle>Offers</SummaryTitle>
       <SummaryValue>4</SummaryValue>
       <SummaryTitle>Average Offer</SummaryTitle>
-      <SummaryValue>R450</SummaryValue>
+      <SummaryValue>$450</SummaryValue>
     </DashboardPanelContainer>
   )
 }

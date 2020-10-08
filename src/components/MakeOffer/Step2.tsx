@@ -41,7 +41,7 @@ const Step2: FC<Props> & TitleType = () => {
       <SectionText>
         You are making an offer for the following amount:
       </SectionText>
-      <ConfirmAmount>R500</ConfirmAmount>
+      <ConfirmAmount>$500</ConfirmAmount>
       <SectionText style={{ marginTop: '20px' }}>
         The reason you have given to be chosen is:
       </SectionText>

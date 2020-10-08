@@ -140,7 +140,7 @@ const PaymentHistoryPage: FC = () => {
       width: 75,
       label: 'AMOUNT',
       cellRenderer: ({ rowData }) => {
-        return `R${rowData.amount}`
+        return `$${rowData.amount}`
       },
     },
     {

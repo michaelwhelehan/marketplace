@@ -28,7 +28,7 @@ const HiresMain: FC<Props> = () => {
         rating: 4.8,
         numRatings: 10,
       },
-      currency: { iso: 'R', code: 'ZAR' },
+      currency: { iso: '$', code: 'USD' },
       amount: 500,
       coverLetter: faker.lorem.paragraph(10),
       task: {
@@ -43,7 +43,7 @@ const HiresMain: FC<Props> = () => {
         title: 'Try to navigate the SAS application, maybe it will',
         slug: 'try-to-navigate-the-sas-application-maybe-it-will',
         budget: 249,
-        currency: { code: 'ZAR', iso: 'R' },
+        currency: { iso: '$', code: 'USD' },
         location: 'Remote',
         dueDate: faker.date.future(),
         details:

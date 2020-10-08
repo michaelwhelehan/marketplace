@@ -157,7 +157,7 @@ const TasksPage: FC = () => {
       width: 100,
       label: 'AVG. OFFER',
       cellRenderer: ({ rowData }) => {
-        return `R${rowData.averageOffer}`
+        return `$${rowData.averageOffer}`
       },
     },
     {

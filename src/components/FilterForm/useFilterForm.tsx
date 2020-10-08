@@ -118,7 +118,7 @@ const useFilterForm = () => {
               value={value}
               onChange={onChange}
               range={budgetRange}
-              unit="R"
+              unit="$"
             />
           )}
         />

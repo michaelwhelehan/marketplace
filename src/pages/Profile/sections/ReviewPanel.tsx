@@ -64,7 +64,7 @@ const ReviewPanel: FC<Props> = () => {
         title: 'Try to navigate the SAS application, maybe it will',
         slug: 'try-to-navigate-the-sas-application-maybe-it-will',
         budget: 249,
-        currency: { code: 'ZAR', iso: 'R' },
+        currency: { iso: '$', code: 'USD' },
         location: 'Remote',
         dueDate: faker.date.future(),
         details:
@@ -98,7 +98,7 @@ const ReviewPanel: FC<Props> = () => {
         title: 'Try to navigate the SAS application, maybe it will',
         slug: 'try-to-navigate-the-sas-application-maybe-it-will',
         budget: 249,
-        currency: { code: 'ZAR', iso: 'R' },
+        currency: { iso: '$', code: 'USD' },
         location: 'Remote',
         dueDate: faker.date.future(),
         details:
@@ -132,7 +132,7 @@ const ReviewPanel: FC<Props> = () => {
         title: 'Try to navigate the SAS application, maybe it will',
         slug: 'try-to-navigate-the-sas-application-maybe-it-will',
         budget: 249,
-        currency: { code: 'ZAR', iso: 'R' },
+        currency: { iso: '$', code: 'USD' },
         location: 'Remote',
         dueDate: faker.date.future(),
         details:
@@ -166,7 +166,7 @@ const ReviewPanel: FC<Props> = () => {
         title: 'Try to navigate the SAS application, maybe it will',
         slug: 'try-to-navigate-the-sas-application-maybe-it-will',
         budget: 249,
-        currency: { code: 'ZAR', iso: 'R' },
+        currency: { iso: '$', code: 'USD' },
         location: 'Remote',
         dueDate: faker.date.future(),
         details:

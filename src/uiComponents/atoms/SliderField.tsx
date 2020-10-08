@@ -98,7 +98,7 @@ const Track = (props, state) => (
 interface Props {
   range: number
   value: number | number[]
-  unit: 'km' | 'R'
+  unit: string
   onChange: (value: number) => void
 }
 
