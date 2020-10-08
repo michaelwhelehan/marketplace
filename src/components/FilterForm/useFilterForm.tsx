@@ -104,7 +104,7 @@ const useFilterForm = () => {
               value={value}
               onChange={onChange}
               range={distanceRange}
-              unit="km"
+              unit="mi"
             />
           )}
         />
