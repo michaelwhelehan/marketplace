@@ -53,13 +53,14 @@ const Map: FC = () => {
         <MapMarker latitude={34.034801} longitude={-118.300794} />
         <MapMarker latitude={30.258472} longitude={-97.722509} />
         <MapMarker latitude={40.69702} longitude={-73.822849} />
-        <MapMarker latitude={47.690421} longitude={-122.362419} />
+        <MapMarker latitude={52.205758} longitude={0.117880} />
+        {/* <MapMarker latitude={47.690421} longitude={-122.362419} />
         <MapMarker latitude={39.724782} longitude={-104.998261} />
         <MapMarker latitude={35.204773} longitude={-80.852195} />
         <MapMarker latitude={37.776682} longitude={-97.337532} />
         <MapMarker latitude={43.689671} longitude={-84.850088} />
         <MapMarker latitude={39.941218} longitude={-83.028524} />
-        <MapMarker latitude={51.027657} longitude={-114.032475} />
+        <MapMarker latitude={51.027657} longitude={-114.032475} /> */}
       </ReactMapGL>
     </StyledDiv>
   )

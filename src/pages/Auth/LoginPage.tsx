@@ -9,7 +9,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { primaryColor, red } from '../../styles/colors'
 import { useAuth } from '../../services'
 import { ParagraphS } from '../../uiComponents/atoms/Paragraphs'
-import { yupResolver } from '@hookform/resolvers'
+import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
 const StyledContainer = styled(BaseContainer)`

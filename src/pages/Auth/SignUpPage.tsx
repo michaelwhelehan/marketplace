@@ -11,7 +11,7 @@ import { ParagraphS, ParagraphXS } from '../../uiComponents/atoms/Paragraphs'
 import { fsXS } from '../../styles/typography'
 import { useAccountRegisterMutation } from './mutations'
 import { useAuth } from '../../services'
-import { yupResolver } from '@hookform/resolvers'
+import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
 const StyledContainer = styled(BaseContainer)`

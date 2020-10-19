@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { primaryColor } from '../../../../styles/colors'
 import { useForm, useFieldArray, Controller } from 'react-hook-form'
 import Icon from '../../../../uiComponents/atoms/Icon'
-import FieldContainer from '../../../../uiComponents/molecules/FieldContainer'
 import FormField from '../../../../uiComponents/molecules/FormField'
 import TextField from '../../../../uiComponents/atoms/TextField'
 import TextAreaField from '../../../../uiComponents/atoms/TextAreaField'
@@ -13,7 +12,7 @@ import { useAccountUpdate } from '../../../../services'
 import { useAlert } from 'react-alert'
 import { UserProfileDetails_me } from '../gqlTypes/UserProfileDetails'
 import useConfirmDialog from '../../../../hooks/useConfirmDialog'
-import { yupResolver } from '@hookform/resolvers'
+import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
 const StyledForm = styled.form`
@@ -44,6 +43,15 @@ const ButtonContainer = styled.div`
   justify-content: flex-end;
 `
 
+type FormValues = {
+  portfolio: [
+    {
+      title: string
+      description: string
+    },
+  ]
+}
+
 const formSchema = {
   title: yup.string().required('Title is required'),
   description: yup.string().required('Description is required'),
@@ -64,7 +72,7 @@ interface Props {
 const Portfolio: FC<Props> = ({ user }) => {
   const [setAccountUpdate, { data, error }] = useAccountUpdate()
   const alert = useAlert()
-  const { register, control, handleSubmit, setError, errors } = useForm({
+  const { register, control, handleSubmit, setError, errors } = useForm<FormValues>({
     resolver: yupResolver(fieldsSchema),
     defaultValues: {
       portfolio: user.portfolios,

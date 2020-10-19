@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
-import Select, { OptionTypeBase } from 'react-select'
+import Select from 'react-select'
 import CreatableSelect from 'react-select/creatable'
 
-export interface OptionType extends OptionTypeBase {
+export interface OptionType {
   value: string | number
   label: string
 }

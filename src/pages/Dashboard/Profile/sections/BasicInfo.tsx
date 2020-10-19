@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useAlert } from 'react-alert'
-import { yupResolver } from '@hookform/resolvers'
+import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import {
   borderColorDark,

@@ -9,7 +9,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { red } from '../../styles/colors'
 import { ParagraphS } from '../../uiComponents/atoms/Paragraphs'
 import { setAuthToken, useSetPassword } from '../../services'
-import { yupResolver } from '@hookform/resolvers'
+import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import useUrlQueries from '../../hooks/useUrlQueries'
 

@@ -7,14 +7,16 @@ import FieldContainer from '../../../../uiComponents/molecules/FieldContainer'
 import FormField from '../../../../uiComponents/molecules/FormField'
 import TextField from '../../../../uiComponents/atoms/TextField'
 import TextAreaField from '../../../../uiComponents/atoms/TextAreaField'
-import SelectField from '../../../../uiComponents/atoms/SelectField'
+import SelectField, {
+  OptionType,
+} from '../../../../uiComponents/atoms/SelectField'
 import Button from '../../../../uiComponents/atoms/Button'
 import { UserProfileDetails_me } from '../gqlTypes/UserProfileDetails'
 import { useAccountUpdate } from '../../../../services'
 import { useAlert } from 'react-alert'
 import useConfirmDialog from '../../../../hooks/useConfirmDialog'
 import { getYearOptions } from '../../../../utils/date'
-import { yupResolver } from '@hookform/resolvers'
+import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
 const StyledForm = styled.form`
@@ -45,6 +47,17 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
 `
+
+type FormValues = {
+  education: [
+    {
+      degree: string
+      school: string
+      startYear: OptionType
+      endYear: OptionType
+    },
+  ]
+}
 
 const formSchema = {
   degree: yup.string().required('Degree is required'),
@@ -80,7 +93,9 @@ interface Props {
 const Education: FC<Props> = ({ user }) => {
   const [setAccountUpdate, { data, error }] = useAccountUpdate()
   const alert = useAlert()
-  const { register, control, handleSubmit, setError, errors } = useForm({
+  const { register, control, handleSubmit, setError, errors } = useForm<
+    FormValues
+  >({
     resolver: yupResolver(fieldsSchema),
     defaultValues: {
       education: user.educations.map((education) => {
