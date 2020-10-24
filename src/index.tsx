@@ -56,11 +56,3 @@ const render = (Component) => {
 }
 
 render(App)
-
-declare const module: any
-if (module.hot) {
-  module.hot.accept('./App', () => {
-    const NextApp = require('./App').default
-    render(NextApp)
-  })
-}

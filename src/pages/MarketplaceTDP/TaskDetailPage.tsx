@@ -23,6 +23,10 @@ interface TaskVars {
   slug: string
 }
 
+interface Params {
+  taskSlug: string
+}
+
 const Container = styled.div`
   height: calc(100vh - 64px - 56px - 2px);
   overflow-y: auto;
@@ -59,7 +63,7 @@ const Container = styled.div`
 `
 
 const TaskDetailPage: FC = () => {
-  const { taskSlug } = useParams()
+  const { taskSlug } = useParams<Params>()
   const { data, loading } = useGetTaskQuery({ slug: taskSlug })
   const { client } = useQuery(GET_MAKE_OFFER_VISIBLE)
   const scrollElement = useRef(null)

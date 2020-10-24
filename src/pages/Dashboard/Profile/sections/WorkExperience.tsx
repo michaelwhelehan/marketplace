@@ -226,6 +226,7 @@ const WorkExperience: FC<Props> = ({ user }) => {
                 type="hidden"
                 name={`experience[${index}].id`}
                 ref={register()}
+                defaultValue={item.id}
               />
               <FormField
                 label="Title"
@@ -235,6 +236,7 @@ const WorkExperience: FC<Props> = ({ user }) => {
                 <TextField
                   name={`experience[${index}].title`}
                   ref={register()}
+                  defaultValue={item.title}
                   placeholder="Eg. Senior Financial Analyst"
                   fullWidth
                   hasError={Boolean(errors.experience?.[index]?.title)}
@@ -249,6 +251,7 @@ const WorkExperience: FC<Props> = ({ user }) => {
                 <TextField
                   name={`experience[${index}].company`}
                   ref={register()}
+                  defaultValue={item.company}
                   placeholder="Eg. Lawrence Associates"
                   fullWidth
                   hasError={Boolean(errors.experience?.[index]?.company)}
@@ -263,6 +266,7 @@ const WorkExperience: FC<Props> = ({ user }) => {
                 <TextField
                   name={`experience[${index}].location`}
                   ref={register()}
+                  defaultValue={item.location}
                   placeholder="Eg. Cape Town"
                   fullWidth
                   hasError={Boolean(errors.experience?.[index]?.location)}
@@ -324,6 +328,7 @@ const WorkExperience: FC<Props> = ({ user }) => {
                   <TextAreaField
                     name={`experience[${index}].description`}
                     ref={register()}
+                    defaultValue={item.description}
                     placeholder="Write a short description of your work experience"
                     fullWidth
                   />

@@ -18,6 +18,7 @@ import useConfirmDialog from '../../../../hooks/useConfirmDialog'
 import { getYearOptions } from '../../../../utils/date'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { start } from 'repl'
 
 const StyledForm = styled.form`
   padding: 20px;
@@ -53,6 +54,7 @@ type FormValues = {
     {
       degree: string
       school: string
+      description: string
       startYear: OptionType
       endYear: OptionType
     },
@@ -174,11 +176,13 @@ const Education: FC<Props> = ({ user }) => {
       <FormField label="Add education">
         {fields.map((item, index) => (
           <ItemWrapper key={item.identifier}>
+            {console.log(item)}
             <StartContainer>
               <input
                 type="hidden"
                 name={`education[${index}].id`}
                 ref={register()}
+                defaultValue={item.id}
               />
               <FormField
                 label="Degree"
@@ -188,6 +192,7 @@ const Education: FC<Props> = ({ user }) => {
                 <TextField
                   name={`education[${index}].degree`}
                   ref={register()}
+                  defaultValue={item.degree}
                   placeholder="Eg. Honor's in Financial Management"
                   fullWidth
                   hasError={Boolean(errors.education?.[index]?.degree)}
@@ -202,6 +207,7 @@ const Education: FC<Props> = ({ user }) => {
                 <TextField
                   name={`education[${index}].school`}
                   ref={register()}
+                  defaultValue={item.school}
                   placeholder="Eg. University of Cape Town"
                   fullWidth
                   hasError={Boolean(errors.education?.[index]?.school)}
@@ -240,6 +246,7 @@ const Education: FC<Props> = ({ user }) => {
                 <TextAreaField
                   name={`education[${index}].description`}
                   ref={register()}
+                  defaultValue={item.description}
                   placeholder="Write a brief description of your education here"
                   fullWidth
                 />

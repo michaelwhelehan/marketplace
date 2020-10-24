@@ -15,6 +15,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "noUnusedLocals": false,
+    "noFallthroughCasesInSwitch": true,
     "jsx": "react",
     "types": ["jest", "@types/webappsec-credential-management"]
   },

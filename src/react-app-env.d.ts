@@ -1,4 +1,5 @@
 /// <reference types="react-scripts" />
+ /* eslint-disable */
 import 'react'
 
 declare module 'react' {

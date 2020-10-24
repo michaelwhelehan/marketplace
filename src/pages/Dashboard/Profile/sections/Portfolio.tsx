@@ -144,6 +144,7 @@ const Portfolio: FC<Props> = ({ user }) => {
                 type="hidden"
                 name={`portfolio[${index}].id`}
                 ref={register()}
+                defaultValue={item.id}
               />
               <FormField
                 label="Title"
@@ -153,6 +154,7 @@ const Portfolio: FC<Props> = ({ user }) => {
                 <TextField
                   name={`portfolio[${index}].title`}
                   ref={register()}
+                  defaultValue={item.title}
                   placeholder="Eg. Research on robotics"
                   fullWidth
                   hasError={Boolean(errors.portfolio?.[index]?.title)}
@@ -167,6 +169,7 @@ const Portfolio: FC<Props> = ({ user }) => {
                 <TextAreaField
                   name={`portfolio[${index}].description`}
                   ref={register()}
+                  defaultValue={item.description}
                   placeholder="Describe the project"
                   fullWidth
                   hasError={Boolean(errors.portfolio?.[index]?.description)}
