@@ -9,7 +9,7 @@ const usePageTracking = () => {
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') {
       TagManager.initialize({
-        gtmId: 'G-WYGNTJC709'
+        gtmId: 'GTM-MMZW99B'
       });
       setInitialized(true);
     }
