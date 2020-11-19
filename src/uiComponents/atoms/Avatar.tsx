@@ -37,7 +37,7 @@ const Avatar: FC<Props> = ({ src, size, onlineStatus, ...props }) => {
         size={size}
         loading="lazy"
         importance="low"
-        crossOrigin="anonymous"
+        crossOrigin={src.indexOf("lorem") > -1 ? null : "anonymous"}
       />
       {onlineStatus ? (
         <StyledStatusIndicator onlineStatus={onlineStatus} />
