@@ -18,7 +18,7 @@ function generateConversationItem() {
     id: faker.random.uuid(),
     member: {
       name: `${faker.name.firstName()} ${faker.name.lastName().charAt(0)}.`,
-      profilePictureUrl: faker.image.avatar(),
+      profilePictureUrl: faker.image.imageUrl(),
       onlineStatus: 'online',
       __typename: 'User',
     },
@@ -64,7 +64,7 @@ function generateConversationListItem() {
     id: faker.random.uuid(),
     member: {
       name: `${faker.name.firstName()} ${faker.name.lastName().charAt(0)}.`,
-      profilePictureUrl: faker.image.avatar(),
+      profilePictureUrl: faker.image.imageUrl(),
       onlineStatus: 'online',
       __typename: 'User',
     },

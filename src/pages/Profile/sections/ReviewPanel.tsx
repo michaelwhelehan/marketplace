@@ -42,7 +42,7 @@ const ReviewPanel: FC<Props> = () => {
       id: faker.random.uuid(),
       created: faker.date.past(),
       reviewer: {
-        profilePictureUrl: faker.image.avatar(),
+        profilePictureUrl: faker.image.imageUrl(),
         name: `${faker.name.firstName()} ${faker.name.lastName().charAt(0)}.`,
         onlineStatus: 'online' as OnlineStatusType,
         lastSeen: new Date(),
@@ -76,7 +76,7 @@ const ReviewPanel: FC<Props> = () => {
       id: faker.random.uuid(),
       created: faker.date.past(),
       reviewer: {
-        profilePictureUrl: faker.image.avatar(),
+        profilePictureUrl: faker.image.imageUrl(),
         name: `${faker.name.firstName()} ${faker.name.lastName().charAt(0)}.`,
         onlineStatus: 'online' as OnlineStatusType,
         lastSeen: new Date(),
@@ -110,7 +110,7 @@ const ReviewPanel: FC<Props> = () => {
       id: faker.random.uuid(),
       created: faker.date.past(),
       reviewer: {
-        profilePictureUrl: faker.image.avatar(),
+        profilePictureUrl: faker.image.imageUrl(),
         name: `${faker.name.firstName()} ${faker.name.lastName().charAt(0)}.`,
         onlineStatus: 'online' as OnlineStatusType,
         lastSeen: new Date(),
@@ -144,7 +144,7 @@ const ReviewPanel: FC<Props> = () => {
       id: faker.random.uuid(),
       created: faker.date.past(),
       reviewer: {
-        profilePictureUrl: faker.image.avatar(),
+        profilePictureUrl: faker.image.imageUrl(),
         name: `${faker.name.firstName()} ${faker.name.lastName().charAt(0)}.`,
         onlineStatus: 'online' as OnlineStatusType,
         lastSeen: new Date(),

@@ -26,7 +26,7 @@ const Notification: FC = () => {
   return (
     <NotificationContainer>
       <NotificationStart>
-        <Avatar src={faker.image.avatar()} size={50} />
+        <Avatar src={faker.image.imageUrl()} size={50} />
       </NotificationStart>
       <NotificationEnd>
         <ParagraphS>

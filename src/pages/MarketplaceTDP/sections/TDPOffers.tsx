@@ -53,8 +53,8 @@ interface Props {
   onMakeOfferClick: (event: MouseEvent) => void
 }
 
-const avatarSrc1 = faker.image.avatar()
-const avatarSrc2 = faker.image.avatar()
+const avatarSrc1 = faker.image.imageUrl()
+const avatarSrc2 = faker.image.imageUrl()
 
 const TDPOffers: FC<Props> = ({ onMakeOfferClick }) => {
   return (

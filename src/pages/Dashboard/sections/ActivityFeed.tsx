@@ -19,7 +19,7 @@ const ActivityFeed: FC = () => {
     {
       created: faker.date.recent(),
       creator: {
-        profilePictureUrl: faker.image.avatar(),
+        profilePictureUrl: faker.image.imageUrl(),
         name: `${faker.name.firstName()} ${faker.name.lastName().charAt(0)}.`,
         onlineStatus: 'online' as OnlineStatusType,
         lastSeen: new Date(),

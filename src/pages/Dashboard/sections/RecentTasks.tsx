@@ -31,7 +31,7 @@ const StyledLink = styled(Link)`
 
 const list = [
   {
-    avatar: faker.image.avatar(),
+    avatar: faker.image.imageUrl(),
     title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
@@ -41,7 +41,7 @@ const list = [
     status: 'Open',
   },
   {
-    avatar: faker.image.avatar(),
+    avatar: faker.image.imageUrl(),
     title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
@@ -51,7 +51,7 @@ const list = [
     status: 'Open',
   },
   {
-    avatar: faker.image.avatar(),
+    avatar: faker.image.imageUrl(),
     title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
@@ -61,7 +61,7 @@ const list = [
     status: 'Open',
   },
   {
-    avatar: faker.image.avatar(),
+    avatar: faker.image.imageUrl(),
     title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
@@ -71,7 +71,7 @@ const list = [
     status: 'Open',
   },
   {
-    avatar: faker.image.avatar(),
+    avatar: faker.image.imageUrl(),
     title: faker.hacker.phrase().slice(0, 50).trim(),
     created: faker.date.past(),
     due: faker.date.future(),
