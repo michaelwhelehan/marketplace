@@ -41,6 +41,15 @@ export enum AccountErrorCode {
 /**
  * An enumeration.
  */
+export enum ConversationMessageMessageType {
+  GENERATED = "GENERATED",
+  MEDIA = "MEDIA",
+  TEXT = "TEXT",
+}
+
+/**
+ * An enumeration.
+ */
 export enum TaskLocationType {
   IN_PERSON = "IN_PERSON",
   REMOTE = "REMOTE",

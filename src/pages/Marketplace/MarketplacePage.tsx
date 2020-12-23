@@ -74,7 +74,7 @@ const MarketplacePage: FC = () => {
                     },
                   }),
                   {
-                    after: data?.tasks?.pageInfo?.endCursor,
+                    after: data.tasks.pageInfo.endCursor,
                   },
                 )
               }

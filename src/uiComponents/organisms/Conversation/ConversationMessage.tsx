@@ -1,14 +1,11 @@
 import React, { FC } from 'react'
-import { UserType } from '../../../types/user'
 import styled from 'styled-components'
 import { primaryFontColor } from '../../../styles/colors'
-import { gql } from '@apollo/client'
-import { DocumentNode } from 'graphql'
 import Avatar from '../../atoms/Avatar'
-import { fromNow } from '../../../utils/date'
+import { differenceSeconds, fromNow } from '../../../utils/date'
 import { fsXXS } from '../../../styles/typography'
 import UserName from '../../atoms/UserName'
-import { Message, TextMessage, MediaMessage } from '../../../types/conversation'
+import { ConversationMessage as ConversationMessageType } from '../../../components/Conversation/gqlTypes/ConversationMessage'
 
 const MessageContainerOuter = styled.div`
   height: 100%;
@@ -48,72 +45,40 @@ const MessageText = styled.p`
 `
 
 interface Props {
-  index: number
-  measure: () => void
-  member: UserType
-  message: Message
+  message: ConversationMessageType
 }
 
-type Fragments = {
-  fragments: { message: DocumentNode }
-}
-
-const ConversationMessage: FC<Props> & Fragments = ({ member, message }) => {
+const ConversationMessage: FC<Props> = ({ message }) => {
   return (
     <MessageContainerOuter>
       <MessageContainer>
         <MessageMemberAvatar>
           <Avatar
-            src={member.profilePictureUrl}
+            src={message.sentBy.avatarUrl}
             size={50}
             onlineStatus="online"
           />
         </MessageMemberAvatar>
         <MessageContent>
           <MessageMember>
-            <UserName as="span">{member.name}</UserName>
-            <MessageTimestamp>{fromNow(message.timestamp)}</MessageTimestamp>
+            <UserName as="span">
+              {message.sentBy.firstName} {message.sentBy.lastName}
+            </UserName>
+            <MessageTimestamp>{fromNow(message.created)}</MessageTimestamp>
+            {differenceSeconds(message.modified, message.created) > 0 && (
+              <MessageTimestamp>edited</MessageTimestamp>
+            )}
           </MessageMember>
-          {message.type === 'text' ? (
-            <MessageText>{(message as TextMessage).text}</MessageText>
-          ) : (
-            <img
-              width={640}
-              height={480}
-              src={(message as MediaMessage).url}
-              alt=""
-            />
+          {message.messageType === 'TEXT' && (
+            <MessageText>{message.body}</MessageText>
+          )}
+          {message.messageType === 'MEDIA' && (
+            <img width={640} height={480} src={message.url} alt="" />
           )}
         </MessageContent>
       </MessageContainer>
     </MessageContainerOuter>
   )
-}
-
-ConversationMessage.fragments = {
-  message: gql`
-    fragment Message on ConversationFeedMessage {
-      id
-      member {
-        name
-        profilePictureUrl
-        onlineStatus
-      }
-      message {
-        type
-        timestamp
-        ... on ConversationMessageText {
-          text
-        }
-        ... on ConversationMessageImage {
-          url
-        }
-        ... on ConversationMessageVideo {
-          url
-        }
-      }
-    }
-  `,
 }
 
 export default ConversationMessage

@@ -12,17 +12,23 @@ import {
   PreSignedUploadParamsVariables,
 } from './gqlTypes/PreSignedUploadParams'
 
-interface Config<TData, TVariables> {
+interface Config<TData, TVariables, TSubscriptionVariables> {
   variables?: TVariables
+  subscriptionVariables?: TSubscriptionVariables
   onCompleted?: (data: TData) => void
   fetchPolicy?: FetchPolicy
   nextFetchPolicy?: FetchPolicy
   errorPolicy?: ErrorPolicy
 }
 
-export function useQuery<TData, TVariables>(
+export function useQuery<
+  TData,
+  TVariables,
+  TSubscriptionData = null,
+  TSubscriptionVariables = null
+>(
   query: DocumentNode,
-  config: Config<TData, TVariables> = {},
+  config: Config<TData, TVariables, TSubscriptionVariables> = {},
 ) {
   const {
     fetchPolicy = 'cache-and-network',
@@ -31,16 +37,16 @@ export function useQuery<TData, TVariables>(
     onCompleted,
     errorPolicy,
   } = config
-  const { error, loading, data, fetchMore } = useApolloQuery<TData, TVariables>(
-    query,
-    {
-      fetchPolicy,
-      nextFetchPolicy,
-      variables,
-      onCompleted,
-      errorPolicy,
-    },
-  )
+  const { error, loading, data, fetchMore, subscribeToMore } = useApolloQuery<
+    TData,
+    TVariables
+  >(query, {
+    fetchPolicy,
+    nextFetchPolicy,
+    variables,
+    onCompleted,
+    errorPolicy,
+  })
   const loadMore = (
     mergeFunc: (previousResults: TData, fetchMoreResult: TData) => TData,
     extraVariables: RequireAtLeastOne<TVariables>,
@@ -55,7 +61,26 @@ export function useQuery<TData, TVariables>(
       },
       variables: { ...config.variables, ...extraVariables },
     })
-  return { error, loading, data, loadMore }
+
+  const subscribeMore = (
+    document: DocumentNode,
+    mergeFunc: (
+      previousResults: TData,
+      subscriptionData: TSubscriptionData,
+    ) => TData,
+  ) =>
+    subscribeToMore<TSubscriptionData, TSubscriptionVariables>({
+      document,
+      updateQuery: (previousResults, { subscriptionData }) => {
+        if (!subscriptionData) {
+          return previousResults
+        }
+        return mergeFunc(previousResults, subscriptionData.data)
+      },
+      variables: { ...config.subscriptionVariables },
+    })
+
+  return { error, loading, data, loadMore, subscribeMore }
 }
 
 const preSignedUploadParamsQuery = gql`

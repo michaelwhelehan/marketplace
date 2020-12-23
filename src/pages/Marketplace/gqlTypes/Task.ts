@@ -49,4 +49,8 @@ export interface Task {
   location: string | null;
   locationLatitude: string | null;
   locationLongitude: string | null;
+  /**
+   * ID of the conversation linked to this task.
+   */
+  conversationId: string | null;
 }

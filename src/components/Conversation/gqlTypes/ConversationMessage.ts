@@ -6,10 +6,10 @@
 import { ConversationMessageMessageType } from "./../../../../gqlTypes/globalTypes";
 
 // ====================================================
-// GraphQL fragment: CreateConversationMessage
+// GraphQL fragment: ConversationMessage
 // ====================================================
 
-export interface CreateConversationMessage_conversationMessage_sentBy {
+export interface ConversationMessage_sentBy {
   __typename: "User";
   /**
    * The ID of the object.
@@ -21,24 +21,16 @@ export interface CreateConversationMessage_conversationMessage_sentBy {
   avatarUrl: string | null;
 }
 
-export interface CreateConversationMessage_conversationMessage {
+export interface ConversationMessage {
   __typename: "ConversationMessage";
   /**
    * The ID of the object.
    */
   id: string;
-  sentBy: CreateConversationMessage_conversationMessage_sentBy;
+  sentBy: ConversationMessage_sentBy;
   body: string | null;
   url: string | null;
   created: any;
   modified: any;
   messageType: ConversationMessageMessageType;
-}
-
-export interface CreateConversationMessage {
-  __typename: "CreateConversationMessagePayload";
-  /**
-   * The conversation message that was created.
-   */
-  conversationMessage: CreateConversationMessage_conversationMessage | null;
 }

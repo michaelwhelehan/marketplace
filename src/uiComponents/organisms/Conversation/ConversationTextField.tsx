@@ -3,7 +3,7 @@ import TextField from '../../atoms/TextField'
 
 export interface ConversationTextFieldProps {
   memberName: string
-  onMessageCreated: (message: String) => void
+  onMessageCreated: (message: string) => void
 }
 
 const ConversationTextField: FC<ConversationTextFieldProps> = ({
@@ -12,7 +12,7 @@ const ConversationTextField: FC<ConversationTextFieldProps> = ({
 }) => {
   const [value, setValue] = useState<string>('')
   const handleKeyPress = useCallback(
-    e => {
+    (e) => {
       if (e.keyCode === 13) {
         onMessageCreated(value)
         setValue('')
@@ -26,7 +26,7 @@ const ConversationTextField: FC<ConversationTextFieldProps> = ({
       placeholder={`Write a message to ${memberName}`}
       fullWidth
       value={value}
-      onChange={e => setValue(e.currentTarget.value)}
+      onChange={(e) => setValue(e.currentTarget.value)}
       onKeyDown={handleKeyPress}
     />
   )

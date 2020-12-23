@@ -70,7 +70,7 @@ const ProgressMain: FC<Props> = () => {
       </TimelineStartedContainer>
       <ConversationContainer>
         <ScrollElementContextProvider scrollElement={window}>
-          <ConversationConnected position="bottomUp" scrollType="windowed" />
+          <ConversationConnected conversationId="Q29udmVyc2F0aW9uOjE=" position="bottomUp" scrollType="windowed" />
         </ScrollElementContextProvider>
       </ConversationContainer>
     </Container>

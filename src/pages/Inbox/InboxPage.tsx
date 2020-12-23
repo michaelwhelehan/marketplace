@@ -71,26 +71,26 @@ const filterStyles = {
   placeholder: (styles) => ({ ...styles, color: primaryFontColor }),
 }
 
-const GET_CONVERSATION_LIST = gql`
-  query ConversationList($cursor: String, $loadAmount: Int) {
-    conversationList(cursor: $cursor, loadAmount: $loadAmount) @client {
-      cursor
-      conversations {
-        id
-        member {
-          profilePictureUrl
-          name
-          onlineStatus
-        }
-        lastMessage {
-          lastMessageFromMe
-          lastMessageTimestamp
-          lastMessageText
-        }
-      }
-    }
-  }
-`
+// const GET_CONVERSATION_LIST = gql`
+//   query ConversationList($cursor: String, $loadAmount: Int) {
+//     conversationList(cursor: $cursor, loadAmount: $loadAmount) @client {
+//       cursor
+//       conversations {
+//         id
+//         member {
+//           profilePictureUrl
+//           name
+//           onlineStatus
+//         }
+//         lastMessage {
+//           lastMessageFromMe
+//           lastMessageTimestamp
+//           lastMessageText
+//         }
+//       }
+//     }
+//   }
+// `
 
 const InboxHint: FC = () => (
   <SelectConversation>
@@ -104,12 +104,12 @@ const InboxHint: FC = () => (
 
 const InboxPage: FC = () => {
   const match = useRouteMatch()
-  const { data, loading, fetchMore } = useQuery<
-    ConversationListData,
-    ConversationListVars
-  >(GET_CONVERSATION_LIST, {
-    variables: { cursor: undefined, loadAmount: undefined },
-  })
+  // const { data, loading, fetchMore } = useQuery<
+  //   ConversationListData,
+  //   ConversationListVars
+  // >(GET_CONVERSATION_LIST, {
+  //   variables: { cursor: undefined, loadAmount: undefined },
+  // })
 
   return (
     <StyledContainer>
@@ -121,7 +121,7 @@ const InboxPage: FC = () => {
             styles={filterStyles}
           />
         </FilterContainer>
-        {!data ? (
+        {/* {!data ? (
           <>Loading...</>
         ) : (
           <InboxConversationList
@@ -163,7 +163,7 @@ const InboxPage: FC = () => {
               })
             }}
           />
-        )}
+        )} */}
       </SideContainer>
       <MainContainer>
         <Switch>
@@ -177,10 +177,6 @@ const InboxPage: FC = () => {
       </MainContainer>
     </StyledContainer>
   )
-}
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 export default InboxPage

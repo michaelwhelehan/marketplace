@@ -6,22 +6,13 @@ import TDPDetails from '../../uiComponents/molecules/TaskDetail/TDPDetails'
 import TDPQuestions from './sections/TDPQuestions'
 import { ScrollElementContextProvider } from '../../contexts/ScrollElementContext'
 import { useParams } from 'react-router-dom'
-import { gql, useQuery } from '@apollo/client'
-import { TaskType } from '../../types/task'
+import { useQuery } from '@apollo/client'
 import TDPAttachments from '../../uiComponents/molecules/TaskDetail/TDPAttachments'
 import TDPOffers from './sections/TDPOffers'
 import { GET_MAKE_OFFER_VISIBLE } from '../../components/Layout/Layout'
 import LineBreak from '../../uiComponents/atoms/LineBreak'
 import { useGetTaskQuery } from './queries'
 import Loader from '../../uiComponents/atoms/Loader/Loader'
-
-interface TaskData {
-  task: TaskType
-}
-
-interface TaskVars {
-  slug: string
-}
 
 interface Params {
   taskSlug: string
@@ -88,7 +79,7 @@ const TaskDetailPage: FC = () => {
           <TDPAttachments />
           <TDPOffers onMakeOfferClick={handleMakeOfferClick} />
           <ScrollElementContextProvider scrollElement={scrollElement}>
-            <TDPQuestions />
+            <TDPQuestions conversationId={data.task.conversationId} />
           </ScrollElementContextProvider>
         </>
       )}

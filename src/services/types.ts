@@ -32,6 +32,10 @@ export interface Config {
    */
   apiUrl: string
   /**
+   * Url of the Marketplace Websocket.
+   */
+  wsUrl: string
+  /**
    * Determines data which have to be queried on start.
    */
   loadOnStart: {

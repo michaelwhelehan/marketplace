@@ -1,169 +1,146 @@
-import React, { FC } from 'react'
-import { useQuery, useMutation, gql } from '@apollo/client'
+import React, { FC, useEffect, useState } from 'react'
 import Conversation from '../../uiComponents/organisms/Conversation/Conversation'
-import ConversationMessageList from '../../uiComponents/organisms/Conversation/ConversationMessageList'
 import {
   ConversationPositionType,
   ConversationScrollType,
-  ConversationMessageType,
 } from '../../types/conversation'
-import ConversationMessage from '../../uiComponents/organisms/Conversation/ConversationMessage'
-
-interface ConversationData {
-  conversation: {
-    id: string
-    conversationFeed: {
-      cursor: string
-      messages: ConversationMessageType[]
-    }
-  }
-}
-
-interface ConversationVars {
-  conversationId: string
-  cursor: string
-  loadAmount: number
-}
-
-const CREATE_CONVERSATION_MESSAGE = gql`
-  mutation CreateConversationMessage($conversationId: ID!, $message: String!) {
-    createConversationMessage(
-      conversationId: $conversationId
-      message: $message
-    ) @client {
-      ...Message
-    }
-  }
-  ${ConversationMessage.fragments.message}
-`
-
-const GET_CONVERSATION_MESSAGES = gql`
-  query ConversationMessages(
-    $conversationId: ID!
-    $cursor: String
-    $loadAmount: Int
-  ) {
-    conversation(id: $conversationId) @client {
-      id
-      conversationFeed(cursor: $cursor, loadAmount: $loadAmount)
-        @connection(key: "conversationMessageFeed") {
-        ...MessageFeed
-      }
-    }
-  }
-  ${ConversationMessageList.fragments.messageFeed}
-`
+import {
+  useGetConversationQuery,
+  conversationMessageCreatedSubscription,
+} from './queries'
+import { useConversationMessageCreateMutation } from './mutations'
+import {
+  Conversation_conversation_conversationFeed_edges,
+  Conversation_conversation_conversationFeed_edges_node,
+} from './gqlTypes/Conversation'
+import { EditConversationMessage_conversationMessage } from './gqlTypes/EditConversationMessage'
 
 interface Props {
+  conversationId: string
   position: ConversationPositionType
   scrollType: ConversationScrollType
+  setCount?: (count: number) => void
 }
 
-const ConversationConnected: FC<Props> = ({ position, scrollType }) => {
-  const { data, loading, fetchMore } = useQuery<
-    ConversationData,
-    ConversationVars
-  >(GET_CONVERSATION_MESSAGES, {
+const ConversationConnected: FC<Props> = ({
+  conversationId,
+  position,
+  scrollType,
+  setCount,
+}) => {
+  const [subscribed, setSubscribed] = useState<boolean>(false)
+  const { data, loading, loadMore, subscribeMore } = useGetConversationQuery({
     variables: {
-      conversationId: '1',
-      cursor: undefined,
-      loadAmount: undefined,
+      id: conversationId,
+      pageSize: 100,
     },
+    subscriptionVariables: { conversationId },
   })
-  const [createConversationMessage] = useMutation(CREATE_CONVERSATION_MESSAGE, {
-    update(cache, { data: { createConversationMessage } }) {
-      const { conversation } = cache.readQuery({
-        query: GET_CONVERSATION_MESSAGES,
-        variables: { conversationId: '1', cursor: undefined },
-      })
-      const previousConversationMessages = conversation.conversationFeed
-      const messages =
-        position === 'topDown'
-          ? [
-              createConversationMessage,
-              ...previousConversationMessages.messages,
-            ]
-          : [
-              ...previousConversationMessages.messages,
-              createConversationMessage,
-            ]
-      const data = {
-        conversation: {
-          ...conversation,
-          conversationFeed: {
-            ...previousConversationMessages,
-            messages,
-          },
-        },
-      }
-      cache.writeQuery({
-        query: GET_CONVERSATION_MESSAGES,
-        variables: { conversationId: '1', cursor: undefined },
-        data,
-      })
-    },
+  const createConversationMessage = useConversationMessageCreateMutation({
+    conversationId,
+    position,
   })
+  const hasData = data?.conversation?.conversationFeed?.edges?.length > 0
+
+  useEffect(() => {
+    if (data?.conversation?.conversationFeed?.totalCount) {
+      setCount(data?.conversation?.conversationFeed?.totalCount)
+    }
+  }, [data?.conversation?.conversationFeed?.totalCount, setCount])
+
+  useEffect(() => {
+    if (subscribeMore && !subscribed) {
+      subscribeMore(conversationMessageCreatedSubscription, (prev, next) => {
+        const type = next.conversationSubscription.__typename
+        const prevConversationFeed = prev.conversation.conversationFeed
+        switch (type) {
+          case 'CreateConversationMessagePayload':
+            const edges: Conversation_conversation_conversationFeed_edges[] =
+              position === 'topDown'
+                ? [
+                    {
+                      __typename: 'ConversationMessageCountableEdge',
+                      node: next.conversationSubscription
+                        .conversationMessage as Conversation_conversation_conversationFeed_edges_node,
+                    },
+                    ...prevConversationFeed.edges,
+                  ]
+                : [
+                    ...prevConversationFeed.edges,
+                    {
+                      __typename: 'ConversationMessageCountableEdge',
+                      node: next.conversationSubscription
+                        .conversationMessage as Conversation_conversation_conversationFeed_edges_node,
+                    },
+                  ]
+            return {
+              ...prev,
+              conversation: {
+                ...prev.conversation,
+                conversationFeed: {
+                  ...prevConversationFeed,
+                  totalCount: prevConversationFeed.totalCount + 1,
+                  edges,
+                },
+              },
+            }
+          case 'DeleteConversationMessagePayload':
+            return {
+              ...prev,
+              conversation: {
+                ...prev.conversation,
+                conversationFeed: {
+                  ...prevConversationFeed,
+                  totalCount: prevConversationFeed.totalCount - 1,
+                  edges: prevConversationFeed.edges.filter(
+                    (edge) =>
+                      edge.node.id !==
+                      next.conversationSubscription.conversationMessage.id,
+                  ),
+                },
+              },
+            }
+        }
+      })
+      setSubscribed(true)
+    }
+  }, [subscribeMore, subscribed, position])
 
   return (
     <Conversation
       position={position}
       scrollType={scrollType}
-      messagesLoading={loading}
-      messageList={data?.conversation?.conversationFeed?.messages}
-      messagesLoadAmount={10}
+      messagesLoading={loading && !hasData}
+      messageList={data?.conversation?.conversationFeed?.edges}
+      messagesLoadAmount={100}
       memberName="Michael W"
       onMessageCreated={(message) => {
         createConversationMessage({
-          variables: { conversationId: '1', message },
+          variables: { conversationId, messageType: 'text', body: message },
         })
       }}
-      onLoadMoreMessages={async (loadAmount) => {
-        await sleep(Math.floor(Math.random() * 1000) + 500)
-        await fetchMore({
-          query: GET_CONVERSATION_MESSAGES,
-          variables: {
-            conversationId: '1',
-            cursor: data.conversation.conversationFeed.cursor,
-            loadAmount,
-          },
-          updateQuery: (
-            previousResult: {
-              conversation: {
-                conversationFeed: { messages: any; cursor: string }
-              }
-            },
-            { fetchMoreResult },
-          ) => {
-            const previousConversationFeed =
-              previousResult.conversation.conversationFeed
-            const newConversationFeed =
-              fetchMoreResult.conversation.conversationFeed
-
-            const newConversationData = {
-              ...previousResult.conversation,
+      onLoadMoreMessages={async () => {
+        if (data?.conversation?.conversationFeed?.pageInfo?.hasNextPage) {
+          loadMore(
+            (prev, next) => ({
+              ...prev,
               conversationFeed: {
-                messages: [
-                  ...newConversationFeed.messages,
-                  ...previousConversationFeed.messages,
+                ...prev.conversation.conversationFeed,
+                edges: [
+                  ...prev.conversation.conversationFeed.edges,
+                  ...next.conversation.conversationFeed.edges,
                 ],
-                cursor: newConversationFeed.cursor,
-                __typename: 'ConversationFeed',
+                pageInfo: next.conversation.conversationFeed.pageInfo,
               },
-            }
-            const newData = {
-              ...previousResult,
-              conversation: newConversationData,
-            }
-            return newData
-          },
-        })
+            }),
+            {
+              after: data.conversation.conversationFeed.pageInfo?.endCursor,
+            },
+          )
+        }
       }}
     />
   )
-}
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 export default ConversationConnected

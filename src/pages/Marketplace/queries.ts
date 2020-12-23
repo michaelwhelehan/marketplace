@@ -25,6 +25,7 @@ export const taskFragment = gql`
     location
     locationLatitude
     locationLongitude
+    conversationId
   }
 `
 

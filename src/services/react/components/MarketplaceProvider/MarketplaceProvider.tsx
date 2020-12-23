@@ -53,6 +53,7 @@ const MarketplaceProvider: React.FC<IProps> = ({
         ? apolloConfig.links
         : createMarketplaceLinks({
             apiUrl: config.apiUrl,
+            wsUrl: config.wsUrl,
             tokenExpirationCallback,
           })
 

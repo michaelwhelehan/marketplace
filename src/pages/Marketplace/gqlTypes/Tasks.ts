@@ -49,6 +49,10 @@ export interface Tasks_tasks_edges_node {
   location: string | null;
   locationLatitude: string | null;
   locationLongitude: string | null;
+  /**
+   * ID of the conversation linked to this task.
+   */
+  conversationId: string | null;
 }
 
 export interface Tasks_tasks_edges {

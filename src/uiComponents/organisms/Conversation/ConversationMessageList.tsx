@@ -2,15 +2,13 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import InfiniteList from '../../molecules/InfiniteList'
 import ConversationMessage from './ConversationMessage'
-import { gql } from '@apollo/client'
-import { DocumentNode } from 'graphql'
 import {
   ConversationPositionType,
   ConversationScrollType,
-  ConversationMessageType,
 } from '../../../types/conversation'
 import WindowedList from '../../molecules/WindowedList'
 import { useScrollElement } from '../../../contexts/ScrollElementContext'
+import { Conversation_conversation_conversationFeed_edges } from '../../../components/Conversation/gqlTypes/Conversation'
 
 const StyledConversationMessageList = styled.div`
   height: 100%;
@@ -18,18 +16,14 @@ const StyledConversationMessageList = styled.div`
 
 export interface ConversationMessageListProps {
   messagesLoading: boolean
-  messageList: ConversationMessageType[]
+  messageList: Conversation_conversation_conversationFeed_edges[]
   messagesLoadAmount: number
   onLoadMoreMessages: (loadAmount: number) => Promise<any>
   position: ConversationPositionType
   scrollType: ConversationScrollType
 }
 
-type Fragments = {
-  fragments: { messageFeed: DocumentNode }
-}
-
-const ConversationMessageList: FC<ConversationMessageListProps> & Fragments = ({
+const ConversationMessageList: FC<ConversationMessageListProps> = ({
   messagesLoading,
   messageList,
   messagesLoadAmount,
@@ -49,7 +43,7 @@ const ConversationMessageList: FC<ConversationMessageListProps> & Fragments = ({
         loading={messagesLoading}
         list={messageList}
         loadAmount={messagesLoadAmount}
-        renderListItem={listItem => <ConversationMessage {...listItem} />}
+        renderListItem={listItem => <ConversationMessage message={listItem.node} />}
         onLoadMore={onLoadMoreMessages}
         rowHeight={100}
         heightCalculation="dynamic"
@@ -64,7 +58,7 @@ const ConversationMessageList: FC<ConversationMessageListProps> & Fragments = ({
         loading={messagesLoading}
         list={messageList}
         loadAmount={messagesLoadAmount}
-        renderListItem={listItem => <ConversationMessage {...listItem} />}
+        renderListItem={(listItem: Conversation_conversation_conversationFeed_edges) => <ConversationMessage message={listItem.node} />}
         onLoadMore={onLoadMoreMessages}
         rowHeight={100}
         heightCalculation="dynamic"
@@ -72,18 +66,6 @@ const ConversationMessageList: FC<ConversationMessageListProps> & Fragments = ({
       />
     </StyledConversationMessageList>
   )
-}
-
-ConversationMessageList.fragments = {
-  messageFeed: gql`
-    fragment MessageFeed on ConversationFeed {
-      cursor
-      messages {
-        ...Message
-      }
-    }
-    ${ConversationMessage.fragments.message}
-  `,
 }
 
 export default ConversationMessageList

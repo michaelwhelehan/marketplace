@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import styled from 'styled-components'
 import { black } from '../../../styles/colors'
 import ConversationConnected from '../../../components/Conversation/ConversationConnected'
@@ -15,12 +15,17 @@ const ConversationContainer = styled.div`
   margin-top: 10px;
 `
 
-const TDPQuestions: FC = () => {
+interface Props {
+  conversationId: string
+}
+
+const TDPQuestions: FC<Props> = ({ conversationId }) => {
+  const [questionsCount, setQuestionsCount] = useState<number>(0)
   return (
     <Container>
-      <Title>Questions (10)</Title>
+      <Title>Questions ({questionsCount})</Title>
       <ConversationContainer>
-        <ConversationConnected position="topDown" scrollType="windowed" />
+        <ConversationConnected conversationId={conversationId} position="topDown" scrollType="windowed" setCount={setQuestionsCount} />
       </ConversationContainer>
     </Container>
   )

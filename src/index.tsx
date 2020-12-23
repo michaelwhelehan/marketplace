@@ -4,12 +4,13 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import { MarketplaceProvider, useAuth } from './services'
 import { ConfigInput } from './services/types'
-import { apiUrl } from './constants/app'
+import { apiUrl, wsUrl } from './constants/app'
 import { positions, Provider as AlertProvider, useAlert } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
 
 const MARKETPLACE_CONFIG: ConfigInput = {
   apiUrl,
+  wsUrl,
 }
 
 const notificationOptions = {
