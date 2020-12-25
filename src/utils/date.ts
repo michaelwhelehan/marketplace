@@ -26,6 +26,10 @@ export function differenceSeconds(date1: Date, date2: Date): number {
   return dayjs(date1).diff(date2, 'second')
 }
 
+export function substractMinutes(date: Date, numMinutes: number): Date {
+  return dayjs(date).subtract(numMinutes, 'minute').toDate()
+}
+
 export function formatDate(date: Date | string, format: string): string {
   return dayjs(date).format(format)
 }

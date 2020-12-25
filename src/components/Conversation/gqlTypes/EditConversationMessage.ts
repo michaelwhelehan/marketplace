@@ -3,8 +3,6 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { ConversationMessageMessageType } from "./../../../../gqlTypes/globalTypes";
-
 // ====================================================
 // GraphQL fragment: EditConversationMessage
 // ====================================================
@@ -17,9 +15,6 @@ export interface EditConversationMessage_conversationMessage {
   id: string;
   modified: any;
   body: string | null;
-  url: string | null;
-  messageType: ConversationMessageMessageType;
-  isActive: boolean;
 }
 
 export interface EditConversationMessage {

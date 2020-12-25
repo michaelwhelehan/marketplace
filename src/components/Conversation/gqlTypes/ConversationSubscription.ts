@@ -51,9 +51,6 @@ export interface ConversationSubscription_conversationSubscription_EditConversat
   id: string;
   modified: any;
   body: string | null;
-  url: string | null;
-  messageType: ConversationMessageMessageType;
-  isActive: boolean;
 }
 
 export interface ConversationSubscription_conversationSubscription_EditConversationMessagePayload {

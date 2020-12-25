@@ -3,11 +3,19 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { ConversationMessageMessageType } from "./../../../../gqlTypes/globalTypes";
+import { ConversationCategory, ConversationMessageMessageType } from "./../../../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL query operation: Conversation
 // ====================================================
+
+export interface Conversation_conversation_task {
+  __typename: "Task";
+  /**
+   * ID of the owner linked to this task.
+   */
+  ownerId: string | null;
+}
 
 export interface Conversation_conversation_conversationFeed_edges_node_sentBy {
   __typename: "User";
@@ -78,6 +86,12 @@ export interface Conversation_conversation_conversationFeed {
 
 export interface Conversation_conversation {
   __typename: "Conversation";
+  /**
+   * The ID of the object.
+   */
+  id: string;
+  category: ConversationCategory;
+  task: Conversation_conversation_task | null;
   /**
    * List of the conversation's messages.
    */

@@ -39,9 +39,6 @@ export const editConversationMessageFragment = gql`
       id
       modified
       body
-      url
-      messageType
-      isActive
     }
   }
 `
@@ -58,6 +55,11 @@ export const getConversationQuery = gql`
   ${conversationMessageFragment}
   query Conversation($id: ID!, $after: String, $pageSize: Int) {
     conversation(id: $id) {
+      id
+      category
+      task {
+        ownerId
+      }
       conversationFeed(first: $pageSize, after: $after) {
         totalCount
         edges {

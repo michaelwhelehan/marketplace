@@ -34,6 +34,7 @@ export interface SetPassword_setPassword_user {
   email: string;
   firstName: string;
   lastName: string;
+  username: string;
   avatarUrl: string | null;
 }
 

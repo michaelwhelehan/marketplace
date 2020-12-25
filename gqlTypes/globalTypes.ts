@@ -41,6 +41,15 @@ export enum AccountErrorCode {
 /**
  * An enumeration.
  */
+export enum ConversationCategory {
+  INBOX = "INBOX",
+  ORDER = "ORDER",
+  TASK = "TASK",
+}
+
+/**
+ * An enumeration.
+ */
 export enum ConversationMessageMessageType {
   GENERATED = "GENERATED",
   MEDIA = "MEDIA",

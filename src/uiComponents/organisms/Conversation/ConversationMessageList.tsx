@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useRef } from 'react'
 import styled from 'styled-components'
 import InfiniteList from '../../molecules/InfiniteList'
 import ConversationMessage from './ConversationMessage'
@@ -8,7 +8,8 @@ import {
 } from '../../../types/conversation'
 import WindowedList from '../../molecules/WindowedList'
 import { useScrollElement } from '../../../contexts/ScrollElementContext'
-import { Conversation_conversation_conversationFeed_edges } from '../../../components/Conversation/gqlTypes/Conversation'
+import { Conversation_conversation } from '../../../components/Conversation/gqlTypes/Conversation'
+import { CellMeasurerCache, List } from 'react-virtualized'
 
 const StyledConversationMessageList = styled.div`
   height: 100%;
@@ -16,22 +17,35 @@ const StyledConversationMessageList = styled.div`
 
 export interface ConversationMessageListProps {
   messagesLoading: boolean
-  messageList: Conversation_conversation_conversationFeed_edges[]
+  currentUserId: string
+  conversation: Conversation_conversation
   messagesLoadAmount: number
   onLoadMoreMessages: (loadAmount: number) => Promise<any>
+  onConversationMessageEdit: ({
+    messageId,
+    body,
+  }: {
+    messageId: string
+    body: string
+  }) => void
   position: ConversationPositionType
   scrollType: ConversationScrollType
 }
 
 const ConversationMessageList: FC<ConversationMessageListProps> = ({
   messagesLoading,
-  messageList,
+  currentUserId,
+  conversation,
   messagesLoadAmount,
   onLoadMoreMessages,
+  onConversationMessageEdit,
   position,
   scrollType,
 }) => {
   const scrollElementRef = useScrollElement()
+  const listRef = useRef<List>()
+  const cacheRef = useRef<CellMeasurerCache>()
+  const messageList = conversation?.conversationFeed?.edges
 
   if (!messageList || !messageList.length) {
     return null
@@ -40,10 +54,22 @@ const ConversationMessageList: FC<ConversationMessageListProps> = ({
   if (scrollType === 'windowed') {
     return (
       <WindowedList
+        listRef={listRef}
+        cacheRef={cacheRef}
         loading={messagesLoading}
         list={messageList}
         loadAmount={messagesLoadAmount}
-        renderListItem={listItem => <ConversationMessage message={listItem.node} />}
+        renderListItem={(listItem) => (
+          <ConversationMessage
+            listRef={listRef}
+            cacheRef={cacheRef}
+            index={listItem.index}
+            currentUserId={currentUserId}
+            conversation={conversation}
+            onConversationMessageEdit={onConversationMessageEdit}
+            message={listItem.node}
+          />
+        )}
         onLoadMore={onLoadMoreMessages}
         rowHeight={100}
         heightCalculation="dynamic"
@@ -58,7 +84,17 @@ const ConversationMessageList: FC<ConversationMessageListProps> = ({
         loading={messagesLoading}
         list={messageList}
         loadAmount={messagesLoadAmount}
-        renderListItem={(listItem: Conversation_conversation_conversationFeed_edges) => <ConversationMessage message={listItem.node} />}
+        renderListItem={(listItem) => (
+          <ConversationMessage
+            listRef={listRef}
+            cacheRef={cacheRef}
+            index={listItem.index}
+            currentUserId={currentUserId}
+            conversation={conversation}
+            onConversationMessageEdit={onConversationMessageEdit}
+            message={listItem.node}
+          />
+        )}
         onLoadMore={onLoadMoreMessages}
         rowHeight={100}
         heightCalculation="dynamic"

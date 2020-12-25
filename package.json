@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@apollo/client": "^3.2.5",
+    "@apollo/client": "^3.3.6",
     "@hookform/resolvers": "^1.0.0",
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.0",
@@ -21,7 +21,7 @@
     "@types/styled-components": "^5.1.4",
     "@types/webappsec-credential-management": "^0.6.0",
     "@types/yup": "^0.29.8",
-    "apollo-cache-persist": "^0.1.1",
+    "apollo3-cache-persist": "^0.9.1",
     "dayjs": "^1.9.4",
     "faker": "^4.1.0",
     "graphql": "^15.3.0",

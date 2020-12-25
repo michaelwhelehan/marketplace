@@ -61,7 +61,6 @@ const StyledLink = styled(Link)`
 `
 
 const ReportLink = styled(Link)`
-  margin-top: 20px;
   font-size: ${fsXXS}px;
   line-height: 1.25;
   ${fwBold};
@@ -88,14 +87,14 @@ const InfoSection = styled.div`
   }
 `
 
-const InfoShare = styled.div`
-  margin-top: 10px;
-  display: flex;
+// const InfoShare = styled.div`
+//   margin-top: 10px;
+//   display: flex;
 
-  svg {
-    cursor: pointer;
-  }
-`
+//   svg {
+//     cursor: pointer;
+//   }
+// `
 
 const InfoBudgetValue = styled.div`
   margin-top: 10px;
@@ -176,7 +175,7 @@ const TDPInfo: FC<Props> = ({ task, editable = false }) => {
             </InfoSection>
           ) : (
             <InfoSection>
-              <InfoValueTitle>Share</InfoValueTitle>
+              {/* <InfoValueTitle>Share</InfoValueTitle>
               <InfoShare>
                 <Icon
                   name="FaFacebook"
@@ -197,7 +196,7 @@ const TDPInfo: FC<Props> = ({ task, editable = false }) => {
                   spacingEnd
                 />
                 <Icon name="MdCode" size={20} color={primaryFontColor} />
-              </InfoShare>
+              </InfoShare> */}
               <ReportLink to="">
                 <Icon name="MdFlag" size={10} /> Report this job
               </ReportLink>
