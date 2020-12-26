@@ -15,18 +15,18 @@ const ConversationContainer = styled.article`
   padding-bottom: 20px;
 `
 
-const ConversationMessagesWrapper = styled.div<{
+const ConversationMessagesContainer = styled.div<{
   position: ConversationPositionType
 }>`
   ${({ position }) =>
     position === 'topDown' &&
     css`
-      margin-top: 70px;
+      margin-top: 190px;
     `}
   height: calc(100% - 60px);
 `
 
-const ConversationTextFieldWrapper = styled.div<{
+const ConversationTextFieldContainer = styled.div<{
   position: ConversationPositionType
 }>`
   position: absolute;
@@ -38,7 +38,7 @@ const ConversationTextFieldWrapper = styled.div<{
   ${({ position }) =>
     position === 'topDown' &&
     css`
-      top: -50px;
+      top: -170px;
     `}
   ${({ position }) =>
     position === 'bottomUp' &&
@@ -51,22 +51,19 @@ interface Props
   extends ConversationMessageListProps,
     ConversationTextFieldProps {}
 
-const Conversation: FC<Props> = ({
-  onMessageCreated,
-  memberName,
-  ...props
-}) => {
+const Conversation: FC<Props> = ({ onMessageCreated, ...props }) => {
   return (
     <ConversationContainer>
-      <ConversationMessagesWrapper position={props.position}>
+      <ConversationMessagesContainer position={props.position}>
         <ConversationMessageList {...props} />
-      </ConversationMessagesWrapper>
-      <ConversationTextFieldWrapper position={props.position}>
+      </ConversationMessagesContainer>
+      <ConversationTextFieldContainer position={props.position}>
         <ConversationTextField
-          memberName={memberName}
+          conversation={props.conversation}
+          position={props.position}
           onMessageCreated={onMessageCreated}
         />
-      </ConversationTextFieldWrapper>
+      </ConversationTextFieldContainer>
     </ConversationContainer>
   )
 }

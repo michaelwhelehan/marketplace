@@ -1,7 +1,10 @@
 import React, { FC, useRef } from 'react'
 import styled from 'styled-components'
 import InfiniteList from '../../molecules/InfiniteList'
-import ConversationMessage from './ConversationMessage'
+import ConversationMessage, {
+  ConversationMessageDeleteType,
+  ConversationMessageEditType,
+} from './ConversationMessage'
 import {
   ConversationPositionType,
   ConversationScrollType,
@@ -21,14 +24,8 @@ export interface ConversationMessageListProps {
   conversation: Conversation_conversation
   messagesLoadAmount: number
   onLoadMoreMessages: (loadAmount: number) => Promise<any>
-  onConversationMessageEdit: ({
-    messageId,
-    body,
-  }: {
-    messageId: string
-    body: string
-  }) => void
-  onConversationMessageDelete: ({ messageId }: { messageId: string }) => void
+  onConversationMessageEdit: ConversationMessageEditType
+  onConversationMessageDelete: ConversationMessageDeleteType
   position: ConversationPositionType
   scrollType: ConversationScrollType
 }

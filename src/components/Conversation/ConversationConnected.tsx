@@ -1,24 +1,18 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect } from 'react'
 import Conversation from '../../uiComponents/organisms/Conversation/Conversation'
 import {
   ConversationPositionType,
   ConversationScrollType,
 } from '../../types/conversation'
-import {
-  useGetConversationQuery,
-  conversationMessageCreatedSubscription,
-} from './queries'
+import { useGetConversationQuery } from './queries'
 import {
   useConversationMessageCreateMutation,
   useConversationMessageDeleteMutation,
   useConversationMessageUpdateMutation,
 } from './mutations'
-import {
-  Conversation_conversation_conversationFeed_edges,
-  Conversation_conversation_conversationFeed_edges_node,
-} from './gqlTypes/Conversation'
 import { useAuth } from '../../services'
 import { substractMinutes } from '../../utils/date'
+import useConversationSubscribeMore from './useConversationSubscribeMore'
 
 interface Props {
   conversationId: string
@@ -33,7 +27,6 @@ const ConversationConnected: FC<Props> = ({
   scrollType,
   setCount,
 }) => {
-  const [subscribed, setSubscribed] = useState<boolean>(false)
   const { user } = useAuth()
   const { data, loading, loadMore, subscribeMore } = useGetConversationQuery({
     variables: {
@@ -58,83 +51,7 @@ const ConversationConnected: FC<Props> = ({
     }
   }, [data?.conversation?.conversationFeed?.totalCount, setCount])
 
-  useEffect(() => {
-    if (subscribeMore && !subscribed) {
-      subscribeMore(conversationMessageCreatedSubscription, (prev, next) => {
-        const type = next.conversationSubscription.__typename
-        const prevConversationFeed = prev.conversation.conversationFeed
-        switch (type) {
-          case 'CreateConversationMessagePayload':
-            if (
-              prev.conversation.conversationFeed.edges.some(
-                ({ node }) =>
-                  node.id ===
-                  next.conversationSubscription.conversationMessage.id,
-              )
-            ) {
-              return prev
-            }
-
-            const edges: Conversation_conversation_conversationFeed_edges[] =
-              position === 'topDown'
-                ? [
-                    {
-                      __typename: 'ConversationMessageCountableEdge',
-                      node: next.conversationSubscription
-                        .conversationMessage as Conversation_conversation_conversationFeed_edges_node,
-                    },
-                    ...prevConversationFeed.edges,
-                  ]
-                : [
-                    ...prevConversationFeed.edges,
-                    {
-                      __typename: 'ConversationMessageCountableEdge',
-                      node: next.conversationSubscription
-                        .conversationMessage as Conversation_conversation_conversationFeed_edges_node,
-                    },
-                  ]
-            return {
-              ...prev,
-              conversation: {
-                ...prev.conversation,
-                conversationFeed: {
-                  ...prevConversationFeed,
-                  totalCount: prevConversationFeed.totalCount + 1,
-                  edges,
-                },
-              },
-            }
-          case 'DeleteConversationMessagePayload':
-            if (
-              !prev.conversation.conversationFeed.edges.some(
-                ({ node }) =>
-                  node.id ===
-                  next.conversationSubscription.conversationMessage.id,
-              )
-            ) {
-              return prev
-            }
-
-            return {
-              ...prev,
-              conversation: {
-                ...prev.conversation,
-                conversationFeed: {
-                  ...prevConversationFeed,
-                  totalCount: prevConversationFeed.totalCount - 1,
-                  edges: prevConversationFeed.edges.filter(
-                    (edge) =>
-                      edge.node.id !==
-                      next.conversationSubscription.conversationMessage.id,
-                  ),
-                },
-              },
-            }
-        }
-      })
-      setSubscribed(true)
-    }
-  }, [subscribeMore, subscribed, position])
+  useConversationSubscribeMore({ subscribeMore, position })
 
   return (
     <Conversation
@@ -144,7 +61,26 @@ const ConversationConnected: FC<Props> = ({
       currentUserId={user?.id}
       conversation={data?.conversation}
       messagesLoadAmount={100}
-      memberName="Michael W"
+      onMessageCreated={(message) => {
+        createConversationMessage({
+          variables: { conversationId, messageType: 'text', body: message },
+          optimisticResponse: {
+            conversationMessageCreate: {
+              __typename: 'ConversationMessageCreate',
+              conversationMessage: {
+                __typename: 'ConversationMessage',
+                id: Math.round(Math.random() * -1000000).toString(),
+                sentBy: user,
+                body: message,
+                messageType: 'TEXT' as any,
+                created: new Date(),
+                modified: new Date(),
+                url: null,
+              },
+            },
+          },
+        })
+      }}
       onConversationMessageEdit={({ messageId, body }) => {
         updateConversationMessage({
           variables: { id: messageId, body },
@@ -174,26 +110,6 @@ const ConversationConnected: FC<Props> = ({
               conversationMessage: {
                 __typename: 'ConversationMessage',
                 id: messageId,
-              },
-            },
-          },
-        })
-      }}
-      onMessageCreated={(message) => {
-        createConversationMessage({
-          variables: { conversationId, messageType: 'text', body: message },
-          optimisticResponse: {
-            conversationMessageCreate: {
-              __typename: 'ConversationMessageCreate',
-              conversationMessage: {
-                __typename: 'ConversationMessage',
-                id: Math.round(Math.random() * -1000000).toString(),
-                sentBy: user,
-                body: message,
-                messageType: 'TEXT' as any,
-                created: new Date(),
-                modified: new Date(),
-                url: null,
               },
             },
           },

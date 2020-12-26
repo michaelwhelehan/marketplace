@@ -3,10 +3,11 @@ import ConfirmDialog from '../uiComponents/molecules/ConfirmDialog'
 
 interface Config {
   title: string
+  body?: string
   onConfirm: (id: string | number) => void
 }
 
-export default function useConfirmDialog({ title, onConfirm }: Config) {
+export default function useConfirmDialog({ title, body, onConfirm }: Config) {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [confirmId, setConfirmId] = useState<string | number>(null)
 
@@ -22,6 +23,7 @@ export default function useConfirmDialog({ title, onConfirm }: Config) {
   const renderedDialog = showConfirmDialog ? (
     <ConfirmDialog
       title={title}
+      body={body}
       onConfirm={handleConfirm}
       onClose={handleClose}
     />

@@ -70,7 +70,7 @@ const MessageMore = styled.span`
 
 const MessageMoreOption = styled.p`
   ${fwBold};
-  padding: 8px;
+  padding: 10px;
 
   &:hover {
     background: ${featherGrey};
@@ -118,12 +118,18 @@ function isMessageAuthor(
   return messageSentById === currentUserId
 }
 
+export type ConversationMessageDeleteType = ({
+  messageId,
+}: {
+  messageId: string
+}) => void
+
 interface ConversationMessageDisplayProps {
   currentUserId: string
   conversation: Conversation_conversation
   message: ConversationMessageType
   setIsEditing: any
-  onConversationMessageDelete: ({ messageId }: { messageId: string }) => void
+  onConversationMessageDelete: ConversationMessageDeleteType
 }
 
 const ConversationMessageDisplay: FC<ConversationMessageDisplayProps> = ({
@@ -147,7 +153,8 @@ const ConversationMessageDisplay: FC<ConversationMessageDisplayProps> = ({
   }
 
   const { renderedDialog, setShowConfirmDialog } = useConfirmDialog({
-    title: 'Confirm delete message?',
+    title: 'Delete message',
+    body: 'Are you sure you wish to delete this message?',
     onConfirm: handleDelete,
   })
 
@@ -212,16 +219,18 @@ const ConversationMessageDisplay: FC<ConversationMessageDisplayProps> = ({
   )
 }
 
+export type ConversationMessageEditType = ({
+  messageId,
+  body,
+}: {
+  messageId: string
+  body: string
+}) => void
+
 interface ConversationMessageEditProps {
   message: ConversationMessageType
   setIsEditing: any
-  onConversationMessageEdit: ({
-    messageId,
-    body,
-  }: {
-    messageId: string
-    body: string
-  }) => void
+  onConversationMessageEdit: ConversationMessageEditType
 }
 
 const ConversationMessageEdit: FC<ConversationMessageEditProps> = ({

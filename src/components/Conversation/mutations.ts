@@ -1,9 +1,7 @@
 import { gql, useMutation } from '@apollo/client'
 import { ConversationPositionType } from '../../types/conversation'
-import {
-  Conversation_conversation_conversationFeed,
-  Conversation_conversation_conversationFeed_edges,
-} from './gqlTypes/Conversation'
+import { addEdge } from '../../utils/graphql'
+import { Conversation_conversation_conversationFeed } from './gqlTypes/Conversation'
 import { ConversationMessage } from './gqlTypes/ConversationMessage'
 import {
   ConversationMessageCreate,
@@ -84,26 +82,17 @@ export const useConversationMessageCreateMutation = ({
               fragment: conversationMessageFragment,
             })
 
-            const edges: Conversation_conversation_conversationFeed_edges[] =
-              position === 'topDown'
-                ? [
-                    {
-                      __typename: 'ConversationMessageCountableEdge',
-                      node: newConversationMessageRef,
-                    },
-                    ...prevConversationFeed.edges,
-                  ]
-                : [
-                    ...prevConversationFeed.edges,
-                    {
-                      __typename: 'ConversationMessageCountableEdge',
-                      node: newConversationMessageRef,
-                    },
-                  ]
             const data: Conversation_conversation_conversationFeed = {
               ...prevConversationFeed,
               totalCount: prevConversationFeed.totalCount + 1,
-              edges,
+              edges: addEdge({
+                position: position === 'topDown' ? 'start' : 'end',
+                prevEdges: prevConversationFeed.edges,
+                nextEdge: {
+                  __typename: 'ConversationMessageCountableEdge',
+                  node: newConversationMessageRef,
+                },
+              }),
             }
             return data
           },
