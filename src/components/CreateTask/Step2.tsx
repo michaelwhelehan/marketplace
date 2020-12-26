@@ -1,7 +1,7 @@
-import React, { FC } from 'react'
+import React, { FC, useCallback } from 'react'
 import FormField from '../../uiComponents/molecules/FormField'
 import DateField from '../../uiComponents/atoms/DateField'
-import { Controller } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import RadioField from '../../uiComponents/atoms/RadioField'
 import styled from 'styled-components'
 import { ParagraphXS } from '../../uiComponents/atoms/Paragraphs'
@@ -31,19 +31,32 @@ const WhereExplanation = styled(ParagraphXS)`
 `
 
 interface Props {
-  register: any
-  control: any
-  watch: any
+  onNextStep: () => void
 }
 
 type TitleType = {
   title: string
 }
 
-const Step2: FC<Props> & TitleType = ({ watch, register, control }) => {
+const Step2: FC<Props> & TitleType = ({ onNextStep }) => {
+  const { register, watch, control, handleSubmit } = useForm({
+    defaultValues: {
+      where: 'in-person',
+      budgetType: 'total',
+    },
+  })
   const watchWhere = watch('where', 'in-person')
+
+  const handleStepSubmit = useCallback(
+    (data) => {
+      console.log(data)
+      onNextStep()
+    },
+    [onNextStep],
+  )
+
   return (
-    <form>
+    <form id="create-task-2" onSubmit={handleSubmit(handleStepSubmit)}>
       <FormField label="Where do you need it done?" required>
         <FieldContainer split>
           <Section>
@@ -104,7 +117,7 @@ const Step2: FC<Props> & TitleType = ({ watch, register, control }) => {
           name="dueDate"
           control={control}
           placeholder="Select a date"
-          onChange={day => {
+          onChange={(day) => {
             // React Select return object instead of value for selection
             return day[0]
           }}

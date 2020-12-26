@@ -1,23 +1,13 @@
-import React, { FC } from 'react'
+import React, { FC, useCallback } from 'react'
 import TextField from '../../uiComponents/atoms/TextField'
 import FormField from '../../uiComponents/molecules/FormField'
 import RadioField from '../../uiComponents/atoms/RadioField'
 import Button from '../../uiComponents/atoms/Button'
 import styled from 'styled-components'
-import { useFieldArray } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import Icon from '../../uiComponents/atoms/Icon'
 import { primaryColor } from '../../styles/colors'
 import TextFieldIcon from '../../uiComponents/molecules/TextFieldIcon'
-
-interface Props {
-  register: any
-  control: any
-  watch: any
-}
-
-type TitleType = {
-  title: string
-}
 
 const InnerSectionContainer = styled.div`
   display: flex;
@@ -42,14 +32,31 @@ const StyledIcon = styled(Icon)`
   cursor: pointer;
 `
 
-const Step3: FC<Props> & TitleType = ({ register, control }) => {
+interface Props {
+  onNextStep: () => void
+}
+
+type TitleType = {
+  title: string
+}
+
+const Step3: FC<Props> & TitleType = ({ onNextStep }) => {
+  const { register, control, handleSubmit } = useForm()
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'question',
   })
 
+  const handleStepSubmit = useCallback(
+    (data) => {
+      console.log(data)
+      onNextStep()
+    },
+    [onNextStep],
+  )
+
   return (
-    <form>
+    <form id="create-task-3" onSubmit={handleSubmit(handleStepSubmit)}>
       <FormField
         label="What is your budget?"
         helpText="Please enter the price you are comfortable with to get your task done. Taskers will use this a guide for how much to offer."

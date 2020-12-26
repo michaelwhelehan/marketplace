@@ -1,23 +1,31 @@
-import React, { FC } from 'react'
+import React, { FC, useCallback } from 'react'
 import TextField from '../../uiComponents/atoms/TextField'
 import FormField from '../../uiComponents/molecules/FormField'
 import TextAreaField from '../../uiComponents/atoms/TextAreaField'
 import SelectField from '../../uiComponents/atoms/SelectField'
-import { Controller } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 
 interface Props {
-  register: any
-  control: any
-  watch: any
+  onNextStep: () => void
 }
 
 type TitleType = {
   title: string
 }
 
-const Step1: FC<Props> & TitleType = ({ register, control }) => {
+const Step1: FC<Props> & TitleType = ({ onNextStep }) => {
+  const { register, control, handleSubmit } = useForm()
+
+  const handleStepSubmit = useCallback(
+    (data) => {
+      console.log(data)
+      onNextStep()
+    },
+    [onNextStep],
+  )
+
   return (
-    <form>
+    <form id="create-task-1" onSubmit={handleSubmit(handleStepSubmit)}>
       <FormField label="What do you need done?" required>
         <TextField
           name="title"

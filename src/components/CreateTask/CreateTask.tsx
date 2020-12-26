@@ -22,14 +22,14 @@ interface CreateTaskProps {
 }
 
 interface CreateTaskFooterProps {
+  currentStep: number
   onPreviousClick?: (event: MouseEvent) => void
-  onNextClick: (event: MouseEvent) => void
   proceedText: string
 }
 
 const CreateTaskFooter: FC<CreateTaskFooterProps> = ({
+  currentStep,
   onPreviousClick,
-  onNextClick,
   proceedText,
 }) => (
   <FooterContainer>
@@ -38,54 +38,14 @@ const CreateTaskFooter: FC<CreateTaskFooterProps> = ({
         Back
       </Button>
     ) : null}
-    <Button onClick={onNextClick}>{proceedText}</Button>
+    <Button form={`create-task-${currentStep}`} type="submit">
+      {proceedText}
+    </Button>
   </FooterContainer>
 )
 
 const CreateTask: FC<CreateTaskProps> = ({ onClose }) => {
   const { currentStep, onNextStep, onPrevStep, canGoBack } = useWizard(3)
-  const { register, watch, control, handleSubmit } = useForm({
-    defaultValues: {
-      where: 'in-person',
-      budgetType: 'total',
-    },
-  })
-
-  const handleStep1Submit = useCallback(
-    data => {
-      console.log(data)
-      onNextStep()
-    },
-    [onNextStep],
-  )
-
-  const handleStep2Submit = useCallback(
-    data => {
-      console.log(data)
-      onNextStep()
-    },
-    [onNextStep],
-  )
-
-  const handleStep3Submit = useCallback(data => {
-    console.log(data)
-  }, [])
-
-  const handleStepSubmit = useCallback(
-    data => {
-      switch (currentStep) {
-        case 1:
-          handleStep1Submit(data)
-          break
-        case 2:
-          handleStep2Submit(data)
-          break
-        case 3:
-          handleStep3Submit(data)
-      }
-    },
-    [currentStep, handleStep1Submit, handleStep2Submit, handleStep3Submit],
-  )
 
   const Step = useMemo(() => {
     switch (currentStep) {
@@ -105,13 +65,13 @@ const CreateTask: FC<CreateTaskProps> = ({ onClose }) => {
       onClose={onClose}
       renderFooter={() => (
         <CreateTaskFooter
+          currentStep={currentStep}
           onPreviousClick={canGoBack && onPrevStep}
-          onNextClick={handleSubmit(handleStepSubmit)}
           proceedText={currentStep === 3 ? 'Get quotes' : 'Next'}
         />
       )}
     >
-      <Step register={register} watch={watch} control={control} />
+      <Step onNextStep={onNextStep} />
     </Modal>
   )
 }
