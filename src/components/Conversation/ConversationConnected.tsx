@@ -10,6 +10,7 @@ import {
 } from './queries'
 import {
   useConversationMessageCreateMutation,
+  useConversationMessageDeleteMutation,
   useConversationMessageUpdateMutation,
 } from './mutations'
 import {
@@ -46,6 +47,9 @@ const ConversationConnected: FC<Props> = ({
     position,
   })
   const updateConversationMessage = useConversationMessageUpdateMutation()
+  const deleteConversationMessage = useConversationMessageDeleteMutation({
+    conversationId,
+  })
   const hasData = data?.conversation?.conversationFeed?.edges?.length > 0
 
   useEffect(() => {
@@ -101,6 +105,16 @@ const ConversationConnected: FC<Props> = ({
               },
             }
           case 'DeleteConversationMessagePayload':
+            if (
+              !prev.conversation.conversationFeed.edges.some(
+                ({ node }) =>
+                  node.id ===
+                  next.conversationSubscription.conversationMessage.id,
+              )
+            ) {
+              return prev
+            }
+
             return {
               ...prev,
               conversation: {
@@ -133,7 +147,7 @@ const ConversationConnected: FC<Props> = ({
       memberName="Michael W"
       onConversationMessageEdit={({ messageId, body }) => {
         updateConversationMessage({
-          variables: { messageId, body },
+          variables: { id: messageId, body },
           optimisticResponse: {
             conversationMessageUpdate: {
               __typename: 'ConversationMessageUpdate',
@@ -146,6 +160,20 @@ const ConversationConnected: FC<Props> = ({
                 created: substractMinutes(new Date(), 5),
                 modified: new Date(),
                 url: null,
+              },
+            },
+          },
+        })
+      }}
+      onConversationMessageDelete={({ messageId }) => {
+        deleteConversationMessage({
+          variables: { id: messageId },
+          optimisticResponse: {
+            conversationMessageDelete: {
+              __typename: 'ConversationMessageDelete',
+              conversationMessage: {
+                __typename: 'ConversationMessage',
+                id: messageId,
               },
             },
           },

@@ -77,7 +77,7 @@
     ]
   },
   "devDependencies": {
-    "@apollo/client": "^3.2.5",
+    "@apollo/client": "^3.3.6",
     "@types/webpack-env": "^1.15.3",
     "apollo": "^2.31.0",
     "husky": "^4.3.0",

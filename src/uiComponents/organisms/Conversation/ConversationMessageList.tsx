@@ -28,6 +28,7 @@ export interface ConversationMessageListProps {
     messageId: string
     body: string
   }) => void
+  onConversationMessageDelete: ({ messageId }: { messageId: string }) => void
   position: ConversationPositionType
   scrollType: ConversationScrollType
 }
@@ -39,6 +40,7 @@ const ConversationMessageList: FC<ConversationMessageListProps> = ({
   messagesLoadAmount,
   onLoadMoreMessages,
   onConversationMessageEdit,
+  onConversationMessageDelete,
   position,
   scrollType,
 }) => {
@@ -67,6 +69,7 @@ const ConversationMessageList: FC<ConversationMessageListProps> = ({
             currentUserId={currentUserId}
             conversation={conversation}
             onConversationMessageEdit={onConversationMessageEdit}
+            onConversationMessageDelete={onConversationMessageDelete}
             message={listItem.node}
           />
         )}
@@ -92,6 +95,7 @@ const ConversationMessageList: FC<ConversationMessageListProps> = ({
             currentUserId={currentUserId}
             conversation={conversation}
             onConversationMessageEdit={onConversationMessageEdit}
+            onConversationMessageDelete={onConversationMessageDelete}
             message={listItem.node}
           />
         )}

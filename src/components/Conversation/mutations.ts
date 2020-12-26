@@ -10,6 +10,10 @@ import {
   ConversationMessageCreateVariables,
 } from './gqlTypes/ConversationMessageCreate'
 import {
+  ConversationMessageDelete,
+  ConversationMessageDeleteVariables,
+} from './gqlTypes/ConversationMessageDelete'
+import {
   ConversationMessageUpdate,
   ConversationMessageUpdateVariables,
 } from './gqlTypes/ConversationMessageUpdate'
@@ -38,10 +42,20 @@ const conversationMessageCreateMutation = gql`
 
 const conversationMessageUpdateMutation = gql`
   ${conversationMessageFragment}
-  mutation ConversationMessageUpdate($messageId: ID!, $body: String!) {
-    conversationMessageUpdate(id: $messageId, input: { body: $body }) {
+  mutation ConversationMessageUpdate($id: ID!, $body: String!) {
+    conversationMessageUpdate(id: $id, input: { body: $body }) {
       conversationMessage {
         ...ConversationMessage
+      }
+    }
+  }
+`
+
+const conversationMessageDeleteMutation = gql`
+  mutation ConversationMessageDelete($id: ID!) {
+    conversationMessageDelete(id: $id) {
+      conversationMessage {
+        id
       }
     }
   }
@@ -67,9 +81,7 @@ export const useConversationMessageCreateMutation = ({
               ConversationMessage
             >({
               data: conversationMessageCreate.conversationMessage,
-              fragment: gql`
-                ${conversationMessageFragment}
-              `,
+              fragment: conversationMessageFragment,
             })
 
             const edges: Conversation_conversation_conversationFeed_edges[] =
@@ -108,4 +120,36 @@ export const useConversationMessageUpdateMutation = () => {
     ConversationMessageUpdateVariables
   >(conversationMessageUpdateMutation)
   return updateConversationMessage
+}
+
+export const useConversationMessageDeleteMutation = ({
+  conversationId,
+}: {
+  conversationId: string
+}) => {
+  const [deleteConversationMessage] = useMutation<
+    ConversationMessageDelete,
+    ConversationMessageDeleteVariables
+  >(conversationMessageDeleteMutation, {
+    update(cache, { data: { conversationMessageDelete } }) {
+      cache.modify({
+        id: cache.identify({ __typename: 'Conversation', id: conversationId }),
+        fields: {
+          conversationFeed(prevConversationFeed, { readField }) {
+            const data: Conversation_conversation_conversationFeed = {
+              ...prevConversationFeed,
+              totalCount: prevConversationFeed.totalCount - 1,
+              edges: prevConversationFeed.edges.filter(
+                (edgeRef: any) =>
+                  conversationMessageDelete.conversationMessage.id !==
+                  readField('id', readField('node', edgeRef)),
+              ),
+            }
+            return data
+          },
+        },
+      })
+    },
+  })
+  return deleteConversationMessage
 }

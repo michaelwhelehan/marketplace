@@ -48,6 +48,6 @@ export interface ConversationMessageUpdate {
 }
 
 export interface ConversationMessageUpdateVariables {
-  messageId: string;
+  id: string;
   body: string;
 }

@@ -20,6 +20,7 @@ import { useForm } from 'react-hook-form'
 import Button from '../../atoms/Button'
 import { CellMeasurerCache, List } from 'react-virtualized'
 import usePrevious from '../../../hooks/usePrevious'
+import useConfirmDialog from '../../../hooks/useConfirmDialog'
 
 const MessageContainerOuter = styled.div`
   height: 100%;
@@ -69,7 +70,7 @@ const MessageMore = styled.span`
 
 const MessageMoreOption = styled.p`
   ${fwBold};
-  padding: 6px;
+  padding: 8px;
 
   &:hover {
     background: ${featherGrey};
@@ -122,6 +123,7 @@ interface ConversationMessageDisplayProps {
   conversation: Conversation_conversation
   message: ConversationMessageType
   setIsEditing: any
+  onConversationMessageDelete: ({ messageId }: { messageId: string }) => void
 }
 
 const ConversationMessageDisplay: FC<ConversationMessageDisplayProps> = ({
@@ -129,6 +131,7 @@ const ConversationMessageDisplay: FC<ConversationMessageDisplayProps> = ({
   conversation,
   currentUserId,
   setIsEditing,
+  onConversationMessageDelete,
 }) => {
   const [showMoreOpen, setShowMoreOpen] = useState<boolean>(false)
   const currentUserIsMessageAuthor = isMessageAuthor(
@@ -138,6 +141,15 @@ const ConversationMessageDisplay: FC<ConversationMessageDisplayProps> = ({
   const showTaskPosterBadge =
     conversation.category === 'TASK' &&
     isTaskPoster(message.sentBy.id, conversation.task.ownerId)
+
+  const handleDelete = async () => {
+    onConversationMessageDelete({ messageId: message.id })
+  }
+
+  const { renderedDialog, setShowConfirmDialog } = useConfirmDialog({
+    title: 'Confirm delete message?',
+    onConfirm: handleDelete,
+  })
 
   return (
     <MessageContainerOuter>
@@ -174,7 +186,11 @@ const ConversationMessageDisplay: FC<ConversationMessageDisplayProps> = ({
                       <MessageMoreOption onClick={() => setIsEditing(true)}>
                         Edit
                       </MessageMoreOption>
-                      <MessageMoreOption>Delete</MessageMoreOption>
+                      <MessageMoreOption
+                        onClick={() => setShowConfirmDialog(true)}
+                      >
+                        Delete
+                      </MessageMoreOption>
                     </>
                   ) : (
                     <MessageMoreOption>Report this message</MessageMoreOption>
@@ -190,6 +206,7 @@ const ConversationMessageDisplay: FC<ConversationMessageDisplayProps> = ({
             <img width={640} height={480} src={message.url} alt="" />
           )}
         </MessageContent>
+        {renderedDialog}
       </MessageContainer>
     </MessageContainerOuter>
   )
@@ -285,6 +302,7 @@ interface Props {
     messageId: string
     body: string
   }) => void
+  onConversationMessageDelete: ({ messageId }: { messageId: string }) => void
 }
 
 const ConversationMessage: FC<Props> = ({
@@ -295,6 +313,7 @@ const ConversationMessage: FC<Props> = ({
   conversation,
   message,
   onConversationMessageEdit,
+  onConversationMessageDelete,
 }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const wasEditing = usePrevious(isEditing)
@@ -318,6 +337,7 @@ const ConversationMessage: FC<Props> = ({
       conversation={conversation}
       currentUserId={currentUserId}
       setIsEditing={setIsEditing}
+      onConversationMessageDelete={onConversationMessageDelete}
     />
   )
 }

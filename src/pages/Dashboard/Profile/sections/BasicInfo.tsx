@@ -106,7 +106,7 @@ type LanguageType = {
   level: OptionType
 }
 
-type FormValues = {
+interface FormValues {
   firstName: string
   lastName: string
   email: string
