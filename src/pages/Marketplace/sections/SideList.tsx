@@ -3,8 +3,10 @@ import styled from 'styled-components'
 import SideListCard from './SideListCard'
 import InfiniteList from '../../../uiComponents/molecules/InfiniteList'
 import { Tasks_tasks_edges } from '../gqlTypes/Tasks'
+import UpdateTasks from './UpdateTasks'
 
 const StyledSideList = styled.div`
+  position: relative;
   background: #f5f5f5;
   height: 100%;
 `
@@ -16,6 +18,8 @@ interface Props {
   tasksLoadAmount: number
   tasksLoading: boolean
   onLoadMoreTasks: (loadAmount: number) => Promise<any>
+  numNewTasks: number
+  onLoadNewTasks: () => void
 }
 
 const SideList: FC<Props> = ({
@@ -23,6 +27,8 @@ const SideList: FC<Props> = ({
   tasksLoading,
   tasksLoadAmount,
   onLoadMoreTasks,
+  numNewTasks,
+  onLoadNewTasks,
 }) => {
   if (!tasks || !tasks.length) {
     return null
@@ -30,6 +36,12 @@ const SideList: FC<Props> = ({
 
   return (
     <StyledSideList>
+      {numNewTasks > 0 && (
+        <UpdateTasks
+          numNewTasks={numNewTasks}
+          onLoadNewTasks={onLoadNewTasks}
+        />
+      )}
       <InfiniteList
         loading={tasksLoading}
         list={tasks}

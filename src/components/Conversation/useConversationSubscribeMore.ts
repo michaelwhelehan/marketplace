@@ -9,7 +9,7 @@ import {
   Conversation_conversation_conversationFeed_edges_node,
 } from './gqlTypes/Conversation'
 import { ConversationSubscription } from './gqlTypes/ConversationSubscription'
-import { conversationMessageCreatedSubscription } from './queries'
+import { conversationMessageSubscription } from './queries'
 
 export default function useConversationSubscribeMore({
   subscribeMore,
@@ -28,8 +28,9 @@ export default function useConversationSubscribeMore({
 
   useEffect(() => {
     if (subscribeMore && !subscribed) {
-      subscribeMore(conversationMessageCreatedSubscription, (prev, next) => {
-        const type = next.conversationSubscription.__typename
+      subscribeMore(conversationMessageSubscription, (prev, next) => {
+        const type =
+          next.conversationSubscription.conversationMessage.__typename
         const prevConversationFeed = prev.conversation.conversationFeed
         switch (type) {
           case 'CreateConversationMessagePayload':
@@ -37,7 +38,7 @@ export default function useConversationSubscribeMore({
               prev.conversation.conversationFeed.edges.some(
                 ({ node }) =>
                   node.id ===
-                  next.conversationSubscription.conversationMessage.id,
+                  next.conversationSubscription.conversationMessage.message.id,
               )
             ) {
               return prev
@@ -55,8 +56,8 @@ export default function useConversationSubscribeMore({
                     prevEdges: prevConversationFeed.edges,
                     nextEdge: {
                       __typename: 'ConversationMessageCountableEdge',
-                      node: next.conversationSubscription
-                        .conversationMessage as Conversation_conversation_conversationFeed_edges_node,
+                      node: next.conversationSubscription.conversationMessage
+                        .message as Conversation_conversation_conversationFeed_edges_node,
                     },
                   }),
                 },
@@ -67,7 +68,7 @@ export default function useConversationSubscribeMore({
               !prev.conversation.conversationFeed.edges.some(
                 ({ node }) =>
                   node.id ===
-                  next.conversationSubscription.conversationMessage.id,
+                  next.conversationSubscription.conversationMessage.message.id,
               )
             ) {
               return prev
@@ -83,7 +84,8 @@ export default function useConversationSubscribeMore({
                   edges: prevConversationFeed.edges.filter(
                     (edge: Conversation_conversation_conversationFeed_edges) =>
                       edge.node.id !==
-                      next.conversationSubscription.conversationMessage.id,
+                      next.conversationSubscription.conversationMessage.message
+                        .id,
                   ),
                 },
               },

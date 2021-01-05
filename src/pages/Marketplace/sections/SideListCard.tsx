@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { TaskType } from '../../../types/task'
 import { HeadingS } from '../../../uiComponents/atoms/Headings'
 import { ParagraphL, ParagraphXS } from '../../../uiComponents/atoms/Paragraphs'
 import {
@@ -148,7 +147,10 @@ const SideListCard: FC<Props> = ({ task }) => {
         </CardMain>
         <CardFooter>
           <CardStatus as="span">Open</CardStatus>
-          <CardOffers as="span">- 2 offers</CardOffers>
+          <CardOffers as="span">
+            {task.numOffers} offer
+            {task.numOffers === 0 || task.numOffers > 1 ? 's' : ''}
+          </CardOffers>
         </CardFooter>
         <CardRibbon />
       </CardInner>

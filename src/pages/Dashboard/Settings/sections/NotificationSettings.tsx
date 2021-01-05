@@ -106,21 +106,21 @@ const NotificationSettings: FC = () => {
     },
     {
       notificationKey: 'taskUpdates',
-      title: 'Task Updates',
+      title: 'Job Updates',
       description:
         'Receive updates on any new comments, private messages, offers and reviews.	',
     },
     {
       notificationKey: 'taskReminders',
-      title: 'Task Reminders',
+      title: 'Job Reminders',
       description:
         'Friendly reminders if you’ve forgotten to accept an offer, release a payment or leave a review.',
     },
     {
       notificationKey: 'taskRecommendations',
-      title: 'Task Recommendations',
+      title: 'Job Recommendations',
       description:
-        'Receive recommendations and be inspired by tasks close to you.',
+        'Receive recommendations and be inspired by jobs close to you.',
     },
     {
       notificationKey: 'updates',

@@ -1,14 +1,19 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { primaryColor, primaryFontColor } from '../../styles/colors'
-import { ParagraphS, ParagraphL, ParagraphXS } from '../atoms/Paragraphs'
-import Button from '../atoms/Button'
-import { fwBold } from '../../styles/typography'
-import UserCard from './UserCard'
-import Icon from '../atoms/Icon'
-import { OfferType } from '../../types/offer'
-import StatusIndicator from '../atoms/StatusIndicator'
-import { DashboardPanelContainer } from '../../pages/Dashboard/Panels/DashboardPanel'
+import { primaryColor, primaryFontColor } from '../../../../../styles/colors'
+import {
+  ParagraphS,
+  ParagraphL,
+  ParagraphXS,
+} from '../../../../../uiComponents/atoms/Paragraphs'
+import Button from '../../../../../uiComponents/atoms/Button'
+import { fwBold } from '../../../../../styles/typography'
+import UserCard from '../../../../../uiComponents/molecules/UserCard'
+import Icon from '../../../../../uiComponents/atoms/Icon'
+import StatusIndicator from '../../../../../uiComponents/atoms/StatusIndicator'
+import { DashboardPanelContainer } from '../../../Panels/DashboardPanel'
+import { Offer } from '../../../../Marketplace/gqlTypes/Offer'
+import { OnlineStatusType, UserType } from '../../../../../types/user'
 
 export const OfferCardSelector = styled(DashboardPanelContainer)`
   border-radius: 6px;
@@ -92,7 +97,7 @@ const Budget = styled(ParagraphL)`
 `
 
 interface Props {
-  offer: OfferType
+  offer: Offer
   action: {
     title: string
     onClick: () => void
@@ -100,14 +105,22 @@ interface Props {
 }
 
 const OfferCard: FC<Props> = ({ offer, action }) => {
+  const userData: UserType = {
+    profilePictureUrl: offer.createdBy.avatarUrl,
+    name: `${offer.createdBy.firstName} ${offer.createdBy.lastName}`,
+    onlineStatus: 'offline' as OnlineStatusType,
+    lastSeen: new Date(),
+    jobTitle: offer.createdBy.jobTitle,
+  }
+
   return (
     <OfferCardSelector padded>
       <TopWrapper>
-        <UserCard user={offer.creator} avatarSize={50} display="inline" />
+        <UserCard user={userData} avatarSize={50} display="inline" />
         <div>
           <Budget>
-            {offer.currency.iso}
-            {offer.amount}
+            {offer.amount.currency}
+            {offer.amount.amount}
           </Budget>
           <IconContainer>
             <Icon name="MdDelete" size={24} color={primaryFontColor} />
@@ -116,7 +129,7 @@ const OfferCard: FC<Props> = ({ offer, action }) => {
         </div>
       </TopWrapper>
       <BottomWrapper>
-        <CoverLetter>{offer.coverLetter}</CoverLetter>
+        <CoverLetter>{offer.message}</CoverLetter>
         <ActionContainer>
           <RepliesWithin>
             <Icon name="MdAccessTime" size={14} color={primaryFontColor} />

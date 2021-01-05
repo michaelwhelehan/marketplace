@@ -1,67 +1,82 @@
-import React, { FC } from 'react'
+import React, { Dispatch, FC, MouseEvent, useCallback } from 'react'
 import FormField from '../../uiComponents/molecules/FormField'
-import styled from 'styled-components'
 import TextFieldIcon from '../../uiComponents/molecules/TextFieldIcon'
 import TextAreaField from '../../uiComponents/atoms/TextAreaField'
-import RadioField from '../../uiComponents/atoms/RadioField'
+import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Offer } from './types'
 
-const InnerSectionContainer = styled.div`
-  display: flex;
-`
+interface FormValues {
+  amount: number
+  message: string
+}
 
-const StyledRadioField = styled(RadioField)`
-  margin-right: 10px;
-  margin-bottom: 10px;
-`
+const schema = yup.object().shape({
+  amount: yup.number().required('Offer amount is required'),
+  message: yup
+    .string()
+    .required('Message is required')
+    .min(25, 'Please enter at least 25 characters'),
+})
 
 interface Props {
-  register: any
-  control: any
-  watch: any
+  onNextStep: () => void
+  setSubmitting: Dispatch<boolean>
+  setOffer: Dispatch<Offer>
+  offer: Offer | null
+  taskId: string
+  onClose: (event: MouseEvent) => void
 }
 
 type TitleType = {
   title: string
 }
 
-const Step1: FC<Props> & TitleType = ({ register }) => {
+const Step1: FC<Props> & TitleType = ({ onNextStep, setOffer }) => {
+  const { register, errors, handleSubmit } = useForm<FormValues>({
+    resolver: yupResolver(schema),
+  })
+
+  const handleStepSubmit = useCallback(
+    (data: FormValues) => {
+      setOffer(data)
+      onNextStep()
+    },
+    [onNextStep, setOffer],
+  )
+
   return (
-    <form>
+    <form id="make-offer-1" onSubmit={handleSubmit(handleStepSubmit)}>
       <FormField
         label="How much do you want to offer?"
         helpText="Please enter the price of the offer you want to make. The poster will then decide if they want to accept it or not."
         required
+        error={errors.amount}
         renderHelpPopup={() => <>This is the help section</>}
       >
-        <InnerSectionContainer>
-          <StyledRadioField
-            name="budgetType"
-            value="total"
-            label="Total"
-            ref={register()}
-          />
-
-          <StyledRadioField
-            name="budgetType"
-            value="hourly"
-            label="Hourly rate"
-            ref={register()}
-          />
-        </InnerSectionContainer>
         <TextFieldIcon
+          type="number"
           customIcon="$"
           name="amount"
           ref={register()}
           fullWidth
           placeholder="Enter an amount"
+          hasError={Boolean(errors.amount)}
         />
       </FormField>
-      <FormField label="Why should you be chosen?" required spacingTop>
+      <FormField
+        label="Why should you be chosen?"
+        required
+        error={errors.message}
+        spacingTop
+      >
         <TextAreaField
-          name="details"
+          name="message"
           ref={register()}
           fullWidth
           placeholder="Motivate why the poster should choose you to do this task."
+          hasError={Boolean(errors.message)}
         />
       </FormField>
     </form>

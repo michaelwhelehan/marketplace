@@ -59,9 +59,63 @@ export enum ConversationMessageMessageType {
 /**
  * An enumeration.
  */
+export enum OfferErrorCode {
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  NOT_FOUND = "NOT_FOUND",
+  OFFER_ERROR = "OFFER_ERROR",
+  REQUIRED = "REQUIRED",
+  UNIQUE = "UNIQUE",
+}
+
+/**
+ * An enumeration.
+ */
+export enum OfferStatus {
+  ACCEPTED = "ACCEPTED",
+  PENDING = "PENDING",
+  REJECTED = "REJECTED",
+}
+
+/**
+ * An enumeration.
+ */
+export enum TaskErrorCode {
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  NOT_FOUND = "NOT_FOUND",
+  REQUIRED = "REQUIRED",
+  TASK_ERROR = "TASK_ERROR",
+  UNIQUE = "UNIQUE",
+}
+
+/**
+ * An enumeration.
+ */
 export enum TaskLocationType {
   IN_PERSON = "IN_PERSON",
   REMOTE = "REMOTE",
+}
+
+/**
+ * An enumeration.
+ */
+export enum TaskStatus {
+  ASSIGNED = "ASSIGNED",
+  CANCELLED = "CANCELLED",
+  COMPLETE = "COMPLETE",
+  DELIVERED = "DELIVERED",
+  DRAFT = "DRAFT",
+  OPEN = "OPEN",
+}
+
+export enum TaskStatusFilter {
+  ASSIGNED = "ASSIGNED",
+  CANCELLED = "CANCELLED",
+  COMPLETE = "COMPLETE",
+  DELIVERED = "DELIVERED",
+  DRAFT = "DRAFT",
+  OPEN = "OPEN",
 }
 
 /**
@@ -98,6 +152,19 @@ export interface EducationInput {
   description?: string | null;
 }
 
+export interface OfferCreateInput {
+  task: string;
+  amountAmount: any;
+  message?: string | null;
+  status?: string | null;
+  shortlisted?: boolean | null;
+}
+
+export interface OfferFilterInput {
+  amount?: PriceRangeInput | null;
+  taskSlug?: string | null;
+}
+
 export interface PortfolioInput {
   id?: string | null;
   title: string;
@@ -112,6 +179,26 @@ export interface PriceRangeInput {
 
 export interface TaskFilterInput {
   budget?: PriceRangeInput | null;
+  status?: (TaskStatusFilter | null)[] | null;
+}
+
+export interface TaskInput {
+  title?: string | null;
+  categories?: (string | null)[] | null;
+  details?: string | null;
+  locationType?: string | null;
+  location?: string | null;
+  locationLatitude?: string | null;
+  locationLongitude?: string | null;
+  dueDate?: any | null;
+  budgetType?: string | null;
+  budgetAmount?: any | null;
+  budgetDuration?: number | null;
+}
+
+export interface UserTaskFilterInput {
+  budget?: PriceRangeInput | null;
+  status?: (TaskStatusFilter | null)[] | null;
 }
 
 export interface WorkExperienceInput {

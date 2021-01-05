@@ -1,4 +1,11 @@
-import React, { FC, useEffect, useState, useRef, MutableRefObject } from 'react'
+import React, {
+  FC,
+  useEffect,
+  useState,
+  useRef,
+  MutableRefObject,
+  Dispatch,
+} from 'react'
 import styled from 'styled-components'
 import {
   darkGrey,
@@ -128,7 +135,7 @@ interface ConversationMessageDisplayProps {
   currentUserId: string
   conversation: Conversation_conversation
   message: ConversationMessageType
-  setIsEditing: any
+  setIsEditing: Dispatch<boolean>
   onConversationMessageDelete: ConversationMessageDeleteType
 }
 
@@ -229,7 +236,7 @@ export type ConversationMessageEditType = ({
 
 interface ConversationMessageEditProps {
   message: ConversationMessageType
-  setIsEditing: any
+  setIsEditing: Dispatch<boolean>
   onConversationMessageEdit: ConversationMessageEditType
 }
 

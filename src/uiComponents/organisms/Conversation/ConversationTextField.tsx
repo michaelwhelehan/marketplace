@@ -1,6 +1,5 @@
 import React, { FC, useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { Conversation_conversation } from '../../../components/Conversation/gqlTypes/Conversation'
 import { borderColor, primaryFontColor } from '../../../styles/colors'
 import { ConversationPositionType } from '../../../types/conversation'
 import Button from '../../atoms/Button'
@@ -28,35 +27,24 @@ const StartIcons = styled.div`
   }
 `
 
-function getPlaceholder({
-  category,
-}: {
-  category: Conversation_conversation['category']
-}) {
-  switch (category) {
-    case 'TASK':
-      return 'Ask a question'
-    default:
-      return 'Send a message'
-  }
-}
-
 export interface ConversationTextFieldProps {
-  conversation: Conversation_conversation
+  textFieldPlaceholder: string
   position: ConversationPositionType
   onMessageCreated: (message: string) => void
 }
 
 const ConversationTextField: FC<ConversationTextFieldProps> = ({
-  conversation,
+  textFieldPlaceholder,
   position,
   onMessageCreated,
 }) => {
   const [value, setValue] = useState<string>('')
 
   const handleSendMessage = useCallback(() => {
-    onMessageCreated(value)
-    setValue('')
+    if (value) {
+      onMessageCreated(value)
+      setValue('')
+    }
   }, [onMessageCreated, value])
 
   const handleKeyPress = useCallback(
@@ -72,7 +60,7 @@ const ConversationTextField: FC<ConversationTextFieldProps> = ({
     <TextFieldContainer>
       {position === 'topDown' ? (
         <TextAreaField
-          placeholder={getPlaceholder({ category: conversation.category })}
+          placeholder={textFieldPlaceholder}
           short
           fullWidth
           value={value}
@@ -80,7 +68,7 @@ const ConversationTextField: FC<ConversationTextFieldProps> = ({
         />
       ) : (
         <TextField
-          placeholder={getPlaceholder({ category: conversation.category })}
+          placeholder={textFieldPlaceholder}
           fullWidth
           value={value}
           onChange={(e) => setValue(e.currentTarget.value)}

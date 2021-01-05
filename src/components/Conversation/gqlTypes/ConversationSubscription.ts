@@ -9,7 +9,7 @@ import { ConversationMessageMessageType } from "./../../../../gqlTypes/globalTyp
 // GraphQL subscription operation: ConversationSubscription
 // ====================================================
 
-export interface ConversationSubscription_conversationSubscription_CreateConversationMessagePayload_conversationMessage_sentBy {
+export interface ConversationSubscription_conversationSubscription_conversationMessage_CreateConversationMessagePayload_message_sentBy {
   __typename: "User";
   /**
    * The ID of the object.
@@ -21,13 +21,13 @@ export interface ConversationSubscription_conversationSubscription_CreateConvers
   avatarUrl: string | null;
 }
 
-export interface ConversationSubscription_conversationSubscription_CreateConversationMessagePayload_conversationMessage {
+export interface ConversationSubscription_conversationSubscription_conversationMessage_CreateConversationMessagePayload_message {
   __typename: "ConversationMessage";
   /**
    * The ID of the object.
    */
   id: string;
-  sentBy: ConversationSubscription_conversationSubscription_CreateConversationMessagePayload_conversationMessage_sentBy;
+  sentBy: ConversationSubscription_conversationSubscription_conversationMessage_CreateConversationMessagePayload_message_sentBy;
   body: string | null;
   url: string | null;
   created: any;
@@ -35,15 +35,15 @@ export interface ConversationSubscription_conversationSubscription_CreateConvers
   messageType: ConversationMessageMessageType;
 }
 
-export interface ConversationSubscription_conversationSubscription_CreateConversationMessagePayload {
+export interface ConversationSubscription_conversationSubscription_conversationMessage_CreateConversationMessagePayload {
   __typename: "CreateConversationMessagePayload";
   /**
    * The conversation message that was created.
    */
-  conversationMessage: ConversationSubscription_conversationSubscription_CreateConversationMessagePayload_conversationMessage | null;
+  message: ConversationSubscription_conversationSubscription_conversationMessage_CreateConversationMessagePayload_message | null;
 }
 
-export interface ConversationSubscription_conversationSubscription_EditConversationMessagePayload_conversationMessage {
+export interface ConversationSubscription_conversationSubscription_conversationMessage_EditConversationMessagePayload_message {
   __typename: "ConversationMessage";
   /**
    * The ID of the object.
@@ -53,15 +53,15 @@ export interface ConversationSubscription_conversationSubscription_EditConversat
   body: string | null;
 }
 
-export interface ConversationSubscription_conversationSubscription_EditConversationMessagePayload {
+export interface ConversationSubscription_conversationSubscription_conversationMessage_EditConversationMessagePayload {
   __typename: "EditConversationMessagePayload";
   /**
    * The conversation message that was edited.
    */
-  conversationMessage: ConversationSubscription_conversationSubscription_EditConversationMessagePayload_conversationMessage | null;
+  message: ConversationSubscription_conversationSubscription_conversationMessage_EditConversationMessagePayload_message | null;
 }
 
-export interface ConversationSubscription_conversationSubscription_DeleteConversationMessagePayload_conversationMessage {
+export interface ConversationSubscription_conversationSubscription_conversationMessage_DeleteConversationMessagePayload_message {
   __typename: "ConversationMessage";
   /**
    * The ID of the object.
@@ -69,20 +69,25 @@ export interface ConversationSubscription_conversationSubscription_DeleteConvers
   id: string;
 }
 
-export interface ConversationSubscription_conversationSubscription_DeleteConversationMessagePayload {
+export interface ConversationSubscription_conversationSubscription_conversationMessage_DeleteConversationMessagePayload {
   __typename: "DeleteConversationMessagePayload";
   /**
    * The conversation message that was deleted.
    */
-  conversationMessage: ConversationSubscription_conversationSubscription_DeleteConversationMessagePayload_conversationMessage | null;
+  message: ConversationSubscription_conversationSubscription_conversationMessage_DeleteConversationMessagePayload_message | null;
 }
 
-export type ConversationSubscription_conversationSubscription = ConversationSubscription_conversationSubscription_CreateConversationMessagePayload | ConversationSubscription_conversationSubscription_EditConversationMessagePayload | ConversationSubscription_conversationSubscription_DeleteConversationMessagePayload;
+export type ConversationSubscription_conversationSubscription_conversationMessage = ConversationSubscription_conversationSubscription_conversationMessage_CreateConversationMessagePayload | ConversationSubscription_conversationSubscription_conversationMessage_EditConversationMessagePayload | ConversationSubscription_conversationSubscription_conversationMessage_DeleteConversationMessagePayload;
 
-export interface ConversationSubscription {
+export interface ConversationSubscription_conversationSubscription {
+  __typename: "ConversationSubscription";
   /**
    * When a conversation message is changed.
    */
+  conversationMessage: ConversationSubscription_conversationSubscription_conversationMessage | null;
+}
+
+export interface ConversationSubscription {
   conversationSubscription: ConversationSubscription_conversationSubscription | null;
 }
 

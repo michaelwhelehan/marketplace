@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { TaskFilterInput, TaskLocationType } from "./../../../../gqlTypes/globalTypes";
+import { TaskFilterInput, TaskStatus, TaskLocationType } from "./../../../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL query operation: Tasks
@@ -42,6 +42,7 @@ export interface Tasks_tasks_edges_node {
   owner: Tasks_tasks_edges_node_owner | null;
   title: string;
   slug: string;
+  status: TaskStatus | null;
   budget: Tasks_tasks_edges_node_budget | null;
   details: string;
   dueDate: any | null;
@@ -53,6 +54,10 @@ export interface Tasks_tasks_edges_node {
    * ID of the conversation linked to this task.
    */
   conversationId: string | null;
+  /**
+   * Number of offers the task has made on it.
+   */
+  numOffers: number | null;
 }
 
 export interface Tasks_tasks_edges {

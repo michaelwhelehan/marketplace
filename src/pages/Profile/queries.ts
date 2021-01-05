@@ -4,8 +4,53 @@ import {
   PublicUserProfile,
   PublicUserProfileVariables,
 } from './gqlTypes/PublicUserProfile'
-import { userFragment } from '../Dashboard/Profile/queries'
 import { useQuery } from '../../core/queries'
+
+export const publicUserFragment = gql`
+  fragment PublicUserDetails on User {
+    id
+    username
+    firstName
+    lastName
+    avatarUrl
+    jobTitle
+    bio
+    skills {
+      id
+      name
+    }
+    languages {
+      id
+      level
+      language {
+        name
+      }
+    }
+    educations {
+      id
+      school
+      startYear
+      endYear
+      degree
+      description
+    }
+    workExperiences {
+      id
+      title
+      company
+      location
+      startDate
+      endDate
+      description
+    }
+    portfolios {
+      id
+      title
+      description
+      imageUrl
+    }
+  }
+`
 
 export const skillTagFragment = gql`
   fragment SkillTag on SkillTag {
@@ -15,10 +60,10 @@ export const skillTagFragment = gql`
 `
 
 export const getPublicUserProfileQuery = gql`
-  ${userFragment}
+  ${publicUserFragment}
   query PublicUserProfile($username: String!) {
     publicUser(username: $username) {
-      ...UserDetails
+      ...PublicUserDetails
     }
   }
 `

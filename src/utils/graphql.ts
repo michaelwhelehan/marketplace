@@ -5,9 +5,12 @@ export function addEdge<T>({
 }: {
   position: 'start' | 'end'
   prevEdges: T[]
-  nextEdge: T
+  nextEdge: T | T[]
 }): T[] {
+  const edgesToAdd = Array.isArray(nextEdge) ? nextEdge : [nextEdge]
   const nextEdges: T[] =
-    position === 'start' ? [nextEdge, ...prevEdges] : [...prevEdges, nextEdge]
+    position === 'start'
+      ? [...edgesToAdd, ...prevEdges]
+      : [...prevEdges, ...edgesToAdd]
   return nextEdges
 }

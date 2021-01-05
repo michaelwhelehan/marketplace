@@ -14,19 +14,6 @@ import Logo from '../../uiComponents/atoms/Logo'
 import { useAuth } from '../../services'
 import { toXL } from '../../constants/breakpoints'
 
-type LinkIdType = 'browse' | 'tasks' | 'updates' | 'messages'
-
-type LinkType = {
-  id: LinkIdType
-  name: string
-  href?: string
-  onClick?: (e: MouseEvent<HTMLAnchorElement>) => void
-  hasDropDown?: boolean
-  renderDropDown?: () => JSX.Element
-  icon?: string
-  hasUpdates?: boolean
-}
-
 const StyledHeader = styled.header`
   height: ${MAIN_HEADER_HEIGHT}px;
   border-bottom: 1px solid ${borderColor};
@@ -79,57 +66,84 @@ const HeaderLinkIcon = styled.span`
   margin-right: 5px;
 `
 
+type LinkIdType =
+  | 'browse'
+  | 'marketplace'
+  | 'tasks'
+  | 'updates'
+  | 'messages'
+  | 'login'
+  | 'signup'
+
+interface LinkType {
+  id: LinkIdType
+  name: string
+  href?: string
+  onClick?: (e: MouseEvent<HTMLAnchorElement>) => void
+  hasDropDown?: boolean
+  renderDropDown?: () => JSX.Element
+  icon?: string
+  hasUpdates?: boolean
+}
+
 const Header: FC = () => {
   const { user } = useAuth()
   const [dropdownOpen, setDropdownOpen] = useState<LinkIdType | null>(null)
-  const links = [
-    user && {
-      id: 'browse',
-      name: 'Browse',
-      href: '/',
-      icon: 'MdSearch',
-    },
-    user && {
-      id: 'marketplace',
-      name: 'Marketplace',
-      href: '/',
-      icon: 'MdLanguage',
-    },
-    user && {
-      id: 'tasks',
-      name: 'My Jobs',
-      href: '/dashboard/my-jobs',
-      icon: 'MdBusinessCenter',
-    },
-    user && {
-      id: 'updates',
-      name: 'Updates',
-      onClick: (e) => {
-        e.preventDefault()
-        setDropdownOpen((prev) => (prev === 'updates' ? null : 'updates'))
-      },
-      hasDropDown: true,
-      renderDropDown: () => <Notifications />,
-      icon: 'MdNotificationsNone',
-      hasUpdates: true,
-    },
-    user && {
-      id: 'messages',
-      name: 'Messages',
-      href: '/dashboard/inbox',
-      icon: 'MdMailOutline',
-      hasUpdates: true,
-    },
-    !user && {
-      id: 'login',
-      name: 'Log in',
-      href: '/login',
-    },
-    !user && {
-      id: 'signup',
-      name: 'Sign up',
-      href: '/sign-up',
-    },
+  const links: LinkType[] = [
+    user &&
+      ({
+        id: 'browse',
+        name: 'Browse',
+        href: '/',
+        icon: 'MdSearch',
+      } as LinkType),
+    user &&
+      ({
+        id: 'marketplace',
+        name: 'Marketplace',
+        href: '/',
+        icon: 'MdLanguage',
+      } as LinkType),
+    user &&
+      ({
+        id: 'tasks',
+        name: 'My Jobs',
+        href: '/dashboard/my-jobs',
+        icon: 'MdBusinessCenter',
+      } as LinkType),
+    user &&
+      ({
+        id: 'updates',
+        name: 'Updates',
+        onClick: (e) => {
+          e.preventDefault()
+          setDropdownOpen((prev) => (prev === 'updates' ? null : 'updates'))
+        },
+        hasDropDown: true,
+        renderDropDown: () => <Notifications />,
+        icon: 'MdNotificationsNone',
+        hasUpdates: true,
+      } as LinkType),
+    user &&
+      ({
+        id: 'messages',
+        name: 'Messages',
+        href: '/dashboard/inbox',
+        icon: 'MdMailOutline',
+        hasUpdates: true,
+      } as LinkType),
+    !user &&
+      ({
+        id: 'login',
+        name: 'Log in',
+        href: '/login',
+      } as LinkType),
+    !user &&
+      ({
+        id: 'signup',
+        name: 'Sign up',
+        href: '/sign-up',
+      } as LinkType),
   ].filter(Boolean)
 
   return (

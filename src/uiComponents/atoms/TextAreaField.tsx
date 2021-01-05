@@ -22,6 +22,10 @@ const StyledTextField = styled.textarea<StyledProps>`
     hasError &&
     css`
       border-color: ${red};
+
+      &:focus {
+        outline: none;
+      }
     `}
 `
 

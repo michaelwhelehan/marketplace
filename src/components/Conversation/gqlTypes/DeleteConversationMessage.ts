@@ -7,7 +7,7 @@
 // GraphQL fragment: DeleteConversationMessage
 // ====================================================
 
-export interface DeleteConversationMessage_conversationMessage {
+export interface DeleteConversationMessage_message {
   __typename: "ConversationMessage";
   /**
    * The ID of the object.
@@ -20,5 +20,5 @@ export interface DeleteConversationMessage {
   /**
    * The conversation message that was deleted.
    */
-  conversationMessage: DeleteConversationMessage_conversationMessage | null;
+  message: DeleteConversationMessage_message | null;
 }

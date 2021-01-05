@@ -4,6 +4,8 @@ import { borderColor, black, white } from '../../../styles/colors'
 import { HeadingM } from '../../../uiComponents/atoms/Headings'
 import Button from '../../../uiComponents/atoms/Button'
 import { Task_task } from '../gqlTypes/Task'
+import { User } from '../../../services/fragments/gqlTypes/User'
+import { Offers_offers } from '../../Marketplace/gqlTypes/Offers'
 
 const Container = styled.section<{ scrolling?: boolean }>`
   height: 80px;
@@ -33,18 +35,23 @@ const StyledButton = styled(Button)`
 `
 
 interface Props {
+  user: User
+  offers?: Offers_offers
   task: Task_task
   onMakeOfferClick: (event: MouseEvent) => void
 }
 
-const TDPHeader: FC<Props> = ({ task, onMakeOfferClick }) => {
+const TDPHeader: FC<Props> = ({ user, offers, task, onMakeOfferClick }) => {
   return (
     <Container>
       <StyledHeading>{task.title}</StyledHeading>
-      <StyledButton large onClick={onMakeOfferClick}>
-        Make offer on {task.budget.currency}
-        {task.budget.amount}
-      </StyledButton>
+      {user.id !== task.owner.id &&
+        !offers?.edges?.some(({ node }) => node.createdBy.id === user.id) && (
+          <StyledButton large onClick={onMakeOfferClick}>
+            Make offer on {task.budget.currency}
+            {task.budget.amount}
+          </StyledButton>
+        )}
     </Container>
   )
 }

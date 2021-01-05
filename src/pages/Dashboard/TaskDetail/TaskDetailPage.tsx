@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import BaseContainer from '../../../uiComponents/atoms/Container'
 import TaskDetailHeader from './sections/TaskDetailHeader'
@@ -15,6 +15,11 @@ import ProgressMain from './sections/Progress/ProgressMain'
 import ProgressSummary from './sections/Progress/ProgressSummary'
 import { DashboardPanelContainer } from '../Panels/DashboardPanel'
 import { toXL } from '../../../constants/breakpoints'
+import { useGetTaskQuery } from '../../MarketplaceTDP/queries'
+import { useParams } from 'react-router-dom'
+import Loader from '../../../uiComponents/atoms/Loader/Loader'
+import { useAuth } from '../../../services'
+import QuestionsMain from './sections/Questions/QuestionsMain'
 
 const Container = styled(BaseContainer)`
   @media (${toXL}) {
@@ -40,17 +45,28 @@ const BottomContainerEnd = styled.aside`
   flex-basis: 300px;
 `
 
+interface Params {
+  taskSlug: string
+}
+
 interface Props {}
 
 const TaskDetailPage: FC<Props> = () => {
-  const { currentTab, updateTab } = useTabs<TabType>('offers')
+  const { currentTab, updateTab } = useTabs<TabType>('taskDetails')
+  const { taskSlug } = useParams<Params>()
+  const { user } = useAuth()
+  const { data, loading } = useGetTaskQuery({
+    slug: taskSlug,
+  })
 
-  function renderTabStart() {
+  const renderTabStart = useCallback(() => {
     switch (currentTab) {
       case 'taskDetails':
-        return <TaskDetailsMain />
+        return <TaskDetailsMain task={data.task} user={user} />
+      case 'questions':
+        return <QuestionsMain task={data.task} />
       case 'offers':
-        return <OffersMain />
+        return <OffersMain taskSlug={taskSlug} />
       case 'hires':
         return <HiresMain />
       case 'taskProgress':
@@ -58,11 +74,13 @@ const TaskDetailPage: FC<Props> = () => {
       default:
         return null
     }
-  }
+  }, [currentTab, data.task, user, taskSlug])
 
-  function renderTabEnd() {
+  const renderTabEnd = useCallback(() => {
     switch (currentTab) {
       case 'taskDetails':
+        return <TaskDetailsSummary />
+      case 'questions':
         return <TaskDetailsSummary />
       case 'offers':
         return <OffersSummary />
@@ -73,18 +91,29 @@ const TaskDetailPage: FC<Props> = () => {
       default:
         return null
     }
-  }
+  }, [currentTab])
 
   return (
     <Container>
-      <TopContainer>
-        <TaskDetailHeader />
-        <TaskDetailTabs currentTab={currentTab} updateTab={updateTab} />
-      </TopContainer>
-      <BottomContainer>
-        <BottomContainerStart>{renderTabStart()}</BottomContainerStart>
-        <BottomContainerEnd>{renderTabEnd()}</BottomContainerEnd>
-      </BottomContainer>
+      {loading ? (
+        <Loader name="Dashboard" />
+      ) : (
+        <>
+          <TopContainer>
+            <TaskDetailHeader task={data.task} />
+            <TaskDetailTabs
+              task={data.task}
+              user={user}
+              currentTab={currentTab}
+              updateTab={updateTab}
+            />
+          </TopContainer>
+          <BottomContainer>
+            <BottomContainerStart>{renderTabStart()}</BottomContainerStart>
+            <BottomContainerEnd>{renderTabEnd()}</BottomContainerEnd>
+          </BottomContainer>
+        </>
+      )}
     </Container>
   )
 }

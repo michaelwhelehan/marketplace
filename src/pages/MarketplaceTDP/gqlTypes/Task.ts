@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { TaskLocationType } from "./../../../../gqlTypes/globalTypes";
+import { TaskStatus, TaskLocationType } from "./../../../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL query operation: Task
@@ -42,6 +42,7 @@ export interface Task_task {
   owner: Task_task_owner | null;
   title: string;
   slug: string;
+  status: TaskStatus | null;
   budget: Task_task_budget | null;
   details: string;
   dueDate: any | null;
@@ -53,6 +54,10 @@ export interface Task_task {
    * ID of the conversation linked to this task.
    */
   conversationId: string | null;
+  /**
+   * Number of offers the task has made on it.
+   */
+  numOffers: number | null;
 }
 
 export interface Task {

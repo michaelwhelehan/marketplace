@@ -8,7 +8,7 @@ import { useForm, Controller } from 'react-hook-form'
 import useUrlQueries from '../../hooks/useUrlQueries'
 import { valueToPercent } from '../../utils/helpers'
 import SelectField from '../../uiComponents/atoms/SelectField'
-import { useGetSkillTagsQuery } from '../../pages/Dashboard/Profile/queries'
+import { useGetSkillTagsQuery } from '../../queries'
 
 const WhereWrapper = styled.div`
   display: flex;

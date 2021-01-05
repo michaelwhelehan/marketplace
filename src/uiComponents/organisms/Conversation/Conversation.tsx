@@ -59,7 +59,7 @@ const Conversation: FC<Props> = ({ onMessageCreated, ...props }) => {
       </ConversationMessagesContainer>
       <ConversationTextFieldContainer position={props.position}>
         <ConversationTextField
-          conversation={props.conversation}
+          textFieldPlaceholder={props.textFieldPlaceholder}
           position={props.position}
           onMessageCreated={onMessageCreated}
         />

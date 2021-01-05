@@ -13,6 +13,8 @@ import { GET_MAKE_OFFER_VISIBLE } from '../../components/Layout/Layout'
 import LineBreak from '../../uiComponents/atoms/LineBreak'
 import { useGetTaskQuery } from './queries'
 import Loader from '../../uiComponents/atoms/Loader/Loader'
+import { useGetOffersQuery } from '../Marketplace/queries'
+import { useAuth } from '../../services'
 
 interface Params {
   taskSlug: string
@@ -54,32 +56,53 @@ const Container = styled.div`
 `
 
 const TaskDetailPage: FC = () => {
+  const { user } = useAuth()
   const { taskSlug } = useParams<Params>()
-  const { data, loading } = useGetTaskQuery({ slug: taskSlug })
+  const { data: taskData, loading: loadingTask } = useGetTaskQuery({
+    slug: taskSlug,
+  })
+  const { data: offersData, loading: loadingOffers } = useGetOffersQuery({
+    pageSize: 50,
+    filter: { taskSlug },
+  })
   const { client } = useQuery(GET_MAKE_OFFER_VISIBLE)
   const scrollElement = useRef(null)
 
   const handleMakeOfferClick = useCallback(() => {
     client.writeQuery({
       query: GET_MAKE_OFFER_VISIBLE,
-      data: { makeOfferVisible: true },
+      data: { makeOfferVisible: true, makeOfferTaskId: taskData?.task?.id },
     })
-  }, [client])
+  }, [client, taskData?.task?.id])
 
   return (
     <Container ref={scrollElement}>
-      {loading ? (
+      {loadingTask ? (
         <Loader name="Dashboard" />
       ) : (
         <>
-          <TDPHeader task={data.task} onMakeOfferClick={handleMakeOfferClick} />
-          <TDPInfo task={data.task} />
+          <TDPHeader
+            user={user}
+            offers={offersData?.offers}
+            task={taskData.task}
+            onMakeOfferClick={handleMakeOfferClick}
+          />
+          <TDPInfo task={taskData.task} />
           <LineBreak />
-          <TDPDetails details={data.task.details} />
+          <TDPDetails details={taskData.task.details} />
           <TDPAttachments />
-          <TDPOffers onMakeOfferClick={handleMakeOfferClick} />
+          {loadingOffers ? (
+            <Loader name="Offers" />
+          ) : (
+            <TDPOffers
+              user={user}
+              task={taskData.task}
+              offers={offersData.offers}
+              onMakeOfferClick={handleMakeOfferClick}
+            />
+          )}
           <ScrollElementContextProvider scrollElement={scrollElement}>
-            <TDPQuestions conversationId={data.task.conversationId} />
+            <TDPQuestions conversationId={taskData.task.conversationId} />
           </ScrollElementContextProvider>
         </>
       )}

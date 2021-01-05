@@ -1,13 +1,19 @@
-import React, { FC, useCallback } from 'react'
-import TextField from '../../uiComponents/atoms/TextField'
+import React, { Dispatch, FC, MouseEvent, useCallback, useMemo } from 'react'
+// import TextField from '../../uiComponents/atoms/TextField'
 import FormField from '../../uiComponents/molecules/FormField'
 import RadioField from '../../uiComponents/atoms/RadioField'
-import Button from '../../uiComponents/atoms/Button'
+// import Button from '../../uiComponents/atoms/Button'
 import styled from 'styled-components'
-import { useFieldArray, useForm } from 'react-hook-form'
-import Icon from '../../uiComponents/atoms/Icon'
-import { primaryColor } from '../../styles/colors'
+import { useForm } from 'react-hook-form'
+// import Icon from '../../uiComponents/atoms/Icon'
+// import { primaryColor } from '../../styles/colors'
 import TextFieldIcon from '../../uiComponents/molecules/TextFieldIcon'
+import { TaskAPI } from '../../services/api/Task'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import FieldContainer from '../../uiComponents/molecules/FieldContainer'
+import TextField from '../../uiComponents/atoms/TextField'
+import { useTaskUpdateMutation } from './mutations'
 
 const InnerSectionContainer = styled.div`
   display: flex;
@@ -18,41 +24,108 @@ const StyledRadioField = styled(RadioField)`
   margin-bottom: 10px;
 `
 
-const QuestionWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-`
+// const QuestionWrapper = styled.div`
+//   display: flex;
+//   align-items: center;
+//   margin-bottom: 20px;
+// `
 
-const StyledButton = styled(Button)`
-  display: inline-block;
-`
+// const StyledButton = styled(Button)`
+//   display: inline-block;
+// `
 
-const StyledIcon = styled(Icon)`
-  cursor: pointer;
-`
+// const StyledIcon = styled(Icon)`
+//   cursor: pointer;
+// `
+
+function getDefaultBudgetType(locationType?: string) {
+  if (locationType === 'TOTAL') {
+    return 'total'
+  }
+
+  if (locationType === 'HOURLY') {
+    return 'hourly'
+  }
+
+  return 'total'
+}
+
+interface FormValues {
+  budgetType: string
+  budgetAmount: number
+  budgetDuration?: number
+}
+
+const schema = yup.object().shape({
+  budgetType: yup.string().required('Budget type is required'),
+  budgetAmount: yup.number().required('Budget amount is required'),
+  budgetDuration: yup.number().when('budgetType', {
+    is: 'hourly',
+    then: yup.number().required('Budget duration is required'),
+  }),
+})
 
 interface Props {
   onNextStep: () => void
+  setSubmitting: Dispatch<boolean>
+  taskStorageAPI: TaskAPI
+  onClose: (event: MouseEvent) => void
 }
 
 type TitleType = {
   title: string
 }
 
-const Step3: FC<Props> & TitleType = ({ onNextStep }) => {
-  const { register, control, handleSubmit } = useForm()
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'question',
+const Step3: FC<Props> & TitleType = ({
+  setSubmitting,
+  taskStorageAPI,
+  onClose,
+}) => {
+  const { loaded: taskLoaded, task } = taskStorageAPI
+  const defaultValues = useMemo(
+    () =>
+      taskLoaded &&
+      task && {
+        budgetType: getDefaultBudgetType(task.budgetType),
+        budgetAmount: task.budgetAmount,
+        budgetDuration: task.budgetDuration,
+      },
+    [taskLoaded, task],
+  )
+  const { register, watch, handleSubmit } = useForm<FormValues>({
+    defaultValues,
+    resolver: yupResolver(schema),
   })
+  // const { fields, append, remove } = useFieldArray({
+  //   control,
+  //   name: 'question',
+  // })
+  const watchbudgetType = watch('budgetType', 'total')
+  const updateTask = useTaskUpdateMutation()
 
   const handleStepSubmit = useCallback(
-    (data) => {
-      console.log(data)
-      onNextStep()
+    async (data: FormValues) => {
+      try {
+        setSubmitting(true)
+        await updateTask({
+          variables: {
+            id: task.id,
+            input: {
+              budgetType: data.budgetType,
+              budgetAmount: data.budgetAmount,
+              budgetDuration: data.budgetDuration ?? data.budgetDuration,
+            },
+          },
+        })
+        taskStorageAPI.clearTaskCreating()
+        onClose(null)
+      } catch (e) {
+        console.error(e)
+      } finally {
+        setSubmitting(false)
+      }
     },
-    [onNextStep],
+    [onClose, setSubmitting, task.id, updateTask, taskStorageAPI],
   )
 
   return (
@@ -78,15 +151,42 @@ const Step3: FC<Props> & TitleType = ({ onNextStep }) => {
             ref={register()}
           />
         </InnerSectionContainer>
-        <TextFieldIcon
-          customIcon="$"
-          name="amount"
-          ref={register()}
-          fullWidth
-          placeholder="Enter an amount"
-        />
       </FormField>
-      <FormField label="Would you like to add screening questions?" spacingTop>
+      {watchbudgetType === 'total' ? (
+        <FormField>
+          <TextFieldIcon
+            type="number"
+            customIcon="$"
+            name="budgetAmount"
+            ref={register()}
+            fullWidth
+            placeholder="Enter an amount"
+          />
+        </FormField>
+      ) : (
+        <FieldContainer split>
+          <FormField>
+            <TextFieldIcon
+              type="number"
+              customIcon="$"
+              name="budgetAmount"
+              ref={register()}
+              fullWidth
+              placeholder="Enter an amount"
+            />
+          </FormField>
+          <FormField>
+            <TextField
+              type="number"
+              name="budgetDuration"
+              ref={register()}
+              fullWidth
+              placeholder="Enter number of hours"
+            />
+          </FormField>
+        </FieldContainer>
+      )}
+      {/* <FormField label="Would you like to add screening questions?" spacingTop>
         {fields.map((item, index) => (
           <QuestionWrapper key={item.id}>
             <TextField
@@ -111,7 +211,7 @@ const Step3: FC<Props> & TitleType = ({ onNextStep }) => {
         >
           {fields.length === 0 ? 'Add question' : 'Add another'}
         </StyledButton>
-      </FormField>
+      </FormField> */}
     </form>
   )
 }

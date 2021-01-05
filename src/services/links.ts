@@ -4,7 +4,11 @@ import { WebSocketLink } from '@apollo/client/link/ws'
 import { split } from '@apollo/client'
 import { getMainDefinition } from '@apollo/client/utilities'
 
-import { authLink, invalidTokenLinkWithTokenHandler } from './auth'
+import {
+  authLink,
+  getAuthToken,
+  invalidTokenLinkWithTokenHandler,
+} from './auth'
 
 interface MarketplaceLinksConfig {
   /**
@@ -36,8 +40,10 @@ export const createMarketplaceLinks = ({
 
   const httpLink = new BatchHttpLink({ uri: apiUrl })
 
+  const authToken = getAuthToken()
+
   const wsLink = new WebSocketLink({
-    uri: wsUrl,
+    uri: authToken ? `${wsUrl}?token=${authToken}` : wsUrl,
     options: {
       reconnect: true,
     },

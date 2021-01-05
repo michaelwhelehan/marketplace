@@ -7,7 +7,7 @@
 // GraphQL fragment: EditConversationMessage
 // ====================================================
 
-export interface EditConversationMessage_conversationMessage {
+export interface EditConversationMessage_message {
   __typename: "ConversationMessage";
   /**
    * The ID of the object.
@@ -22,5 +22,5 @@ export interface EditConversationMessage {
   /**
    * The conversation message that was edited.
    */
-  conversationMessage: EditConversationMessage_conversationMessage | null;
+  message: EditConversationMessage_message | null;
 }

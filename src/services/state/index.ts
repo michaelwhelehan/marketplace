@@ -5,23 +5,28 @@ import {
   LocalStorageEvents,
   LocalStorageHandler,
   LocalStorageItems,
+  TaskModel,
 } from '../helpers/LocalStorageHandler'
 import { JobsManager } from '../jobs'
 import { Config } from '../types'
 import { StateItems } from './types'
 
 export interface MarketplaceStateLoaded {
+  task: boolean
   user: boolean
   signInToken: boolean
 }
 
 const defaultMarketplaceStateLoaded = {
+  task: false,
   signInToken: false,
   user: false,
 }
 
 export class MarketplaceState extends NamedObservable<StateItems> {
   user?: User | null
+
+  task?: TaskModel
 
   signInToken?: string | null
 
@@ -57,6 +62,10 @@ export class MarketplaceState extends NamedObservable<StateItems> {
    */
   private subscribeStateToChanges = () => {
     this.localStorageHandler.subscribeToChange(
+      LocalStorageItems.TASK,
+      this.onTaskUpdate,
+    )
+    this.localStorageHandler.subscribeToChange(
       LocalStorageItems.TOKEN,
       this.onSignInTokenUpdate,
     )
@@ -75,6 +84,9 @@ export class MarketplaceState extends NamedObservable<StateItems> {
       this.onSignInTokenUpdate(LocalStorageHandler.getSignInToken())
       await this.jobsManager.run('auth', 'provideUser', undefined)
     }
+    if (config.loadOnStart.task) {
+      this.jobsManager.run('task', 'provideTask', undefined)
+    }
   }
 
   private onLoadedUpdate = (newLoaded: Partial<MarketplaceStateLoaded>) => {
@@ -88,6 +100,7 @@ export class MarketplaceState extends NamedObservable<StateItems> {
   private onClearLocalStorage = () => {
     this.onSignInTokenUpdate(null)
     this.onUserUpdate(null)
+    this.onTaskUpdate(null)
   }
 
   private onSignInTokenUpdate = (token: string | null) => {
@@ -95,6 +108,14 @@ export class MarketplaceState extends NamedObservable<StateItems> {
     this.notifyChange(StateItems.SIGN_IN_TOKEN, this.signInToken)
     this.onLoadedUpdate({
       signInToken: true,
+    })
+  }
+
+  private onTaskUpdate = (task?: TaskModel) => {
+    this.task = task
+    this.notifyChange(StateItems.TASK, this.task)
+    this.onLoadedUpdate({
+      task: true,
     })
   }
 

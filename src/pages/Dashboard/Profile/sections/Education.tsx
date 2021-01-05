@@ -175,7 +175,6 @@ const Education: FC<Props> = ({ user }) => {
       <FormField label="Add education">
         {fields.map((item, index) => (
           <ItemWrapper key={item.identifier}>
-            {console.log(item)}
             <StartContainer>
               <input
                 type="hidden"

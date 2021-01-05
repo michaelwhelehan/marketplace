@@ -14,6 +14,9 @@ import Button from '../../../uiComponents/atoms/Button'
 import { formatDate } from '../../../utils/date'
 import { useHistory } from 'react-router-dom'
 import { black } from '../../../styles/colors'
+import { useGetUserTasksQuery } from './queries'
+import { TaskStatusFilter } from '../../../types/task'
+import Loader from '../../../uiComponents/atoms/Loader/Loader'
 
 const PageContainer = styled(DashboardPageContainer)`
   margin-top: 20px;
@@ -28,91 +31,14 @@ const StyledHeading = styled(HeadingM)`
   color: ${black};
 `
 
-const list = [
-  {
-    avatar: faker.image.imageUrl(),
-    title: faker.hacker.phrase().slice(0, 50).trim(),
-    created: faker.date.past(),
-    due: faker.date.future(),
-    numOffers: Math.round(Math.random() * 10),
-    averageOffer: Math.round(Math.random() * 1000),
-    href: '/jobs/abc',
-  },
-  {
-    avatar: faker.image.imageUrl(),
-    title: faker.hacker.phrase().slice(0, 50).trim(),
-    created: faker.date.past(),
-    due: faker.date.future(),
-    numOffers: Math.round(Math.random() * 10),
-    averageOffer: Math.round(Math.random() * 1000),
-    href: '/jobs/abc',
-  },
-  {
-    avatar: faker.image.imageUrl(),
-    title: faker.hacker.phrase().slice(0, 50).trim(),
-    created: faker.date.past(),
-    due: faker.date.future(),
-    numOffers: Math.round(Math.random() * 10),
-    averageOffer: Math.round(Math.random() * 1000),
-    href: '/jobs/abc',
-  },
-  {
-    avatar: faker.image.imageUrl(),
-    title: faker.hacker.phrase().slice(0, 50).trim(),
-    created: faker.date.past(),
-    due: faker.date.future(),
-    numOffers: Math.round(Math.random() * 10),
-    averageOffer: Math.round(Math.random() * 1000),
-    href: '/jobs/abc',
-  },
-  {
-    avatar: faker.image.imageUrl(),
-    title: faker.hacker.phrase().slice(0, 50).trim(),
-    created: faker.date.past(),
-    due: faker.date.future(),
-    numOffers: Math.round(Math.random() * 10),
-    averageOffer: Math.round(Math.random() * 1000),
-    href: '/jobs/abc',
-  },
-  {
-    avatar: faker.image.imageUrl(),
-    title: faker.hacker.phrase().slice(0, 50).trim(),
-    created: faker.date.past(),
-    due: faker.date.future(),
-    numOffers: Math.round(Math.random() * 10),
-    averageOffer: Math.round(Math.random() * 1000),
-    href: '/jobs/abc',
-  },
-  {
-    avatar: faker.image.imageUrl(),
-    title: faker.hacker.phrase().slice(0, 50).trim(),
-    created: faker.date.past(),
-    due: faker.date.future(),
-    numOffers: Math.round(Math.random() * 10),
-    averageOffer: Math.round(Math.random() * 1000),
-    href: '/jobs/abc',
-  },
-  {
-    avatar: faker.image.imageUrl(),
-    title: faker.hacker.phrase().slice(0, 50).trim(),
-    created: faker.date.past(),
-    due: faker.date.future(),
-    numOffers: Math.round(Math.random() * 10),
-    averageOffer: Math.round(Math.random() * 1000),
-    href: '/jobs/abc',
-  },
-  {
-    avatar: faker.image.imageUrl(),
-    title: faker.hacker.phrase().slice(0, 50).trim(),
-    created: faker.date.past(),
-    due: faker.date.future(),
-    numOffers: Math.round(Math.random() * 10),
-    averageOffer: Math.round(Math.random() * 1000),
-    href: '/jobs/abc',
-  },
-]
-
 const TasksPage: FC = () => {
+  const { data, loading } = useGetUserTasksQuery({
+    pageSize: 20,
+    filter: {
+      status: [TaskStatusFilter.OPEN],
+    },
+  })
+  console.log(loading, data)
   const { currentTab, updateTab } = useTabs<TabType>('active')
   const scrollElement = useRef(null)
   const history = useHistory()
@@ -184,12 +110,24 @@ const TasksPage: FC = () => {
       <PageContainer>
         <StyledHeading>Active Jobs</StyledHeading>
         <GridContainer>
-          <WindowedTable
-            columns={columns}
-            list={list}
-            rowHeight={72}
-            scrollElement={scrollElement.current ?? window}
-          />
+          {loading ? (
+            <Loader name="Dashboard" />
+          ) : (
+            <WindowedTable
+              columns={columns}
+              list={data.me.tasks.edges.map(({ node }) => ({
+                avatar: node.owner.avatarUrl,
+                title: node.title,
+                created: node.created,
+                due: node.dueDate,
+                numOffers: node.numOffers,
+                averageOffer: Math.round(Math.random() * 1000),
+                href: `/jobs/${node.slug}`,
+              }))}
+              rowHeight={72}
+              scrollElement={scrollElement.current ?? window}
+            />
+          )}
         </GridContainer>
       </PageContainer>
     </main>

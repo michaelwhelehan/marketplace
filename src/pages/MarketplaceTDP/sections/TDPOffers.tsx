@@ -2,9 +2,12 @@ import React, { FC, MouseEvent } from 'react'
 import styled from 'styled-components'
 import { black, primaryColor, white } from '../../../styles/colors'
 import { HeadingS } from '../../../uiComponents/atoms/Headings'
-import faker from 'faker'
 import Avatar from '../../../uiComponents/atoms/Avatar'
 import Icon from '../../../uiComponents/atoms/Icon'
+import { Offers_offers } from '../../Marketplace/gqlTypes/Offers'
+import { User } from '../../../services/fragments/gqlTypes/User'
+import { Task_task } from '../gqlTypes/Task'
+import { Link } from 'react-router-dom'
 
 const Container = styled.article`
   padding: 20px;
@@ -50,28 +53,39 @@ const StyledAvatar = styled(Avatar)`
 `
 
 interface Props {
+  user: User
+  task: Task_task
+  offers: Offers_offers
   onMakeOfferClick: (event: MouseEvent) => void
 }
 
-const avatarSrc1 = faker.image.imageUrl()
-const avatarSrc2 = faker.image.imageUrl()
-
-const TDPOffers: FC<Props> = ({ onMakeOfferClick }) => {
+const TDPOffers: FC<Props> = ({ user, task, offers, onMakeOfferClick }) => {
   return (
     <Container>
-      <Title>Offers (2)</Title>
+      <Title>Offers ({offers.totalCount})</Title>
       <OfferContainer>
-        <OfferOuter>
-          <StyledAvatar src={avatarSrc1} size={50} />
-        </OfferOuter>
-        <OfferOuter>
-          <StyledAvatar src={avatarSrc2} size={50} />
-        </OfferOuter>
-        <OfferOuter onClick={onMakeOfferClick}>
-          <OfferInner>
-            <Icon name="MdAdd" size={35} color={white} />
-          </OfferInner>
-        </OfferOuter>
+        {offers.edges.slice(0, 10).map(({ node }) => (
+          <Link
+            key={node.id}
+            to={`/profile/${node.createdBy.username}`}
+            target="_blank"
+          >
+            <OfferOuter>
+              <StyledAvatar src={node.createdBy.avatarUrl} size={50} />
+            </OfferOuter>
+          </Link>
+        ))}
+        {user.id !== task.owner.id &&
+          !offers.edges.some(({ node }) => node.createdBy.id === user.id) && (
+            <OfferOuter onClick={onMakeOfferClick}>
+              <OfferInner>
+                <Icon name="MdAdd" size={35} color={white} />
+              </OfferInner>
+            </OfferOuter>
+          )}
+        {user.id === task.owner.id && offers.edges.length === 0 && (
+          <p>Nobody has made an offer on your task yet.</p>
+        )}
       </OfferContainer>
     </Container>
   )

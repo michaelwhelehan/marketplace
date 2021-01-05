@@ -40,6 +40,7 @@ export interface Config {
    */
   loadOnStart: {
     auth: boolean
+    task: boolean
   }
 }
 

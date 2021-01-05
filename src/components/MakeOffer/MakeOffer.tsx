@@ -1,11 +1,11 @@
-import React, { FC, MouseEvent, useCallback, useMemo } from 'react'
-import { useForm } from 'react-hook-form'
+import React, { FC, MouseEvent, useMemo, useState } from 'react'
 import Modal from '../../uiComponents/molecules/Modal'
 import Button from '../../uiComponents/atoms/Button'
 import styled from 'styled-components'
 import Step1 from './Step1'
 import Step2 from './Step2'
 import useWizard from '../../hooks/useWizard'
+import { Offer } from './types'
 
 const FooterContainer = styled.div`
   display: flex;
@@ -17,18 +17,21 @@ const FooterContainer = styled.div`
 `
 
 interface MakeOfferProps {
+  taskId: string
   onClose: (event: MouseEvent) => void
 }
 
 interface MakeOfferFooterProps {
+  currentStep: number
+  isSubmitting: boolean
   onPreviousClick?: (event: MouseEvent) => void
-  onNextClick: (event: MouseEvent) => void
   proceedText: string
 }
 
 const MakeOfferFooter: FC<MakeOfferFooterProps> = ({
+  currentStep,
+  isSubmitting,
   onPreviousClick,
-  onNextClick,
   proceedText,
 }) => (
   <FooterContainer>
@@ -37,44 +40,20 @@ const MakeOfferFooter: FC<MakeOfferFooterProps> = ({
         Back
       </Button>
     ) : null}
-    <Button onClick={onNextClick}>{proceedText}</Button>
+    <Button
+      form={`make-offer-${currentStep}`}
+      type="submit"
+      disabled={isSubmitting}
+    >
+      {isSubmitting ? 'Loading...' : proceedText}
+    </Button>
   </FooterContainer>
 )
 
-const MakeOffer: FC<MakeOfferProps> = ({ onClose }) => {
+const MakeOffer: FC<MakeOfferProps> = ({ taskId, onClose }) => {
   const { currentStep, onNextStep, onPrevStep, canGoBack } = useWizard(2)
-  const { register, watch, control, handleSubmit } = useForm({
-    defaultValues: {
-      where: 'in-person',
-      budgetType: 'total',
-    },
-  })
-
-  const handleStep1Submit = useCallback(
-    data => {
-      console.log(data)
-      onNextStep()
-    },
-    [onNextStep],
-  )
-
-  const handleStep2Submit = useCallback(data => {
-    console.log(data)
-  }, [])
-
-  const handleStepSubmit = useCallback(
-    data => {
-      switch (currentStep) {
-        case 1:
-          handleStep1Submit(data)
-          break
-        case 2:
-          handleStep2Submit(data)
-          break
-      }
-    },
-    [currentStep, handleStep1Submit, handleStep2Submit],
-  )
+  const [isSubmitting, setSubmitting] = useState<boolean>(false)
+  const [offer, setOffer] = useState<Offer>(null)
 
   const Step = useMemo(() => {
     switch (currentStep) {
@@ -92,13 +71,21 @@ const MakeOffer: FC<MakeOfferProps> = ({ onClose }) => {
       overflowContent={false}
       renderFooter={() => (
         <MakeOfferFooter
+          currentStep={currentStep}
+          isSubmitting={isSubmitting}
           onPreviousClick={canGoBack && onPrevStep}
-          onNextClick={handleSubmit(handleStepSubmit)}
           proceedText={currentStep === 2 ? 'Make Offer' : 'Continue'}
         />
       )}
     >
-      <Step register={register} watch={watch} control={control} />
+      <Step
+        taskId={taskId}
+        onNextStep={onNextStep}
+        setSubmitting={setSubmitting}
+        setOffer={setOffer}
+        offer={offer}
+        onClose={onClose}
+      />
     </Modal>
   )
 }

@@ -27,7 +27,7 @@ export const conversationMessageFragment = gql`
 
 export const createConversationMessageFragment = gql`
   fragment CreateConversationMessage on CreateConversationMessagePayload {
-    conversationMessage {
+    message {
       ...ConversationMessage
     }
   }
@@ -35,7 +35,7 @@ export const createConversationMessageFragment = gql`
 
 export const editConversationMessageFragment = gql`
   fragment EditConversationMessage on EditConversationMessagePayload {
-    conversationMessage {
+    message {
       id
       modified
       body
@@ -45,7 +45,7 @@ export const editConversationMessageFragment = gql`
 
 export const deleteConversationMessageFragment = gql`
   fragment DeleteConversationMessage on DeleteConversationMessagePayload {
-    conversationMessage {
+    message {
       id
     }
   }
@@ -78,17 +78,19 @@ export const getConversationQuery = gql`
   }
 `
 
-export const conversationMessageCreatedSubscription = gql`
+export const conversationMessageSubscription = gql`
   ${conversationMessageFragment}
   ${createConversationMessageFragment}
   ${editConversationMessageFragment}
   ${deleteConversationMessageFragment}
   subscription ConversationSubscription($conversationId: ID!) {
     conversationSubscription(conversationId: $conversationId) {
-      __typename
-      ...CreateConversationMessage
-      ...EditConversationMessage
-      ...DeleteConversationMessage
+      conversationMessage {
+        __typename
+        ...CreateConversationMessage
+        ...EditConversationMessage
+        ...DeleteConversationMessage
+      }
     }
   }
 `

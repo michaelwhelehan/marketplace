@@ -29,9 +29,9 @@ import Button from '../../../../uiComponents/atoms/Button'
 import CheckboxField from '../../../../uiComponents/atoms/CheckboxField'
 import { UserProfileDetails_me } from '../gqlTypes/UserProfileDetails'
 import { useAccountUpdate } from '../../../../services'
-import { useGetSkillTagsQuery } from '../queries'
 import ChangeAvatar from './ChangeAvatar'
 import { titleCase } from '../../../../utils/format'
+import { useGetSkillTagsQuery } from '../../../../queries'
 
 const StyledForm = styled.form`
   padding-top: 20px;

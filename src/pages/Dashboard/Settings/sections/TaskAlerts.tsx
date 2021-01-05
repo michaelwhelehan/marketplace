@@ -25,14 +25,14 @@ const Description = styled(ParagraphS)`
 const TaskAlerts: FC = () => {
   return (
     <Container>
-      <Heading>Task Alerts</Heading>
+      <Heading>Job Alerts</Heading>
       <Description>
         These are emails and push notifications about tasks you may be
         interested in.
       </Description>
       <CheckboxField
         name="enableAlerts"
-        label="Turn on task alerts to get notified about tasks we think you'd like"
+        label="Turn on job alerts to get notified about jobs we think you'd like"
         value="enableAlerts"
       />
     </Container>

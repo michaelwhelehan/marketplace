@@ -25,7 +25,13 @@ const TDPQuestions: FC<Props> = ({ conversationId }) => {
     <Container>
       <Title>Questions ({questionsCount})</Title>
       <ConversationContainer>
-        <ConversationConnected conversationId={conversationId} position="topDown" scrollType="windowed" setCount={setQuestionsCount} />
+        <ConversationConnected
+          conversationId={conversationId}
+          position="topDown"
+          scrollType="windowed"
+          textFieldPlaceholder="Ask a question"
+          setCount={setQuestionsCount}
+        />
       </ConversationContainer>
     </Container>
   )

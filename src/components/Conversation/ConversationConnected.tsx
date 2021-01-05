@@ -13,11 +13,13 @@ import {
 import { useAuth } from '../../services'
 import { substractMinutes } from '../../utils/date'
 import useConversationSubscribeMore from './useConversationSubscribeMore'
+import { useHistory } from 'react-router-dom'
 
 interface Props {
   conversationId: string
   position: ConversationPositionType
   scrollType: ConversationScrollType
+  textFieldPlaceholder?: string
   setCount?: (count: number) => void
 }
 
@@ -26,7 +28,9 @@ const ConversationConnected: FC<Props> = ({
   position,
   scrollType,
   setCount,
+  textFieldPlaceholder = 'Send a message',
 }) => {
+  const history = useHistory()
   const { user } = useAuth()
   const { data, loading, loadMore, subscribeMore } = useGetConversationQuery({
     variables: {
@@ -46,7 +50,7 @@ const ConversationConnected: FC<Props> = ({
   const hasData = data?.conversation?.conversationFeed?.edges?.length > 0
 
   useEffect(() => {
-    if (data?.conversation?.conversationFeed?.totalCount) {
+    if (setCount && data?.conversation?.conversationFeed?.totalCount) {
       setCount(data?.conversation?.conversationFeed?.totalCount)
     }
   }, [data?.conversation?.conversationFeed?.totalCount, setCount])
@@ -60,8 +64,14 @@ const ConversationConnected: FC<Props> = ({
       messagesLoading={loading && !hasData}
       currentUserId={user?.id}
       conversation={data?.conversation}
+      textFieldPlaceholder={textFieldPlaceholder}
       messagesLoadAmount={100}
       onMessageCreated={(message) => {
+        if (!user) {
+          history.push('/login')
+          return
+        }
+
         createConversationMessage({
           variables: { conversationId, messageType: 'text', body: message },
           optimisticResponse: {

@@ -158,7 +158,7 @@ const TDPInfo: FC<Props> = ({ task, editable = false }) => {
       <InfoEnd>
         <InfoContainer>
           <StatusBar>
-            <TaskStatusIndicator status="open" />
+            <TaskStatusIndicator status={task.status} />
           </StatusBar>
         </InfoContainer>
         <InfoContainer>

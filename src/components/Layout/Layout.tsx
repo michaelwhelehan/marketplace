@@ -16,6 +16,7 @@ export const GET_CREATE_TASK_VISIBLE = gql`
 export const GET_MAKE_OFFER_VISIBLE = gql`
   query MakeOffer {
     makeOfferVisible @client
+    makeOfferTaskId @client
   }
 `
 
@@ -64,8 +65,9 @@ const Layout: FC = ({ children }) => {
           }
         />
       )}
-      {offerData?.makeOfferVisible && (
+      {offerData?.makeOfferVisible && offerData?.makeOfferTaskId && (
         <MakeOffer
+          taskId={offerData.makeOfferTaskId}
           onClose={() =>
             offerClient.writeQuery({
               query: GET_MAKE_OFFER_VISIBLE,
