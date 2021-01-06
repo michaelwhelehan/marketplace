@@ -15,10 +15,11 @@ export interface ConversationMessageCreate_conversationMessageCreate_conversatio
    * The ID of the object.
    */
   id: string;
-  username: string;
   firstName: string;
   lastName: string;
+  username: string;
   avatarUrl: string | null;
+  jobTitle: string | null;
 }
 
 export interface ConversationMessageCreate_conversationMessageCreate_conversationMessage {

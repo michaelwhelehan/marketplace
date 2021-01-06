@@ -15,10 +15,11 @@ export interface EditTask_task_owner {
    * The ID of the object.
    */
   id: string;
-  username: string;
   firstName: string;
   lastName: string;
+  username: string;
   avatarUrl: string | null;
+  jobTitle: string | null;
 }
 
 export interface EditTask_task_budget {
@@ -42,7 +43,7 @@ export interface EditTask_task {
   owner: EditTask_task_owner | null;
   title: string;
   slug: string;
-  status: TaskStatus | null;
+  taskStatus: TaskStatus | null;
   budget: EditTask_task_budget | null;
   details: string;
   dueDate: any | null;

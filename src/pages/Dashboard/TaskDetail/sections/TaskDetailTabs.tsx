@@ -23,8 +23,8 @@ const TaskDetailTabs: FC<Props> = ({ currentTab, updateTab, task, user }) => {
   const tabs: Tabs<TabType>[] = [
     {
       title: 'Job Details',
-      active: currentTab === 'taskDetails',
-      type: 'taskDetails',
+      active: currentTab === 'details',
+      type: 'details',
     } as Tabs<TabType>,
     {
       title: 'Questions',
@@ -43,11 +43,11 @@ const TaskDetailTabs: FC<Props> = ({ currentTab, updateTab, task, user }) => {
         type: 'hires',
       } as Tabs<TabType>),
     user.id === task.owner.id &&
-      (task.status === 'ASSIGNED' || task.status === 'DELIVERED') &&
+      (task.taskStatus === 'ASSIGNED' || task.taskStatus === 'DELIVERED') &&
       ({
         title: 'Job Progress',
-        active: currentTab === 'taskProgress',
-        type: 'taskProgress',
+        active: currentTab === 'progress',
+        type: 'progress',
         hasUpdates: true,
       } as Tabs<TabType>),
   ].filter(Boolean)

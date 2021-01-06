@@ -1,16 +1,14 @@
 import { gql, useMutation } from '@apollo/client'
+import { publicUserBasicFragment } from '../../services/fragments/auth'
 import { TaskCreate, TaskCreateVariables } from './gqlTypes/TaskCreate'
 import { TaskUpdate, TaskUpdateVariables } from './gqlTypes/TaskUpdate'
 
 export const taskCreateFragment = gql`
+  ${publicUserBasicFragment}
   fragment TaskCreated on Task {
     id
     owner {
-      id
-      username
-      firstName
-      lastName
-      avatarUrl
+      ...PublicUserBasic
     }
     title
     slug

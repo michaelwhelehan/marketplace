@@ -8,5 +8,17 @@ export const userFragment = gql`
     lastName
     username
     avatarUrl
+    jobTitle
+  }
+`
+
+export const publicUserBasicFragment = gql`
+  fragment PublicUserBasic on User {
+    id
+    firstName
+    lastName
+    username
+    avatarUrl
+    jobTitle
   }
 `

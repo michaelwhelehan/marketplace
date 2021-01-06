@@ -6,16 +6,14 @@ import {
   ConversationSubscriptionVariables,
 } from './gqlTypes/ConversationSubscription'
 import { useQuery } from '../../core/queries'
+import { publicUserBasicFragment } from '../../services/fragments/auth'
 
 export const conversationMessageFragment = gql`
+  ${publicUserBasicFragment}
   fragment ConversationMessage on ConversationMessage {
     id
     sentBy {
-      id
-      username
-      firstName
-      lastName
-      avatarUrl
+      ...PublicUserBasic
     }
     body
     url

@@ -27,10 +27,11 @@ export interface OfferMade_createdBy {
    * The ID of the object.
    */
   id: string;
-  avatarUrl: string | null;
   firstName: string;
   lastName: string;
   username: string;
+  avatarUrl: string | null;
+  jobTitle: string | null;
 }
 
 export interface OfferMade {

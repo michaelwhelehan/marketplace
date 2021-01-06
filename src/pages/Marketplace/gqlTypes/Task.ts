@@ -15,10 +15,11 @@ export interface Task_owner {
    * The ID of the object.
    */
   id: string;
-  username: string;
   firstName: string;
   lastName: string;
+  username: string;
   avatarUrl: string | null;
+  jobTitle: string | null;
 }
 
 export interface Task_budget {
@@ -42,7 +43,7 @@ export interface Task {
   owner: Task_owner | null;
   title: string;
   slug: string;
-  status: TaskStatus | null;
+  taskStatus: TaskStatus | null;
   budget: Task_budget | null;
   details: string;
   dueDate: any | null;

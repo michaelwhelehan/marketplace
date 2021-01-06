@@ -122,7 +122,7 @@ const TasksPage: FC = () => {
                 due: node.dueDate,
                 numOffers: node.numOffers,
                 averageOffer: Math.round(Math.random() * 1000),
-                href: `/jobs/${node.slug}`,
+                href: `/jobs/${node.slug}/details`,
               }))}
               rowHeight={72}
               scrollElement={scrollElement.current ?? window}

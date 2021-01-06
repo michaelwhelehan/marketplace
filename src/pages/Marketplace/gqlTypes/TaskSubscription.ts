@@ -15,10 +15,11 @@ export interface TaskSubscription_taskSubscription_marketplaceTask_PublishTaskPa
    * The ID of the object.
    */
   id: string;
-  username: string;
   firstName: string;
   lastName: string;
+  username: string;
   avatarUrl: string | null;
+  jobTitle: string | null;
 }
 
 export interface TaskSubscription_taskSubscription_marketplaceTask_PublishTaskPayload_task_budget {
@@ -42,7 +43,7 @@ export interface TaskSubscription_taskSubscription_marketplaceTask_PublishTaskPa
   owner: TaskSubscription_taskSubscription_marketplaceTask_PublishTaskPayload_task_owner | null;
   title: string;
   slug: string;
-  status: TaskStatus | null;
+  taskStatus: TaskStatus | null;
   budget: TaskSubscription_taskSubscription_marketplaceTask_PublishTaskPayload_task_budget | null;
   details: string;
   dueDate: any | null;
@@ -74,10 +75,11 @@ export interface TaskSubscription_taskSubscription_marketplaceTask_EditTaskPaylo
    * The ID of the object.
    */
   id: string;
-  username: string;
   firstName: string;
   lastName: string;
+  username: string;
   avatarUrl: string | null;
+  jobTitle: string | null;
 }
 
 export interface TaskSubscription_taskSubscription_marketplaceTask_EditTaskPayload_task_budget {
@@ -101,7 +103,7 @@ export interface TaskSubscription_taskSubscription_marketplaceTask_EditTaskPaylo
   owner: TaskSubscription_taskSubscription_marketplaceTask_EditTaskPayload_task_owner | null;
   title: string;
   slug: string;
-  status: TaskStatus | null;
+  taskStatus: TaskStatus | null;
   budget: TaskSubscription_taskSubscription_marketplaceTask_EditTaskPayload_task_budget | null;
   details: string;
   dueDate: any | null;

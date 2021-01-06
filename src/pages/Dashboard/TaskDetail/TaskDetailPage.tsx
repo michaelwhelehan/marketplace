@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback } from 'react'
 import styled from 'styled-components'
 import BaseContainer from '../../../uiComponents/atoms/Container'
 import TaskDetailHeader from './sections/TaskDetailHeader'
@@ -47,13 +47,14 @@ const BottomContainerEnd = styled.aside`
 
 interface Params {
   taskSlug: string
+  tab: TabType
 }
 
 interface Props {}
 
 const TaskDetailPage: FC<Props> = () => {
-  const { currentTab, updateTab } = useTabs<TabType>('taskDetails')
-  const { taskSlug } = useParams<Params>()
+  const { taskSlug, tab } = useParams<Params>()
+  const { currentTab, updateTab } = useTabs<TabType>(tab)
   const { user } = useAuth()
   const { data, loading } = useGetTaskQuery({
     slug: taskSlug,
@@ -61,7 +62,7 @@ const TaskDetailPage: FC<Props> = () => {
 
   const renderTabStart = useCallback(() => {
     switch (currentTab) {
-      case 'taskDetails':
+      case 'details':
         return <TaskDetailsMain task={data.task} user={user} />
       case 'questions':
         return <QuestionsMain task={data.task} />
@@ -69,16 +70,16 @@ const TaskDetailPage: FC<Props> = () => {
         return <OffersMain taskSlug={taskSlug} />
       case 'hires':
         return <HiresMain />
-      case 'taskProgress':
+      case 'progress':
         return <ProgressMain />
       default:
         return null
     }
-  }, [currentTab, data.task, user, taskSlug])
+  }, [currentTab, data?.task, user, taskSlug])
 
   const renderTabEnd = useCallback(() => {
     switch (currentTab) {
-      case 'taskDetails':
+      case 'details':
         return <TaskDetailsSummary />
       case 'questions':
         return <TaskDetailsSummary />
@@ -86,7 +87,7 @@ const TaskDetailPage: FC<Props> = () => {
         return <OffersSummary />
       case 'hires':
         return <HiresSummary />
-      case 'taskProgress':
+      case 'progress':
         return <ProgressSummary />
       default:
         return null

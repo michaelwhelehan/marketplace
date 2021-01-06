@@ -15,10 +15,11 @@ export interface Tasks_tasks_edges_node_owner {
    * The ID of the object.
    */
   id: string;
-  username: string;
   firstName: string;
   lastName: string;
+  username: string;
   avatarUrl: string | null;
+  jobTitle: string | null;
 }
 
 export interface Tasks_tasks_edges_node_budget {
@@ -42,7 +43,7 @@ export interface Tasks_tasks_edges_node {
   owner: Tasks_tasks_edges_node_owner | null;
   title: string;
   slug: string;
-  status: TaskStatus | null;
+  taskStatus: TaskStatus | null;
   budget: Tasks_tasks_edges_node_budget | null;
   details: string;
   dueDate: any | null;

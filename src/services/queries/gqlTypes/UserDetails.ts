@@ -18,6 +18,7 @@ export interface UserDetails_me {
   lastName: string;
   username: string;
   avatarUrl: string | null;
+  jobTitle: string | null;
 }
 
 export interface UserDetails {

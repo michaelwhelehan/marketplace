@@ -27,10 +27,11 @@ export interface OfferCreate_offerCreate_offer_createdBy {
    * The ID of the object.
    */
   id: string;
-  avatarUrl: string | null;
   firstName: string;
   lastName: string;
   username: string;
+  avatarUrl: string | null;
+  jobTitle: string | null;
 }
 
 export interface OfferCreate_offerCreate_offer {

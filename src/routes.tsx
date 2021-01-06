@@ -3,50 +3,59 @@ import Layout from './components/Layout/Layout'
 import { Switch, Route } from 'react-router-dom'
 import Loader from './uiComponents/atoms/Loader/Loader'
 
-const Marketplace = lazy(() =>
-  import(
-    /* webpackChunkName: "marketplace-page" */ './pages/Marketplace/MarketplacePage'
-  ),
+const Marketplace = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "marketplace-page" */ './pages/Marketplace/MarketplacePage'
+    ),
 )
 
-const ProfilePage = lazy(() =>
-  import(/* webpackChunkName: "profile-page" */ './pages/Profile/ProfilePage'),
+const ProfilePage = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "profile-page" */ './pages/Profile/ProfilePage'
+    ),
 )
 
-const TaskDetailPage = lazy(() =>
-  import(
-    /* webpackChunkName: "task-detail-page" */ './pages/Dashboard/TaskDetail/TaskDetailPage'
-  ),
+const TaskDetailPage = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "task-detail-page" */ './pages/Dashboard/TaskDetail/TaskDetailPage'
+    ),
 )
 
-const LoginPage = lazy(() =>
-  import(/* webpackChunkName: "login-page" */ './pages/Auth/LoginPage'),
+const LoginPage = lazy(
+  () => import(/* webpackChunkName: "login-page" */ './pages/Auth/LoginPage'),
 )
 
-const SignUpPage = lazy(() =>
-  import(/* webpackChunkName: "sign-up-page" */ './pages/Auth/SignUpPage'),
+const SignUpPage = lazy(
+  () =>
+    import(/* webpackChunkName: "sign-up-page" */ './pages/Auth/SignUpPage'),
 )
 
-const RequestPasswordResetPage = lazy(() =>
-  import(
-    /* webpackChunkName: "request-password-reset-page" */ './pages/Auth/RequestPasswordResetPage'
-  ),
+const RequestPasswordResetPage = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "request-password-reset-page" */ './pages/Auth/RequestPasswordResetPage'
+    ),
 )
 
-const PasswordResetPage = lazy(() =>
-  import(
-    /* webpackChunkName: "password-reset-page" */ './pages/Auth/PasswordResetPage'
-  ),
+const PasswordResetPage = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "password-reset-page" */ './pages/Auth/PasswordResetPage'
+    ),
 )
 
-const Inbox = lazy(() =>
-  import(/* webpackChunkName: "inbox-page" */ './pages/Inbox/InboxPage'),
+const Inbox = lazy(
+  () => import(/* webpackChunkName: "inbox-page" */ './pages/Inbox/InboxPage'),
 )
 
-const Dashboard = lazy(() =>
-  import(
-    /* webpackChunkName: "dashboard-page" */ './pages/Dashboard/DashboardPage'
-  ),
+const Dashboard = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "dashboard-page" */ './pages/Dashboard/DashboardPage'
+    ),
 )
 
 const Routes: FC = () => {
@@ -58,7 +67,7 @@ const Routes: FC = () => {
             <Route path="/dashboard/inbox">
               <Inbox />
             </Route>
-            <Route path="/jobs/:taskSlug">
+            <Route path="/jobs/:taskSlug/:tab">
               <TaskDetailPage />
             </Route>
             <Route path="/dashboard">

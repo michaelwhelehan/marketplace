@@ -4,16 +4,15 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL fragment: User
+// GraphQL fragment: PublicUserBasic
 // ====================================================
 
-export interface User {
+export interface PublicUserBasic {
   __typename: "User";
   /**
    * The ID of the object.
    */
   id: string;
-  email: string;
   firstName: string;
   lastName: string;
   username: string;

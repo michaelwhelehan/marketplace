@@ -39,7 +39,7 @@ const TaskDetailHeader: FC<Props> = ({ task }) => {
     <Container>
       <StyledHeading>{task.title}</StyledHeading>
       <EndContainer>
-        <TaskStatusIndicator status={task.status} />
+        <TaskStatusIndicator status={task.taskStatus} />
         <Budget>
           {task.budget.currency}
           {task.budget.amount}

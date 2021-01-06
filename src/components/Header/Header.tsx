@@ -13,6 +13,7 @@ import UpdateIndicator from '../../uiComponents/atoms/UpdateIndicator'
 import Logo from '../../uiComponents/atoms/Logo'
 import { useAuth } from '../../services'
 import { toXL } from '../../constants/breakpoints'
+import { useGetUserActivityQuery } from './queries'
 
 const StyledHeader = styled.header`
   height: ${MAIN_HEADER_HEIGHT}px;
@@ -88,6 +89,10 @@ interface LinkType {
 
 const Header: FC = () => {
   const { user } = useAuth()
+  const {
+    data: activityData,
+    loading: activityLoading,
+  } = useGetUserActivityQuery({ pageSize: 10 })
   const [dropdownOpen, setDropdownOpen] = useState<LinkIdType | null>(null)
   const links: LinkType[] = [
     user &&
@@ -120,7 +125,14 @@ const Header: FC = () => {
           setDropdownOpen((prev) => (prev === 'updates' ? null : 'updates'))
         },
         hasDropDown: true,
-        renderDropDown: () => <Notifications />,
+        renderDropDown: () => (
+          <Notifications
+            activity={activityData.me.activity}
+            onClose={(e) => {
+              setDropdownOpen((prev) => (prev === 'updates' ? null : 'updates'))
+            }}
+          />
+        ),
         icon: 'MdNotificationsNone',
         hasUpdates: true,
       } as LinkType),
@@ -168,7 +180,9 @@ const Header: FC = () => {
                   <span>{link.name}</span>
                 </HeaderLink>
                 {link.hasDropDown && dropdownOpen === link.id ? (
-                  <DropDown position="end">{link.renderDropDown()}</DropDown>
+                  <DropDown position="end" autoHeight>
+                    {link.renderDropDown()}
+                  </DropDown>
                 ) : null}
               </HeaderItem>
             ))}

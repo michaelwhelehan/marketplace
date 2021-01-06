@@ -3,19 +3,16 @@ import { gql } from '@apollo/client'
 import { Tasks, TasksVariables } from './gqlTypes/Tasks'
 import { useQuery } from '../../core/queries'
 import { Offers, OffersVariables } from './gqlTypes/Offers'
+import { publicUserBasicFragment } from '../../services/fragments/auth'
 
 export const offerFragment = gql`
+  ${publicUserBasicFragment}
   fragment Offer on Offer {
     id
     created
-    status
+    offerStatus: status
     createdBy {
-      id
-      username
-      firstName
-      lastName
-      avatarUrl
-      jobTitle
+      ...PublicUserBasic
     }
     message
     amount {
@@ -26,18 +23,15 @@ export const offerFragment = gql`
 `
 
 export const taskFragment = gql`
+  ${publicUserBasicFragment}
   fragment Task on Task {
     id
     owner {
-      id
-      username
-      firstName
-      lastName
-      avatarUrl
+      ...PublicUserBasic
     }
     title
     slug
-    status
+    taskStatus: status
     budget {
       currency
       amount

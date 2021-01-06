@@ -15,10 +15,11 @@ export interface TaskCreate_taskCreate_task_owner {
    * The ID of the object.
    */
   id: string;
-  username: string;
   firstName: string;
   lastName: string;
+  username: string;
   avatarUrl: string | null;
+  jobTitle: string | null;
 }
 
 export interface TaskCreate_taskCreate_task {

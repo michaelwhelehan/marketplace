@@ -15,9 +15,9 @@ export interface Offer_createdBy {
    * The ID of the object.
    */
   id: string;
-  username: string;
   firstName: string;
   lastName: string;
+  username: string;
   avatarUrl: string | null;
   jobTitle: string | null;
 }
@@ -41,7 +41,7 @@ export interface Offer {
    */
   id: string;
   created: any;
-  status: OfferStatus | null;
+  offerStatus: OfferStatus | null;
   createdBy: Offer_createdBy;
   message: string | null;
   amount: Offer_amount | null;

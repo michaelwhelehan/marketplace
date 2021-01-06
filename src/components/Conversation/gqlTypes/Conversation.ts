@@ -23,10 +23,11 @@ export interface Conversation_conversation_conversationFeed_edges_node_sentBy {
    * The ID of the object.
    */
   id: string;
-  username: string;
   firstName: string;
   lastName: string;
+  username: string;
   avatarUrl: string | null;
+  jobTitle: string | null;
 }
 
 export interface Conversation_conversation_conversationFeed_edges_node {

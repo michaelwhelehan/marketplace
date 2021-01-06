@@ -1,5 +1,6 @@
 import { gql, useMutation } from '@apollo/client'
 import { Offers_offers } from '../../pages/Marketplace/gqlTypes/Offers'
+import { publicUserBasicFragment } from '../../services/fragments/auth'
 import { addEdge } from '../../utils/graphql'
 import {
   OfferCreate,
@@ -8,6 +9,7 @@ import {
 } from './gqlTypes/OfferCreate'
 
 export const createOfferFragment = gql`
+  ${publicUserBasicFragment}
   fragment OfferMade on Offer {
     id
     status
@@ -17,11 +19,7 @@ export const createOfferFragment = gql`
     }
     message
     createdBy {
-      id
-      avatarUrl
-      firstName
-      lastName
-      username
+      ...PublicUserBasic
     }
   }
 `

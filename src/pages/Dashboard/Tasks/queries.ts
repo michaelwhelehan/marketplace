@@ -18,7 +18,7 @@ export const userTaskFragment = gql`
   }
 `
 
-export const getTasksQuery = gql`
+export const getUserTasksQuery = gql`
   ${userTaskFragment}
   query UserTasks(
     $after: String
@@ -45,5 +45,7 @@ export const getTasksQuery = gql`
 `
 
 export const useGetUserTasksQuery = (variables: UserTasksVariables) => {
-  return useQuery<UserTasks, UserTasksVariables>(getTasksQuery, { variables })
+  return useQuery<UserTasks, UserTasksVariables>(getUserTasksQuery, {
+    variables,
+  })
 }
