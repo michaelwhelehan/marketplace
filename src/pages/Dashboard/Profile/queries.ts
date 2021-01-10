@@ -14,6 +14,7 @@ export const userFragment = gql`
     mobile
     jobTitle
     bio
+    lastNotificationsSeenTimestamp
     skills {
       id
       name

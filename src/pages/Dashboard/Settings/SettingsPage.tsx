@@ -10,7 +10,9 @@ import TaskAlerts from './sections/TaskAlerts'
 import NotificationSettings from './sections/NotificationSettings'
 
 const SettingsPage: FC = () => {
-  const { currentTab, updateTab } = useTabs<TabType>('taskAlerts')
+  const { currentTab, updateTab } = useTabs<TabType>({
+    initialTab: 'taskAlerts',
+  })
 
   function renderTab() {
     switch (currentTab) {

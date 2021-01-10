@@ -30,6 +30,21 @@ export const accountUpdate = gql`
   }
 `
 
+export const accountNotificationsUpdate = gql`
+  ${accountErrorFragment}
+  mutation AccountNotificationsUpdate($input: AccountInput!) {
+    accountUpdateNotifications: accountUpdate(input: $input) {
+      errors: accountErrors {
+        ...AccountError
+      }
+      user {
+        id
+        lastNotificationsSeenTimestamp
+      }
+    }
+  }
+`
+
 export const setPassword = gql`
   ${basicUserFragment}
   ${accountErrorFragment}

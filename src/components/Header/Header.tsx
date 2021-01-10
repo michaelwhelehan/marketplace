@@ -11,9 +11,11 @@ import Notifications from './Notifications/Notifications'
 import Icon from '../../uiComponents/atoms/Icon'
 import UpdateIndicator from '../../uiComponents/atoms/UpdateIndicator'
 import Logo from '../../uiComponents/atoms/Logo'
-import { useAuth } from '../../services'
+import { useAccountNotificationsUpdate, useAuth } from '../../services'
 import { toXL } from '../../constants/breakpoints'
 import { useGetUserActivityQuery } from './queries'
+import { differenceSeconds } from '../../utils/date'
+import { useActivityUpdateMutation } from './mutations'
 
 const StyledHeader = styled.header`
   height: ${MAIN_HEADER_HEIGHT}px;
@@ -89,10 +91,9 @@ interface LinkType {
 
 const Header: FC = () => {
   const { user } = useAuth()
-  const {
-    data: activityData,
-    loading: activityLoading,
-  } = useGetUserActivityQuery({ pageSize: 10 })
+  const [setAccountNotificationsUpdate] = useAccountNotificationsUpdate()
+  const updateActivity = useActivityUpdateMutation()
+  const { data: activityData } = useGetUserActivityQuery({ pageSize: 10 })
   const [dropdownOpen, setDropdownOpen] = useState<LinkIdType | null>(null)
   const links: LinkType[] = [
     user &&
@@ -122,19 +123,49 @@ const Header: FC = () => {
         name: 'Updates',
         onClick: (e) => {
           e.preventDefault()
+          const now = new Date()
           setDropdownOpen((prev) => (prev === 'updates' ? null : 'updates'))
+          setAccountNotificationsUpdate(
+            {
+              input: { lastNotificationsSeenTimestamp: now },
+            },
+            {
+              optimisticResponse: {
+                // @ts-ignore
+                accountUpdateNotifications: {
+                  __typename: 'AccountUpdate',
+                  user: {
+                    __typename: 'User',
+                    id: user.id,
+                    lastNotificationsSeenTimestamp: now,
+                  },
+                  errors: [],
+                },
+              },
+            },
+          )
         },
         hasDropDown: true,
         renderDropDown: () => (
           <Notifications
             activity={activityData.me.activity}
-            onClose={(e) => {
+            onClose={(activityId) => {
               setDropdownOpen((prev) => (prev === 'updates' ? null : 'updates'))
+              updateActivity({
+                variables: { id: activityId, input: { read: true } },
+              })
             }}
           />
         ),
         icon: 'MdNotificationsNone',
-        hasUpdates: true,
+        hasUpdates:
+          user?.lastNotificationsSeenTimestamp &&
+          activityData?.me?.activity?.edges?.[0]?.node?.timestamp
+            ? differenceSeconds(
+                user.lastNotificationsSeenTimestamp,
+                activityData.me.activity.edges[0].node.timestamp,
+              ) <= 0
+            : false,
       } as LinkType),
     user &&
       ({

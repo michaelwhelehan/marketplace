@@ -9,6 +9,7 @@ export const userFragment = gql`
     username
     avatarUrl
     jobTitle
+    lastNotificationsSeenTimestamp
   }
 `
 

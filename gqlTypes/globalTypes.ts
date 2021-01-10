@@ -134,6 +134,7 @@ export interface AccountInput {
   jobTitle?: string | null;
   mobile?: string | null;
   bio?: string | null;
+  lastNotificationsSeenTimestamp?: any | null;
   skills?: (string | null)[] | null;
   educations?: (EducationInput | null)[] | null;
   deleteEducation?: string | null;
@@ -141,6 +142,10 @@ export interface AccountInput {
   deleteWorkExperience?: string | null;
   portfolios?: (PortfolioInput | null)[] | null;
   deletePortfolio?: string | null;
+}
+
+export interface ActivityInput {
+  read?: boolean | null;
 }
 
 export interface EducationInput {

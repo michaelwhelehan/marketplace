@@ -80,6 +80,7 @@ export const useConversationMessageCreateMutation = ({
             >({
               data: conversationMessageCreate.conversationMessage,
               fragment: conversationMessageFragment,
+              fragmentName: 'ConversationMessage',
             })
 
             const data: Conversation_conversation_conversationFeed = {

@@ -37,6 +37,7 @@ export interface SetPassword_setPassword_user {
   username: string;
   avatarUrl: string | null;
   jobTitle: string | null;
+  lastNotificationsSeenTimestamp: any | null;
 }
 
 export interface SetPassword_setPassword_accountErrors {

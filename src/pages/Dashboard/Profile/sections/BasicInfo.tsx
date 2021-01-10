@@ -186,9 +186,9 @@ const BasicInfo: FC<Props> = ({ user }) => {
         setError(err.field, { type: 'manual', message: err.message }),
       )
     }
-  }, [data, error])
+  }, [data, error, alert, setError])
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     delete data.email
     delete data.transport
     delete data.languages

@@ -19,4 +19,5 @@ export interface User {
   username: string;
   avatarUrl: string | null;
   jobTitle: string | null;
+  lastNotificationsSeenTimestamp: any | null;
 }

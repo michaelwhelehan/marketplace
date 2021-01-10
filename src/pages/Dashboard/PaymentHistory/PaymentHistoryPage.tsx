@@ -112,7 +112,7 @@ const PaymentHistoryPage: FC = () => {
   const { control } = useForm({
     defaultValues: { showAmount: { label: '10', value: 10 } },
   })
-  const { currentTab, updateTab } = useTabs<TabType>('earned')
+  const { currentTab, updateTab } = useTabs<TabType>({ initialTab: 'earned' })
   const scrollElement = useRef(null)
   const history = useHistory()
   const columns: ColumnType[] = [

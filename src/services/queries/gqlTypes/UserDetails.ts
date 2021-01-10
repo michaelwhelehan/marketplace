@@ -19,6 +19,7 @@ export interface UserDetails_me {
   username: string;
   avatarUrl: string | null;
   jobTitle: string | null;
+  lastNotificationsSeenTimestamp: any | null;
 }
 
 export interface UserDetails {

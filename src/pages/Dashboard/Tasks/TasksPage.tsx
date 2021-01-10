@@ -38,8 +38,7 @@ const TasksPage: FC = () => {
       status: [TaskStatusFilter.OPEN],
     },
   })
-  console.log(loading, data)
-  const { currentTab, updateTab } = useTabs<TabType>('active')
+  const { currentTab, updateTab } = useTabs<TabType>({ initialTab: 'active' })
   const scrollElement = useRef(null)
   const history = useHistory()
   const columns: ColumnType[] = [

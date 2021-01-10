@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent } from 'react'
+import React, { FC } from 'react'
 import { HeadingS } from '../../../uiComponents/atoms/Headings'
 import styled from 'styled-components'
 import { black, primaryFontColor } from '../../../styles/colors'
@@ -18,7 +18,7 @@ const StyledHeading = styled(HeadingS)`
 
 interface Props {
   activity: UserActivity_me_activity
-  onClose: (e: MouseEvent) => void
+  onClose: (activityId: string) => void
 }
 
 const Notifications: FC<Props> = ({ activity, onClose }) => {
@@ -29,7 +29,7 @@ const Notifications: FC<Props> = ({ activity, onClose }) => {
         <Icon name="MdMoreHoriz" size={30} color={primaryFontColor} />
       </Header>
       {activity.edges.map(({ node }) => (
-        <Notification activityItem={node} onClose={onClose} />
+        <Notification key={node.id} activityItem={node} onClose={onClose} />
       ))}
     </>
   )

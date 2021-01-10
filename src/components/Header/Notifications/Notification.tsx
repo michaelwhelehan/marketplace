@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent } from 'react'
+import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { darkGrey, featherGrey, primaryColor } from '../../../styles/colors'
@@ -86,6 +86,13 @@ function getActionObjectUrl(activityItem: UserActivity_me_activity_edges_node) {
     ) {
       return `/jobs/${activityItem.targetObject.slug}/offers`
     }
+
+    if (
+      activityItem.actionObject.__typename === 'ConversationMessage' &&
+      activityItem.targetObject.__typename === 'Task'
+    ) {
+      return `/jobs/${activityItem.targetObject.slug}/questions`
+    }
   }
 
   return ''
@@ -93,14 +100,14 @@ function getActionObjectUrl(activityItem: UserActivity_me_activity_edges_node) {
 
 interface Props {
   activityItem: UserActivity_me_activity_edges_node
-  onClose: (e: MouseEvent) => void
+  onClose: (activityId: string) => void
 }
 
 const Notification: FC<Props> = ({ activityItem, onClose }) => {
   return (
     <NotificationContainer
       to={getActionObjectUrl(activityItem)}
-      onClick={onClose}
+      onClick={() => onClose(activityItem.id)}
     >
       <NotificationStart>
         <Avatar src={activityItem.actorObject.avatarUrl} size={50} />
