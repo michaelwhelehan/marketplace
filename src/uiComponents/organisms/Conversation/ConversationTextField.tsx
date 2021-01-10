@@ -5,7 +5,6 @@ import { ConversationPositionType } from '../../../types/conversation'
 import Button from '../../atoms/Button'
 import Icon from '../../atoms/Icon'
 import TextAreaField from '../../atoms/TextAreaField'
-
 import TextField from '../../atoms/TextField'
 
 const TextFieldContainer = styled.div``
