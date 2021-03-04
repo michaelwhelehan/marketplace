@@ -37,7 +37,7 @@ export interface Conversation_conversation_conversationFeed_edges_node {
    */
   id: string;
   sentBy: Conversation_conversation_conversationFeed_edges_node_sentBy;
-  body: string | null;
+  rawBody: any | null;
   url: string | null;
   created: any;
   modified: any;
@@ -107,7 +107,9 @@ export interface Conversation {
 }
 
 export interface ConversationVariables {
-  id: string;
+  category: string;
+  id?: string | null;
+  username?: string | null;
   after?: string | null;
   pageSize?: number | null;
 }

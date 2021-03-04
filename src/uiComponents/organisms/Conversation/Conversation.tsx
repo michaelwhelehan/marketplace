@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
+import { useResizeDetector } from 'react-resize-detector'
 import ConversationMessageList, {
   ConversationMessageListProps,
 } from './ConversationMessageList'
@@ -7,6 +8,9 @@ import ConversationTextField, {
   ConversationTextFieldProps,
 } from './ConversationTextField'
 import { ConversationPositionType } from '../../../types/conversation'
+import ConversationWelcomeMessage, {
+  ConversationWelcomeMessageProps,
+} from './ConversationWelcomeMessage'
 
 const ConversationContainer = styled.article`
   position: relative;
@@ -17,17 +21,23 @@ const ConversationContainer = styled.article`
 
 const ConversationMessagesContainer = styled.div<{
   position: ConversationPositionType
+  textFieldHeightOffset: number
 }>`
-  ${({ position }) =>
-    position === 'topDown' &&
-    css`
-      margin-top: 190px;
-    `}
-  height: calc(100% - 60px);
+  position: relative;
+  ${({ position, textFieldHeightOffset }) =>
+    position === 'topDown'
+      ? css`
+          margin-top: ${(textFieldHeightOffset || 92) + 28}px;
+          height: calc(100% - 60px);
+        `
+      : css`
+          height: calc(100% - ${(textFieldHeightOffset || 92) + 20}px);
+        `}
 `
 
 const ConversationTextFieldContainer = styled.div<{
   position: ConversationPositionType
+  textFieldHeightOffset: number
 }>`
   position: absolute;
   width: 100%;
@@ -35,10 +45,10 @@ const ConversationTextFieldContainer = styled.div<{
   padding-right: 20px;
   left: 0;
   right: 0;
-  ${({ position }) =>
+  ${({ position, textFieldHeightOffset }) =>
     position === 'topDown' &&
     css`
-      top: -170px;
+      top: -${(textFieldHeightOffset || 92) + 15}px;
     `}
   ${({ position }) =>
     position === 'bottomUp' &&
@@ -49,18 +59,34 @@ const ConversationTextFieldContainer = styled.div<{
 
 interface Props
   extends ConversationMessageListProps,
-    ConversationTextFieldProps {}
+    ConversationTextFieldProps,
+    ConversationWelcomeMessageProps {}
 
-const Conversation: FC<Props> = ({ onMessageCreated, ...props }) => {
+const Conversation: FC<Props> = ({ onMessageCreated, member, ...props }) => {
+  const { height, ref } = useResizeDetector()
+  const messageListLength = props.conversation?.conversationFeed?.edges?.length
+
   return (
     <ConversationContainer>
-      <ConversationMessagesContainer position={props.position}>
-        <ConversationMessageList {...props} />
+      <ConversationMessagesContainer
+        position={props.position}
+        textFieldHeightOffset={height}
+      >
+        {messageListLength > 0 && <ConversationMessageList {...props} />}
+        {!messageListLength && !!member && (
+          <ConversationWelcomeMessage member={member} />
+        )}
       </ConversationMessagesContainer>
-      <ConversationTextFieldContainer position={props.position}>
+      <ConversationTextFieldContainer
+        ref={ref as any}
+        position={props.position}
+        textFieldHeightOffset={height}
+      >
         <ConversationTextField
+          editorRef={props.editorRef}
+          editorValue={props.editorValue}
+          setEditorValue={props.setEditorValue}
           textFieldPlaceholder={props.textFieldPlaceholder}
-          position={props.position}
           onMessageCreated={onMessageCreated}
         />
       </ConversationTextFieldContainer>

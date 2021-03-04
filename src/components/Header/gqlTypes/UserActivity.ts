@@ -132,7 +132,7 @@ export interface UserActivity_me_activity_edges_node_actionObject_ConversationMe
    */
   id: string;
   sentBy: UserActivity_me_activity_edges_node_actionObject_ConversationMessage_sentBy;
-  body: string | null;
+  rawBody: any | null;
   url: string | null;
   created: any;
   modified: any;

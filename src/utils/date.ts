@@ -22,6 +22,10 @@ export function fromNow(date: Date): string {
   return dayjs(date).from(new Date())
 }
 
+export function fromNowShort(date: Date): string {
+  return fromNow(date)
+}
+
 export function differenceSeconds(date1: Date, date2: Date): number {
   return dayjs(date1).diff(date2, 'second')
 }

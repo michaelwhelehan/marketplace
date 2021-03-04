@@ -29,7 +29,7 @@ export interface CreateConversationMessage_message {
    */
   id: string;
   sentBy: CreateConversationMessage_message_sentBy;
-  body: string | null;
+  rawBody: any | null;
   url: string | null;
   created: any;
   modified: any;

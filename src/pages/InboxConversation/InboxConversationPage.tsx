@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import styled from 'styled-components'
 import { borderColor, white } from '../../styles/colors'
 import { MAIN_HEADER_HEIGHT } from '../../constants/sizes'
@@ -7,6 +7,10 @@ import profilePictureUrl from '../../assets/images/profile.png'
 import InboxConversationTitle from './sections/InboxConversationTitle'
 import { UserType } from '../../types/user'
 import InboxConversationDetails from './sections/InboxConversationDetails'
+import { useHistory, useRouteMatch } from 'react-router-dom'
+import { ConversationCategory } from '../../types/conversation'
+import { useConversationMemberProfileQuery } from '../../components/Conversation/queries'
+import Loader from '../../uiComponents/atoms/Loader/Loader'
 
 const INBOX_HEADER_HEIGHT = 75
 
@@ -36,28 +40,47 @@ const DetailsContainer = styled.article`
   background-color: ${white};
 `
 
+interface MatchParams {
+  username: string
+}
+
 const InboxConversationPage: FC = () => {
-  const member: UserType = {
-    name: 'Mike Wells',
-    profilePictureUrl,
-    onlineStatus: 'online',
-    lastSeen: new Date(),
-    jobTitle: 'Software Developer',
-    rating: 4.8,
-    numRatings: 10,
-  }
+  const match = useRouteMatch<MatchParams>()
+  const history = useHistory()
+
+  const { data, loading } = useConversationMemberProfileQuery(
+    match.params.username,
+  )
+
+  useEffect(() => {
+    if (data?.publicUser === null) {
+      history.push('/dashboard/inbox')
+    }
+  }, [data, history])
 
   return (
     <ConversationWrapper>
-      <TitleContainer>
-        <InboxConversationTitle member={member} />
-      </TitleContainer>
-      <DiscussionContainer>
-        <ConversationConnected conversationId="Q29udmVyc2F0aW9uOjE=" position="bottomUp" scrollType="infinite" />
-      </DiscussionContainer>
-      <DetailsContainer>
-        <InboxConversationDetails member={member} />
-      </DetailsContainer>
+      {loading ? (
+        <Loader name="Dashboard" />
+      ) : (
+        <>
+          <TitleContainer>
+            <InboxConversationTitle member={data.publicUser} />
+          </TitleContainer>
+          <DiscussionContainer>
+            <ConversationConnected
+              conversationCategory={ConversationCategory.INBOX}
+              conversationMemberUsername={match.params.username}
+              conversationMember={data.publicUser}
+              position="bottomUp"
+              scrollType="infinite"
+            />
+          </DiscussionContainer>
+          <DetailsContainer>
+            <InboxConversationDetails member={data.publicUser} />
+          </DetailsContainer>
+        </>
+      )}
     </ConversationWrapper>
   )
 }

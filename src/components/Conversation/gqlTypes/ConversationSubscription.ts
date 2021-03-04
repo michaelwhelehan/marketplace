@@ -29,7 +29,7 @@ export interface ConversationSubscription_conversationSubscription_conversationM
    */
   id: string;
   sentBy: ConversationSubscription_conversationSubscription_conversationMessage_CreateConversationMessagePayload_message_sentBy;
-  body: string | null;
+  rawBody: any | null;
   url: string | null;
   created: any;
   modified: any;
@@ -51,7 +51,7 @@ export interface ConversationSubscription_conversationSubscription_conversationM
    */
   id: string;
   modified: any;
-  body: string | null;
+  rawBody: any | null;
 }
 
 export interface ConversationSubscription_conversationSubscription_conversationMessage_EditConversationMessagePayload {
@@ -93,5 +93,7 @@ export interface ConversationSubscription {
 }
 
 export interface ConversationSubscriptionVariables {
-  conversationId: string;
+  category: string;
+  conversationId?: string | null;
+  username?: string | null;
 }

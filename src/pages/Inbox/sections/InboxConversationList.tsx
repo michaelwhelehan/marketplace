@@ -6,19 +6,24 @@ import {
   MAIN_HEADER_HEIGHT,
   INBOX_HEADER_HEIGHT,
 } from '../../../constants/sizes'
-import { ConversationType } from '../../../types/conversation'
+import { UserConversations_me_conversations_edges } from '../gqlTypes/UserConversations'
+import { User } from '../../../services/fragments/gqlTypes/User'
 
 const ConversationList = styled.section`
   height: calc(100vh - ${MAIN_HEADER_HEIGHT}px - ${INBOX_HEADER_HEIGHT}px);
 `
 
 interface Props {
-  conversationList: ConversationType[]
+  user: User
+  conversationLoadAmount: number
+  conversationList: any[]
   conversationListLoading: boolean
   onLoadMoreConversations: (loadAmount: number) => Promise<any>
 }
 
 const InboxConversationList: FC<Props> = ({
+  user,
+  conversationLoadAmount,
   conversationList,
   conversationListLoading,
   onLoadMoreConversations,
@@ -28,8 +33,10 @@ const InboxConversationList: FC<Props> = ({
       <InfiniteList
         list={conversationList}
         loading={conversationListLoading}
-        loadAmount={10}
-        renderListItem={listItem => <InboxConversationCard {...listItem} />}
+        loadAmount={conversationLoadAmount}
+        renderListItem={(
+          listItem: UserConversations_me_conversations_edges,
+        ) => <InboxConversationCard user={user} conversation={listItem.node} />}
         onLoadMore={onLoadMoreConversations}
         rowHeight={80}
       />

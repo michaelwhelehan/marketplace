@@ -14,7 +14,7 @@ export interface EditConversationMessage_message {
    */
   id: string;
   modified: any;
-  body: string | null;
+  rawBody: any | null;
 }
 
 export interface EditConversationMessage {

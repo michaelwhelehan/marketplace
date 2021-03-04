@@ -58,7 +58,7 @@ const InfiniteList: FC<Props> = ({
         fixedWidth: true,
         defaultHeight: rowHeight,
       }),
-    [rowHeight, list.length!],
+    [rowHeight, list?.length],
   )
 
   useEffect(() => {
@@ -86,6 +86,20 @@ const InfiniteList: FC<Props> = ({
       }
     }
   }, [list, prevList, loadAmount])
+
+  function getHeightOffset() {
+    let totalHeight = 0
+
+    if (direction === 'forward') {
+      return totalHeight
+    }
+
+    for (let i = 0; i < list.length; i++) {
+      totalHeight += cache.getHeight(i, 0)
+    }
+
+    return totalHeight
+  }
 
   function isRowLoaded({ index }) {
     return !!list[index]
@@ -142,6 +156,8 @@ const InfiniteList: FC<Props> = ({
     return <Loader name="List" />
   }
 
+  const heightOffset = getHeightOffset()
+
   return (
     <InfiniteLoader
       ref={infiniteLoader}
@@ -162,6 +178,12 @@ const InfiniteList: FC<Props> = ({
         <AutoSizer>
           {({ height, width }) => (
             <List
+              style={{
+                paddingTop:
+                  heightOffset < height && heightOffset > 0
+                    ? height - heightOffset
+                    : 0,
+              }}
               onRowsRendered={(props) => {
                 if (direction === 'reverse') {
                   loadMoreRowsTop(props)

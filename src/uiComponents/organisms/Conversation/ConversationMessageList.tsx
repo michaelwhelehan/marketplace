@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react'
+import React, { FC, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import InfiniteList from '../../molecules/InfiniteList'
 import ConversationMessage, {
@@ -13,6 +13,7 @@ import WindowedList from '../../molecules/WindowedList'
 import { useScrollElement } from '../../../contexts/ScrollElementContext'
 import { Conversation_conversation } from '../../../components/Conversation/gqlTypes/Conversation'
 import { CellMeasurerCache, List } from 'react-virtualized'
+import { differenceSeconds } from '../../../utils/date'
 
 const StyledConversationMessageList = styled.div`
   height: 100%;
@@ -28,6 +29,7 @@ export interface ConversationMessageListProps {
   onConversationMessageDelete: ConversationMessageDeleteType
   position: ConversationPositionType
   scrollType: ConversationScrollType
+  onReplyClick: () => void
 }
 
 const ConversationMessageList: FC<ConversationMessageListProps> = ({
@@ -40,6 +42,7 @@ const ConversationMessageList: FC<ConversationMessageListProps> = ({
   onConversationMessageDelete,
   position,
   scrollType,
+  onReplyClick,
 }) => {
   const scrollElementRef = useScrollElement()
   const listRef = useRef<List>()
@@ -68,6 +71,7 @@ const ConversationMessageList: FC<ConversationMessageListProps> = ({
             onConversationMessageEdit={onConversationMessageEdit}
             onConversationMessageDelete={onConversationMessageDelete}
             message={listItem.node}
+            onReplyClick={onReplyClick}
           />
         )}
         onLoadMore={onLoadMoreMessages}
@@ -82,7 +86,13 @@ const ConversationMessageList: FC<ConversationMessageListProps> = ({
     <StyledConversationMessageList>
       <InfiniteList
         loading={messagesLoading}
-        list={messageList}
+        list={messageList
+          .slice()
+          .sort((a, b) =>
+            position === 'bottomUp'
+              ? differenceSeconds(a.node.created, b.node.created)
+              : -differenceSeconds(a.node.created, b.node.created),
+          )}
         loadAmount={messagesLoadAmount}
         renderListItem={(listItem) => (
           <ConversationMessage
@@ -94,6 +104,7 @@ const ConversationMessageList: FC<ConversationMessageListProps> = ({
             onConversationMessageEdit={onConversationMessageEdit}
             onConversationMessageDelete={onConversationMessageDelete}
             message={listItem.node}
+            onReplyClick={onReplyClick}
           />
         )}
         onLoadMore={onLoadMoreMessages}

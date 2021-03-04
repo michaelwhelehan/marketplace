@@ -19,18 +19,8 @@ import { conversationMessageFragment } from './queries'
 
 const conversationMessageCreateMutation = gql`
   ${conversationMessageFragment}
-  mutation ConversationMessageCreate(
-    $conversationId: ID!
-    $messageType: String!
-    $body: String!
-  ) {
-    conversationMessageCreate(
-      input: {
-        conversation: $conversationId
-        messageType: $messageType
-        body: $body
-      }
-    ) {
+  mutation ConversationMessageCreate($input: ConversationMessageCreateInput!) {
+    conversationMessageCreate(input: $input) {
       conversationMessage {
         ...ConversationMessage
       }
@@ -40,8 +30,11 @@ const conversationMessageCreateMutation = gql`
 
 const conversationMessageUpdateMutation = gql`
   ${conversationMessageFragment}
-  mutation ConversationMessageUpdate($id: ID!, $body: String!) {
-    conversationMessageUpdate(id: $id, input: { body: $body }) {
+  mutation ConversationMessageUpdate(
+    $id: ID!
+    $input: ConversationMessageUpdateInput!
+  ) {
+    conversationMessageUpdate(id: $id, input: $input) {
       conversationMessage {
         ...ConversationMessage
       }
@@ -63,7 +56,7 @@ export const useConversationMessageCreateMutation = ({
   conversationId,
   position,
 }: {
-  conversationId: string
+  conversationId?: string
   position: ConversationPositionType
 }) => {
   const [createConversationMessage] = useMutation<

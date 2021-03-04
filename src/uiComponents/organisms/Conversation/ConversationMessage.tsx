@@ -2,12 +2,20 @@ import React, {
   FC,
   useEffect,
   useState,
-  useRef,
   MutableRefObject,
   Dispatch,
+  useCallback,
 } from 'react'
 import styled from 'styled-components'
 import {
+  EditorState,
+  convertFromRaw,
+  convertToRaw,
+  RawDraftContentState,
+} from 'draft-js'
+import { convertToHTML } from 'draft-convert'
+import {
+  borderColor,
   darkGrey,
   featherGrey,
   primaryColor,
@@ -22,12 +30,12 @@ import { lighten } from 'polished'
 import { Conversation_conversation } from '../../../components/Conversation/gqlTypes/Conversation'
 import Icon from '../../atoms/Icon'
 import DropDown from '../../atoms/DropDown'
-import TextAreaField from '../../atoms/TextAreaField'
-import { useForm } from 'react-hook-form'
 import Button from '../../atoms/Button'
 import { CellMeasurerCache, List } from 'react-virtualized'
 import usePrevious from '../../../hooks/usePrevious'
 import useConfirmDialog from '../../../hooks/useConfirmDialog'
+import RichTextField from '../../atoms/RichTextField'
+import { useResizeDetector } from 'react-resize-detector'
 
 const MessageContainerOuter = styled.div`
   height: 100%;
@@ -60,6 +68,15 @@ const MessageTimestamp = styled.span`
   padding-top: 2px;
   font-size: ${fsXXS}px;
   color: ${primaryFontColor};
+`
+
+const MessageReply = styled.span`
+  padding-left: 10px;
+  padding-top: 2px;
+  ${fwBold};
+  font-size: ${fsXXS}px;
+  color: ${primaryColor};
+  cursor: pointer;
 `
 
 const MessageMore = styled.span`
@@ -97,8 +114,24 @@ const PosterBadge = styled.span`
   background-color: ${lighten(0.4, primaryColor)};
 `
 
-const MessageText = styled.p`
+const MessageText = styled.div`
   line-height: 22px;
+`
+
+const UserMentionLink = styled.a`
+  text-decoration: none;
+  color: ${primaryColor};
+  ${fwBold};
+
+  &:hover {
+    text-decoration: underline;
+  }
+`
+
+const TextFieldContainer = styled.div`
+  padding: 10px;
+  border: 2px solid ${borderColor};
+  border-radius: 4px;
 `
 
 const ButtonContainer = styled.div`
@@ -137,6 +170,7 @@ interface ConversationMessageDisplayProps {
   message: ConversationMessageType
   setIsEditing: Dispatch<boolean>
   onConversationMessageDelete: ConversationMessageDeleteType
+  onReplyClick: () => void
 }
 
 const ConversationMessageDisplay: FC<ConversationMessageDisplayProps> = ({
@@ -145,6 +179,7 @@ const ConversationMessageDisplay: FC<ConversationMessageDisplayProps> = ({
   currentUserId,
   setIsEditing,
   onConversationMessageDelete,
+  onReplyClick,
 }) => {
   const [showMoreOpen, setShowMoreOpen] = useState<boolean>(false)
   const currentUserIsMessageAuthor = isMessageAuthor(
@@ -185,6 +220,7 @@ const ConversationMessageDisplay: FC<ConversationMessageDisplayProps> = ({
             {differenceSeconds(message.modified, message.created) > 0 && (
               <MessageTimestamp>edited</MessageTimestamp>
             )}
+            <MessageReply onClick={onReplyClick}>Reply</MessageReply>
             <MessageMore
               onClick={() =>
                 setShowMoreOpen(
@@ -214,7 +250,26 @@ const ConversationMessageDisplay: FC<ConversationMessageDisplayProps> = ({
             </MessageMore>
           </MessageMember>
           {message.messageType === 'TEXT' && (
-            <MessageText>{message.body}</MessageText>
+            <MessageText
+              dangerouslySetInnerHTML={{
+                __html: convertToHTML({
+                  entityToHTML: (entity: any, originalText: string) => {
+                    if (entity.type === 'mention') {
+                      return (
+                        <UserMentionLink
+                          target="_blank"
+                          rel="noreferrer"
+                          href={`/profile/${entity.data.mention.id}`}
+                        >
+                          {originalText}
+                        </UserMentionLink>
+                      )
+                    }
+                    return originalText
+                  },
+                })(convertFromRaw(message.rawBody)),
+              }}
+            />
           )}
           {message.messageType === 'MEDIA' && (
             <img width={640} height={480} src={message.url} alt="" />
@@ -231,30 +286,39 @@ export type ConversationMessageEditType = ({
   body,
 }: {
   messageId: string
-  body: string
+  body: RawDraftContentState
 }) => void
 
 interface ConversationMessageEditProps {
   message: ConversationMessageType
   setIsEditing: Dispatch<boolean>
   onConversationMessageEdit: ConversationMessageEditType
+  recomputeListSize: () => void
 }
 
 const ConversationMessageEdit: FC<ConversationMessageEditProps> = ({
   message,
   setIsEditing,
   onConversationMessageEdit,
+  recomputeListSize,
 }) => {
-  const messageFieldRef = useRef<HTMLTextAreaElement>()
-  const { register, handleSubmit } = useForm({
-    defaultValues: {
-      body: message.body,
-    },
-  })
+  const { height, ref } = useResizeDetector()
+  const lastHeight = usePrevious(height)
+
+  const [editorValue, setEditorValue] = useState<EditorState>(
+    EditorState.moveFocusToEnd(
+      EditorState.push(
+        EditorState.createEmpty(),
+        convertFromRaw(message.rawBody),
+      ),
+    ),
+  )
 
   useEffect(() => {
-    messageFieldRef.current.focus()
-  }, [])
+    if (height !== lastHeight) {
+      recomputeListSize()
+    }
+  }, [height, lastHeight, recomputeListSize])
 
   return (
     <MessageContainerOuter>
@@ -268,21 +332,24 @@ const ConversationMessageEdit: FC<ConversationMessageEditProps> = ({
         </MessageMemberAvatar>
         <MessageContent>
           <form
-            onSubmit={handleSubmit((data: any) => {
-              onConversationMessageEdit({ messageId: message.id, ...data })
+            onSubmit={(e: any) => {
+              e.preventDefault()
+              onConversationMessageEdit({
+                messageId: message.id,
+                body: convertToRaw(editorValue.getCurrentContent()),
+              })
               setIsEditing(false)
-            })}
+            }}
           >
             {message.messageType === 'TEXT' && (
-              <TextAreaField
-                name="body"
-                ref={(e: any) => {
-                  register(e)
-                  messageFieldRef.current = e
-                }}
-                short
-                fullWidth
-              />
+              <TextFieldContainer ref={ref as any}>
+                <RichTextField
+                  value={editorValue}
+                  onChange={(editorState) => setEditorValue(editorState)}
+                  mentionsEnabled
+                  placeholder="Edit your message"
+                />
+              </TextFieldContainer>
             )}
             {message.messageType === 'MEDIA' && (
               <img width={640} height={480} src={message.url} alt="" />
@@ -316,9 +383,10 @@ interface Props {
     body,
   }: {
     messageId: string
-    body: string
+    body: RawDraftContentState
   }) => void
   onConversationMessageDelete: ({ messageId }: { messageId: string }) => void
+  onReplyClick: () => void
 }
 
 const ConversationMessage: FC<Props> = ({
@@ -330,25 +398,38 @@ const ConversationMessage: FC<Props> = ({
   message,
   onConversationMessageEdit,
   onConversationMessageDelete,
+  onReplyClick,
 }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const wasEditing = usePrevious(isEditing)
 
+  const recomputeListSize = useCallback(() => {
+    cacheRef.current.clear(index, 0)
+    listRef.current.recomputeGridSize({ rowIndex: index, columnIndex: 0 })
+  }, [cacheRef, index, listRef])
+
   useEffect(() => {
     if (wasEditing !== undefined && wasEditing !== isEditing) {
-      cacheRef.current.clear(index, 0)
-      listRef.current.recomputeGridSize({ rowIndex: index, columnIndex: 0 })
+      recomputeListSize()
     }
-  }, [listRef, cacheRef, index, wasEditing, isEditing])
+  }, [isEditing, wasEditing, recomputeListSize])
+
+  useEffect(() => {
+    if (differenceSeconds(message.modified, message.created) > 0) {
+      recomputeListSize()
+    }
+  }, [message.created, message.modified, recomputeListSize])
 
   return isEditing ? (
     <ConversationMessageEdit
       message={message}
       setIsEditing={setIsEditing}
       onConversationMessageEdit={onConversationMessageEdit}
+      recomputeListSize={recomputeListSize}
     />
   ) : (
     <ConversationMessageDisplay
+      onReplyClick={onReplyClick}
       message={message}
       conversation={conversation}
       currentUserId={currentUserId}

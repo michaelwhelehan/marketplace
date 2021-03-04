@@ -52,6 +52,7 @@ export const useOfferCreateMutation = () => {
               >({
                 data: offerCreate.offer,
                 fragment: createOfferFragment,
+                fragmentName: 'OfferMade',
               })
 
               const data: Offers_offers = {

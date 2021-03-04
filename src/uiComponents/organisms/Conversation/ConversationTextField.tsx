@@ -1,84 +1,99 @@
-import React, { FC, useState, useCallback } from 'react'
+import React, { FC, useCallback, MutableRefObject, Dispatch } from 'react'
+import { EditorState, convertToRaw } from 'draft-js'
 import styled from 'styled-components'
 import { borderColor, primaryFontColor } from '../../../styles/colors'
-import { ConversationPositionType } from '../../../types/conversation'
 import Button from '../../atoms/Button'
 import Icon from '../../atoms/Icon'
-import TextAreaField from '../../atoms/TextAreaField'
-import TextField from '../../atoms/TextField'
+import RichTextField, { emojiPlugin } from '../../atoms/RichTextField'
+import Editor from '@draft-js-plugins/editor/lib/Editor'
 
-const TextFieldContainer = styled.div``
+const TextFieldContainer = styled.div`
+  padding: 10px;
+  border: 2px solid ${borderColor};
+  border-radius: 4px;
+`
 
 const TextFieldBelow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-top: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid ${borderColor};
 `
 
 const StartIcons = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
 
   > span:first-child {
     margin-right: 5px;
   }
 `
 
+const EmojiContainer = styled.span`
+  display: flex;
+
+  button {
+    padding: 0;
+    border: none;
+    height: auto;
+    width: auto;
+    line-height: 10px;
+    font-size: 35px;
+    border-radius: 0;
+
+    &:hover,
+    :focus {
+      background: none;
+    }
+  }
+`
+
 export interface ConversationTextFieldProps {
+  editorRef: MutableRefObject<Editor>
+  editorValue: EditorState
+  setEditorValue: Dispatch<EditorState>
   textFieldPlaceholder: string
-  position: ConversationPositionType
   onMessageCreated: (message: string) => void
 }
 
 const ConversationTextField: FC<ConversationTextFieldProps> = ({
+  editorRef,
+  editorValue,
+  setEditorValue,
   textFieldPlaceholder,
-  position,
   onMessageCreated,
 }) => {
-  const [value, setValue] = useState<string>('')
-
   const handleSendMessage = useCallback(() => {
-    if (value) {
-      onMessageCreated(value)
-      setValue('')
+    if (editorValue) {
+      onMessageCreated(convertToRaw(editorValue.getCurrentContent()))
     }
-  }, [onMessageCreated, value])
+  }, [onMessageCreated, editorValue])
 
-  const handleKeyPress = useCallback(
-    (e) => {
-      if (e.keyCode === 13) {
-        handleSendMessage()
-      }
-    },
-    [handleSendMessage],
-  )
+  // const handleKeyPress = useCallback(
+  //   (e) => {
+  //     if (e.keyCode === 13) {
+  //       handleSendMessage()
+  //     }
+  //   },
+  //   [handleSendMessage],
+  // )
 
   return (
     <TextFieldContainer>
-      {position === 'topDown' ? (
-        <TextAreaField
-          placeholder={textFieldPlaceholder}
-          short
-          fullWidth
-          value={value}
-          onChange={(e) => setValue(e.currentTarget.value)}
-        />
-      ) : (
-        <TextField
-          placeholder={textFieldPlaceholder}
-          fullWidth
-          value={value}
-          onChange={(e) => setValue(e.currentTarget.value)}
-          onKeyDown={handleKeyPress}
-        />
-      )}
+      <RichTextField
+        ref={editorRef}
+        placeholder={textFieldPlaceholder}
+        mentionsEnabled
+        emojisEnabled
+        value={editorValue}
+        onChange={(editorState) => setEditorValue(editorState)}
+      />
       <TextFieldBelow>
         <StartIcons>
-          <span>
-            <Icon name="MdInsertEmoticon" size={25} color={primaryFontColor} />
-          </span>
+          <EmojiContainer>
+            <emojiPlugin.EmojiSelect />
+          </EmojiContainer>
           <span>
             <Icon name="MdAttachFile" size={25} color={primaryFontColor} />
           </span>

@@ -7,6 +7,10 @@ import {
 } from './gqlTypes/ConversationSubscription'
 import { useQuery } from '../../core/queries'
 import { publicUserBasicFragment } from '../../services/fragments/auth'
+import {
+  ConversationMemberProfile,
+  ConversationMemberProfileVariables,
+} from './gqlTypes/ConversationMemberProfile'
 
 export const conversationMessageFragment = gql`
   ${publicUserBasicFragment}
@@ -15,7 +19,7 @@ export const conversationMessageFragment = gql`
     sentBy {
       ...PublicUserBasic
     }
-    body
+    rawBody
     url
     created
     modified
@@ -36,7 +40,7 @@ export const editConversationMessageFragment = gql`
     message {
       id
       modified
-      body
+      rawBody
     }
   }
 `
@@ -51,8 +55,14 @@ export const deleteConversationMessageFragment = gql`
 
 export const getConversationQuery = gql`
   ${conversationMessageFragment}
-  query Conversation($id: ID!, $after: String, $pageSize: Int) {
-    conversation(id: $id) {
+  query Conversation(
+    $category: String!
+    $id: ID
+    $username: String
+    $after: String
+    $pageSize: Int
+  ) {
+    conversation(category: $category, id: $id, username: $username) {
       id
       category
       task {
@@ -81,8 +91,16 @@ export const conversationMessageSubscription = gql`
   ${createConversationMessageFragment}
   ${editConversationMessageFragment}
   ${deleteConversationMessageFragment}
-  subscription ConversationSubscription($conversationId: ID!) {
-    conversationSubscription(conversationId: $conversationId) {
+  subscription ConversationSubscription(
+    $category: String!
+    $conversationId: ID
+    $username: String
+  ) {
+    conversationSubscription(
+      category: $category
+      conversationId: $conversationId
+      username: $username
+    ) {
       conversationMessage {
         __typename
         ...CreateConversationMessage
@@ -92,6 +110,24 @@ export const conversationMessageSubscription = gql`
     }
   }
 `
+
+export const getConversationMemberProfileQuery = gql`
+  ${publicUserBasicFragment}
+  query ConversationMemberProfile($username: String!) {
+    publicUser(username: $username) {
+      ...PublicUserBasic
+    }
+  }
+`
+
+export const useConversationMemberProfileQuery = (username: string) => {
+  return useQuery<
+    ConversationMemberProfile,
+    ConversationMemberProfileVariables
+  >(getConversationMemberProfileQuery, {
+    variables: { username },
+  })
+}
 
 export const useGetConversationQuery = ({
   variables,

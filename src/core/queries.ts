@@ -37,10 +37,14 @@ export function useQuery<
     onCompleted,
     errorPolicy,
   } = config
-  const { error, loading, data, fetchMore, subscribeToMore } = useApolloQuery<
-    TData,
-    TVariables
-  >(query, {
+  const {
+    error,
+    loading,
+    data,
+    fetchMore,
+    subscribeToMore,
+    refetch,
+  } = useApolloQuery<TData, TVariables>(query, {
     fetchPolicy,
     nextFetchPolicy,
     variables,
@@ -80,7 +84,7 @@ export function useQuery<
       variables: { ...config.subscriptionVariables },
     })
 
-  return { error, loading, data, loadMore, subscribeMore }
+  return { error, loading, data, loadMore, subscribeMore, refetch }
 }
 
 const preSignedUploadParamsQuery = gql`

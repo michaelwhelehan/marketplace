@@ -132,7 +132,7 @@ export interface Activity_actionObject_ConversationMessage {
    */
   id: string;
   sentBy: Activity_actionObject_ConversationMessage_sentBy;
-  body: string | null;
+  rawBody: any | null;
   url: string | null;
   created: any;
   modified: any;

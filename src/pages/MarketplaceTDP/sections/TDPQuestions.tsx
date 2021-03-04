@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { black } from '../../../styles/colors'
 import ConversationConnected from '../../../components/Conversation/ConversationConnected'
 import { HeadingS } from '../../../uiComponents/atoms/Headings'
+import { ConversationCategory } from '../../../types/conversation'
 
 const Container = styled.article``
 
@@ -26,6 +27,7 @@ const TDPQuestions: FC<Props> = ({ conversationId }) => {
       <Title>Questions ({questionsCount})</Title>
       <ConversationContainer>
         <ConversationConnected
+          conversationCategory={ConversationCategory.TASK}
           conversationId={conversationId}
           position="topDown"
           scrollType="windowed"

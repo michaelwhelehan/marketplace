@@ -1,8 +1,9 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import Conversation from '../../uiComponents/organisms/Conversation/Conversation'
 import {
   ConversationPositionType,
   ConversationScrollType,
+  ConversationCategory,
 } from '../../types/conversation'
 import { useGetConversationQuery } from './queries'
 import {
@@ -14,9 +15,52 @@ import { useAuth } from '../../services'
 import { substractMinutes } from '../../utils/date'
 import useConversationSubscribeMore from './useConversationSubscribeMore'
 import { useHistory } from 'react-router-dom'
+import { EditorState, ContentState, Modifier } from 'draft-js'
+import { MentionData } from '@draft-js-plugins/mention'
+import Editor from '@draft-js-plugins/editor/lib/Editor'
+import { ConversationMemberProfile_publicUser } from './gqlTypes/ConversationMemberProfile'
+
+function addMention(
+  editorState: EditorState,
+  mention: MentionData,
+  entityMutability: 'SEGMENTED' | 'IMMUTABLE' | 'MUTABLE',
+): EditorState {
+  const contentStateWithEntity = editorState
+    .getCurrentContent()
+    .createEntity('mention', entityMutability, {
+      mention,
+    })
+  const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
+
+  const currentSelectionState = editorState.getSelection()
+
+  let textWithEntity = Modifier.insertText(
+    editorState.getCurrentContent(),
+    currentSelectionState,
+    mention.name,
+    null,
+    entityKey,
+  )
+
+  textWithEntity = Modifier.insertText(
+    textWithEntity,
+    textWithEntity.getSelectionAfter(),
+    ' ',
+  )
+
+  const newEditorState = EditorState.push(
+    editorState,
+    textWithEntity,
+    'insert-fragment',
+  )
+  return EditorState.moveFocusToEnd(newEditorState)
+}
 
 interface Props {
-  conversationId: string
+  conversationCategory: ConversationCategory
+  conversationId?: string
+  conversationMemberUsername?: string
+  conversationMember?: ConversationMemberProfile_publicUser
   position: ConversationPositionType
   scrollType: ConversationScrollType
   textFieldPlaceholder?: string
@@ -24,30 +68,50 @@ interface Props {
 }
 
 const ConversationConnected: FC<Props> = ({
+  conversationCategory,
   conversationId,
+  conversationMemberUsername,
+  conversationMember,
   position,
   scrollType,
   setCount,
   textFieldPlaceholder = 'Send a message',
 }) => {
+  const editorRef = useRef<Editor>()
+  const [editorValue, setEditorValue] = useState<EditorState>(
+    EditorState.createEmpty(),
+  )
   const history = useHistory()
   const { user } = useAuth()
-  const { data, loading, loadMore, subscribeMore } = useGetConversationQuery({
+  const {
+    data,
+    loading,
+    loadMore,
+    subscribeMore,
+    refetch,
+  } = useGetConversationQuery({
     variables: {
+      category: conversationCategory,
       id: conversationId,
+      username: conversationMemberUsername,
       pageSize: 100,
     },
-    subscriptionVariables: { conversationId },
+    subscriptionVariables: {
+      category: conversationCategory,
+      conversationId,
+      username: conversationMemberUsername,
+    },
   })
+  const conversation = data?.conversation
+  const hasData = conversation?.conversationFeed?.edges?.length > 0
   const createConversationMessage = useConversationMessageCreateMutation({
-    conversationId,
+    conversationId: conversationId || conversation?.id,
     position,
   })
   const updateConversationMessage = useConversationMessageUpdateMutation()
   const deleteConversationMessage = useConversationMessageDeleteMutation({
     conversationId,
   })
-  const hasData = data?.conversation?.conversationFeed?.edges?.length > 0
 
   useEffect(() => {
     if (setCount && data?.conversation?.conversationFeed?.totalCount) {
@@ -57,23 +121,55 @@ const ConversationConnected: FC<Props> = ({
 
   useConversationSubscribeMore({ subscribeMore, position })
 
+  const handleReplyClick = useCallback(() => {
+    const editorState = EditorState.push(
+      editorValue,
+      ContentState.createFromText(''),
+    )
+    const mention = addMention(
+      editorState,
+      {
+        name: 'Matthew Russell',
+        link: 'https://twitter.com/mrussell247',
+        avatar:
+          'https://pbs.twimg.com/profile_images/517863945/mattsailing_400x400.jpg',
+        id: '123',
+      },
+      'SEGMENTED',
+    )
+    setEditorValue(mention)
+  }, [editorValue])
+
   return (
     <Conversation
       position={position}
       scrollType={scrollType}
       messagesLoading={loading && !hasData}
       currentUserId={user?.id}
-      conversation={data?.conversation}
+      conversation={conversation}
+      member={conversationMember}
       textFieldPlaceholder={textFieldPlaceholder}
       messagesLoadAmount={100}
-      onMessageCreated={(message) => {
+      editorRef={editorRef}
+      editorValue={editorValue}
+      setEditorValue={setEditorValue}
+      onReplyClick={handleReplyClick}
+      onMessageCreated={async (message) => {
         if (!user) {
           history.push('/login')
           return
         }
 
-        createConversationMessage({
-          variables: { conversationId, messageType: 'text', body: message },
+        setEditorValue(EditorState.createEmpty())
+        await createConversationMessage({
+          variables: {
+            input: {
+              member: conversationMember?.id,
+              conversation: conversation.id,
+              messageType: 'text',
+              rawBody: message,
+            },
+          },
           optimisticResponse: {
             conversationMessageCreate: {
               __typename: 'ConversationMessageCreate',
@@ -81,7 +177,7 @@ const ConversationConnected: FC<Props> = ({
                 __typename: 'ConversationMessage',
                 id: Math.round(Math.random() * -1000000).toString(),
                 sentBy: user,
-                body: message,
+                rawBody: message,
                 messageType: 'TEXT' as any,
                 created: new Date(),
                 modified: new Date(),
@@ -90,10 +186,13 @@ const ConversationConnected: FC<Props> = ({
             },
           },
         })
+        if (!conversation) {
+          refetch()
+        }
       }}
       onConversationMessageEdit={({ messageId, body }) => {
         updateConversationMessage({
-          variables: { id: messageId, body },
+          variables: { id: messageId, input: { rawBody: body } },
           optimisticResponse: {
             conversationMessageUpdate: {
               __typename: 'ConversationMessageUpdate',
@@ -101,7 +200,7 @@ const ConversationConnected: FC<Props> = ({
                 __typename: 'ConversationMessage',
                 id: messageId,
                 sentBy: user,
-                body,
+                rawBody: body,
                 messageType: 'TEXT' as any,
                 created: substractMinutes(new Date(), 5),
                 modified: new Date(),

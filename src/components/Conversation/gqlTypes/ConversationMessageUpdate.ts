@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { ConversationMessageMessageType } from "./../../../../gqlTypes/globalTypes";
+import { ConversationMessageUpdateInput, ConversationMessageMessageType } from "./../../../../gqlTypes/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: ConversationMessageUpdate
@@ -29,7 +29,7 @@ export interface ConversationMessageUpdate_conversationMessageUpdate_conversatio
    */
   id: string;
   sentBy: ConversationMessageUpdate_conversationMessageUpdate_conversationMessage_sentBy;
-  body: string | null;
+  rawBody: any | null;
   url: string | null;
   created: any;
   modified: any;
@@ -50,5 +50,5 @@ export interface ConversationMessageUpdate {
 
 export interface ConversationMessageUpdateVariables {
   id: string;
-  body: string;
+  input: ConversationMessageUpdateInput;
 }

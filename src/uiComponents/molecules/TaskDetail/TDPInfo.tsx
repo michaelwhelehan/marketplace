@@ -51,7 +51,7 @@ const InfoValueTitle = styled(ParagraphXS)`
   text-transform: uppercase;
 `
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.a`
   margin-top: 5px;
   font-size: ${fsS}px;
   line-height: 1.25;
@@ -122,7 +122,11 @@ const TDPInfo: FC<Props> = ({ task, editable = false }) => {
           </InfoIcon>
           <InfoValue>
             <InfoValueTitle>Posted By</InfoValueTitle>
-            <StyledLink to="/">
+            <StyledLink
+              target="_blank"
+              rel="noreferrer"
+              href={`/profile/${task.owner.username}`}
+            >
               {task.owner.firstName} {task.owner.lastName}
             </StyledLink>
           </InfoValue>

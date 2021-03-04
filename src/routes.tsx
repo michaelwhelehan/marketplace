@@ -3,6 +3,11 @@ import Layout from './components/Layout/Layout'
 import { Switch, Route } from 'react-router-dom'
 import Loader from './uiComponents/atoms/Loader/Loader'
 
+import LoginPage from './pages/Auth/LoginPage'
+import SignUpPage from './pages/Auth/SignUpPage'
+import RequestPasswordResetPage from './pages/Auth/RequestPasswordResetPage'
+import PasswordResetPage from './pages/Auth/PasswordResetPage'
+
 const Marketplace = lazy(
   () =>
     import(
@@ -21,29 +26,6 @@ const TaskDetailPage = lazy(
   () =>
     import(
       /* webpackChunkName: "task-detail-page" */ './pages/Dashboard/TaskDetail/TaskDetailPage'
-    ),
-)
-
-const LoginPage = lazy(
-  () => import(/* webpackChunkName: "login-page" */ './pages/Auth/LoginPage'),
-)
-
-const SignUpPage = lazy(
-  () =>
-    import(/* webpackChunkName: "sign-up-page" */ './pages/Auth/SignUpPage'),
-)
-
-const RequestPasswordResetPage = lazy(
-  () =>
-    import(
-      /* webpackChunkName: "request-password-reset-page" */ './pages/Auth/RequestPasswordResetPage'
-    ),
-)
-
-const PasswordResetPage = lazy(
-  () =>
-    import(
-      /* webpackChunkName: "password-reset-page" */ './pages/Auth/PasswordResetPage'
     ),
 )
 

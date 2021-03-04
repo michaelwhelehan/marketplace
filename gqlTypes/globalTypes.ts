@@ -148,6 +148,17 @@ export interface ActivityInput {
   read?: boolean | null;
 }
 
+export interface ConversationMessageCreateInput {
+  conversation?: string | null;
+  member?: string | null;
+  rawBody: any;
+  messageType: string;
+}
+
+export interface ConversationMessageUpdateInput {
+  rawBody: any;
+}
+
 export interface EducationInput {
   id?: string | null;
   school: string;

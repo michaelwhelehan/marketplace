@@ -11,7 +11,6 @@ import { MAIN_HEADER_HEIGHT, FILTER_HEADER_HEIGHT } from '../../constants/sizes'
 import { useGetTasksQuery } from './queries'
 import { fromXL } from '../../constants/breakpoints'
 import useUrlQueries from '../../hooks/useUrlQueries'
-import { TasksVariables } from './gqlTypes/Tasks'
 import useTaskSubscribeMore from './useTaskSubscribeMore'
 import { TaskStatusFilter } from '../../types/task'
 
