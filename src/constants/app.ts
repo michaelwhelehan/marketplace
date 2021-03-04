@@ -1,6 +1,6 @@
-export const apiUrl = 'http://futurefemales.taskdropper.com:8000/graphql/' // 'https://api-staging.taskdropper.com/graphql/'
-export const wsUrl = 'ws://futurefemales.taskdropper.com:8000/graphql/' // 'wss://api-staging.taskdropper.com/graphql/'
-export const sentryDsn = process.env.SENTRY_DSN
-const sampleRate = parseFloat(process.env.SENTRY_APM)
+export const apiUrl = process.env.REACT_APP_API_URL
+export const wsUrl = process.env.REACT_APP_WS_URL
+export const sentryDsn = process.env.REACT_APP_SENTRY_DSN
+const sampleRate = parseFloat(process.env.REACT_APP_SENTRY_APM)
 export const sentrySampleRate = isNaN(sampleRate) ? 0 : sampleRate
-export const demoMode = process.env.DEMO_MODE === 'true'
+export const demoMode = process.env.REACT_APP_DEMO_MODE === 'true'
