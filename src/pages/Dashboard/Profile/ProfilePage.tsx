@@ -13,7 +13,9 @@ import { useGetUserProfileDetailsQuery } from './queries'
 import Loader from '../../../uiComponents/atoms/Loader/Loader'
 
 const ProfilePage: FC = () => {
-  const { currentTab, updateTab } = useTabs<TabType>('basicInfo')
+  const { currentTab, updateTab } = useTabs<TabType>({
+    initialTab: 'basicInfo',
+  })
   const { data: User, loading } = useGetUserProfileDetailsQuery()
 
   function renderTab() {

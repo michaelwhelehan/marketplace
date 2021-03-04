@@ -23,7 +23,9 @@ type TabType = 'freelancer' | 'employer'
 interface Props {}
 
 const ReviewPanel: FC<Props> = () => {
-  const { currentTab, updateTab } = useTabs<TabType>('freelancer')
+  const { currentTab, updateTab } = useTabs<TabType>({
+    initialTab: 'freelancer',
+  })
   const tabs: Tabs<TabType>[] = [
     {
       title: 'As Freelancer',

@@ -1,10 +1,5 @@
 import { ApolloCache, ApolloClient, ApolloLink } from '@apollo/client'
 
-import {
-  typeDefs as conversationTypeDefs,
-  resolvers as conversationResolvers,
-} from '../graphql/conversation'
-
 /**
  * Creates Apollo client.
  * @param cache Cache used by created Apollo client.
@@ -17,7 +12,5 @@ export function createMarketplaceClient(
   return new ApolloClient({
     cache,
     link: ApolloLink.from(links),
-    typeDefs: [conversationTypeDefs],
-    resolvers: [conversationResolvers],
   })
 }

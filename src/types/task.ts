@@ -1,7 +1,14 @@
 import { Currency } from './currency'
 import { UserType } from './user'
 
-export type TaskStatusType = 'open' | 'in-progress' | 'complete'
+export enum TaskStatus {
+  ASSIGNED = 'ASSIGNED',
+  CANCELLED = 'CANCELLED',
+  COMPLETE = 'COMPLETE',
+  DELIVERED = 'DELIVERED',
+  DRAFT = 'DRAFT',
+  OPEN = 'OPEN',
+}
 
 export type TaskType = {
   id: string
@@ -13,6 +20,15 @@ export type TaskType = {
   location: string
   dueDate: Date
   details: string
-  status?: TaskStatusType
+  status?: TaskStatus
   numOffers: number
+}
+
+export enum TaskStatusFilter {
+  ASSIGNED = 'ASSIGNED',
+  CANCELLED = 'CANCELLED',
+  COMPLETE = 'COMPLETE',
+  DELIVERED = 'DELIVERED',
+  DRAFT = 'DRAFT',
+  OPEN = 'OPEN',
 }

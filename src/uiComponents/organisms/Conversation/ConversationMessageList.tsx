@@ -1,16 +1,19 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import InfiniteList from '../../molecules/InfiniteList'
-import ConversationMessage from './ConversationMessage'
-import { gql } from '@apollo/client'
-import { DocumentNode } from 'graphql'
+import ConversationMessage, {
+  ConversationMessageDeleteType,
+  ConversationMessageEditType,
+} from './ConversationMessage'
 import {
   ConversationPositionType,
   ConversationScrollType,
-  ConversationMessageType,
 } from '../../../types/conversation'
 import WindowedList from '../../molecules/WindowedList'
 import { useScrollElement } from '../../../contexts/ScrollElementContext'
+import { Conversation_conversation } from '../../../components/Conversation/gqlTypes/Conversation'
+import { CellMeasurerCache, List } from 'react-virtualized'
+import { differenceSeconds } from '../../../utils/date'
 
 const StyledConversationMessageList = styled.div`
   height: 100%;
@@ -18,26 +21,33 @@ const StyledConversationMessageList = styled.div`
 
 export interface ConversationMessageListProps {
   messagesLoading: boolean
-  messageList: ConversationMessageType[]
+  currentUserId: string
+  conversation: Conversation_conversation
   messagesLoadAmount: number
   onLoadMoreMessages: (loadAmount: number) => Promise<any>
+  onConversationMessageEdit: ConversationMessageEditType
+  onConversationMessageDelete: ConversationMessageDeleteType
   position: ConversationPositionType
   scrollType: ConversationScrollType
+  onReplyClick: () => void
 }
 
-type Fragments = {
-  fragments: { messageFeed: DocumentNode }
-}
-
-const ConversationMessageList: FC<ConversationMessageListProps> & Fragments = ({
+const ConversationMessageList: FC<ConversationMessageListProps> = ({
   messagesLoading,
-  messageList,
+  currentUserId,
+  conversation,
   messagesLoadAmount,
   onLoadMoreMessages,
+  onConversationMessageEdit,
+  onConversationMessageDelete,
   position,
   scrollType,
+  onReplyClick,
 }) => {
   const scrollElementRef = useScrollElement()
+  const listRef = useRef<List>()
+  const cacheRef = useRef<CellMeasurerCache>()
+  const messageList = conversation?.conversationFeed?.edges
 
   if (!messageList || !messageList.length) {
     return null
@@ -46,10 +56,24 @@ const ConversationMessageList: FC<ConversationMessageListProps> & Fragments = ({
   if (scrollType === 'windowed') {
     return (
       <WindowedList
+        listRef={listRef}
+        cacheRef={cacheRef}
         loading={messagesLoading}
         list={messageList}
         loadAmount={messagesLoadAmount}
-        renderListItem={listItem => <ConversationMessage {...listItem} />}
+        renderListItem={(listItem) => (
+          <ConversationMessage
+            listRef={listRef}
+            cacheRef={cacheRef}
+            index={listItem.index}
+            currentUserId={currentUserId}
+            conversation={conversation}
+            onConversationMessageEdit={onConversationMessageEdit}
+            onConversationMessageDelete={onConversationMessageDelete}
+            message={listItem.node}
+            onReplyClick={onReplyClick}
+          />
+        )}
         onLoadMore={onLoadMoreMessages}
         rowHeight={100}
         heightCalculation="dynamic"
@@ -62,9 +86,27 @@ const ConversationMessageList: FC<ConversationMessageListProps> & Fragments = ({
     <StyledConversationMessageList>
       <InfiniteList
         loading={messagesLoading}
-        list={messageList}
+        list={messageList
+          .slice()
+          .sort((a, b) =>
+            position === 'bottomUp'
+              ? differenceSeconds(a.node.created, b.node.created)
+              : -differenceSeconds(a.node.created, b.node.created),
+          )}
         loadAmount={messagesLoadAmount}
-        renderListItem={listItem => <ConversationMessage {...listItem} />}
+        renderListItem={(listItem) => (
+          <ConversationMessage
+            listRef={listRef}
+            cacheRef={cacheRef}
+            index={listItem.index}
+            currentUserId={currentUserId}
+            conversation={conversation}
+            onConversationMessageEdit={onConversationMessageEdit}
+            onConversationMessageDelete={onConversationMessageDelete}
+            message={listItem.node}
+            onReplyClick={onReplyClick}
+          />
+        )}
         onLoadMore={onLoadMoreMessages}
         rowHeight={100}
         heightCalculation="dynamic"
@@ -72,18 +114,6 @@ const ConversationMessageList: FC<ConversationMessageListProps> & Fragments = ({
       />
     </StyledConversationMessageList>
   )
-}
-
-ConversationMessageList.fragments = {
-  messageFeed: gql`
-    fragment MessageFeed on ConversationFeed {
-      cursor
-      messages {
-        ...Message
-      }
-    }
-    ${ConversationMessage.fragments.message}
-  `,
 }
 
 export default ConversationMessageList

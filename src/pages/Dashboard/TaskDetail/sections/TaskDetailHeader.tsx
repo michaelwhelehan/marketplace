@@ -5,6 +5,7 @@ import { black, borderColor, primaryColor } from '../../../../styles/colors'
 import TaskStatusIndicator from '../../../../uiComponents/atoms/TaskStatusIndicator'
 import { ParagraphL } from '../../../../uiComponents/atoms/Paragraphs'
 import { fwBold } from '../../../../styles/typography'
+import { Task_task } from '../../../MarketplaceTDP/gqlTypes/Task'
 
 const Container = styled.div`
   padding: 20px;
@@ -29,15 +30,20 @@ const EndContainer = styled.div`
   align-items: center;
 `
 
-interface Props {}
+interface Props {
+  task: Task_task
+}
 
-const TaskDetailHeader: FC<Props> = () => {
+const TaskDetailHeader: FC<Props> = ({ task }) => {
   return (
     <Container>
-      <StyledHeading>Need some tasks done because I can afford</StyledHeading>
+      <StyledHeading>{task.title}</StyledHeading>
       <EndContainer>
-        <TaskStatusIndicator status="open" />
-        <Budget>$500</Budget>
+        <TaskStatusIndicator status={task.taskStatus} />
+        <Budget>
+          {task.budget.currency}
+          {task.budget.amount}
+        </Budget>
       </EndContainer>
     </Container>
   )

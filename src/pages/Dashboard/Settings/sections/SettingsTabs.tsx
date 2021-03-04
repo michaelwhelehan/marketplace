@@ -12,7 +12,7 @@ interface Props {
 const SettingsTabs: FC<Props> = ({ currentTab, updateTab }) => {
   const tabs: Tabs<TabType>[] = [
     {
-      title: 'Task Alerts',
+      title: 'Job Alerts',
       active: currentTab === 'taskAlerts',
       type: 'taskAlerts',
     },

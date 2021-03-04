@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react'
+import React, { FC, useMemo, MutableRefObject } from 'react'
 import {
   WindowScroller,
   List,
@@ -17,6 +17,8 @@ interface HeightProps {
 }
 
 interface Props {
+  listRef: MutableRefObject<List>
+  cacheRef: MutableRefObject<CellMeasurerCache>
   rowHeight: number
   renderListItem: (listItem: any) => JSX.Element
   onLoadMore: (loadAmount: number) => Promise<any>
@@ -28,6 +30,8 @@ interface Props {
 }
 
 const WindowedList: FC<Props> = ({
+  listRef,
+  cacheRef,
   rowHeight,
   renderListItem,
   onLoadMore,
@@ -45,6 +49,8 @@ const WindowedList: FC<Props> = ({
       }),
     [rowHeight, list.length!],
   )
+
+  cacheRef.current = cache
 
   // async function loadMoreRows() {
   //   await onLoadMore(loadAmount)
@@ -90,6 +96,7 @@ const WindowedList: FC<Props> = ({
         <AutoSizer disableHeight>
           {({ width }) => (
             <List
+              ref={listRef}
               autoHeight
               height={height}
               isScrolling={isScrolling}

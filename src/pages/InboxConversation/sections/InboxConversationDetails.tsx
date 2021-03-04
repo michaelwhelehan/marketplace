@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
+import { ConversationMemberProfile_publicUser } from '../../../components/Conversation/gqlTypes/ConversationMemberProfile'
 import { UserType } from '../../../types/user'
 import UserCard from '../../../uiComponents/molecules/UserCard'
 import UserStats, {
@@ -17,13 +18,20 @@ const Container = styled.article`
 `
 
 interface Props {
-  member: UserType
+  member: ConversationMemberProfile_publicUser
 }
 
 const InboxConversationDetails: FC<Props> = ({ member }) => {
+  const userDetails: UserType = {
+    profilePictureUrl: member.avatarUrl,
+    name: `${member.firstName} ${member.lastName}`,
+    onlineStatus: 'offline',
+    lastSeen: new Date(),
+  }
+
   return (
     <Container>
-      <UserCard user={member} />
+      <UserCard user={userDetails} />
       <UserStats />
     </Container>
   )

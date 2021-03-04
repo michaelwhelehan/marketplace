@@ -10,21 +10,9 @@ import InboxConversation from '../InboxConversation/InboxConversationPage'
 import { HeadingL } from '../../uiComponents/atoms/Headings'
 import { ParagraphM } from '../../uiComponents/atoms/Paragraphs'
 import { INBOX_HEADER_HEIGHT } from '../../constants/sizes'
+import { useGetUserConversationsQuery } from './queries'
 import InboxConversationList from './sections/InboxConversationList'
-import { gql, useQuery } from '@apollo/client'
-import { ConversationType } from '../../types/conversation'
-
-interface ConversationListData {
-  conversationList: {
-    cursor: string
-    conversations: ConversationType[]
-  }
-}
-
-interface ConversationListVars {
-  cursor: string
-  loadAmount: number
-}
+import { useAuth } from '../../services'
 
 const StyledContainer = styled(BaseContainer)`
   border-left: 1px solid ${borderColor};
@@ -71,27 +59,6 @@ const filterStyles = {
   placeholder: (styles) => ({ ...styles, color: primaryFontColor }),
 }
 
-const GET_CONVERSATION_LIST = gql`
-  query ConversationList($cursor: String, $loadAmount: Int) {
-    conversationList(cursor: $cursor, loadAmount: $loadAmount) @client {
-      cursor
-      conversations {
-        id
-        member {
-          profilePictureUrl
-          name
-          onlineStatus
-        }
-        lastMessage {
-          lastMessageFromMe
-          lastMessageTimestamp
-          lastMessageText
-        }
-      }
-    }
-  }
-`
-
 const InboxHint: FC = () => (
   <SelectConversation>
     <Icon name="MdChat" size={40} color={primaryFontColor} />
@@ -104,12 +71,11 @@ const InboxHint: FC = () => (
 
 const InboxPage: FC = () => {
   const match = useRouteMatch()
-  const { data, loading, fetchMore } = useQuery<
-    ConversationListData,
-    ConversationListVars
-  >(GET_CONVERSATION_LIST, {
-    variables: { cursor: undefined, loadAmount: undefined },
+  const { user } = useAuth()
+  const { data, loading, loadMore } = useGetUserConversationsQuery({
+    pageSize: 20,
   })
+  const hasData = data?.me?.conversations?.edges?.length > 0
 
   return (
     <StyledContainer>
@@ -121,53 +87,39 @@ const InboxPage: FC = () => {
             styles={filterStyles}
           />
         </FilterContainer>
-        {!data ? (
-          <>Loading...</>
-        ) : (
-          <InboxConversationList
-            conversationList={data?.conversationList?.conversations}
-            conversationListLoading={loading}
-            onLoadMoreConversations={async (loadAmount) => {
-              await sleep(Math.floor(Math.random() * 1000) + 500)
-              await fetchMore({
-                query: GET_CONVERSATION_LIST,
-                variables: {
-                  cursor: data.conversationList.cursor,
-                  loadAmount,
-                },
-                updateQuery: (
-                  previousResult: {
-                    conversationList: { conversations: any; cursor: string }
+        <InboxConversationList
+          user={user}
+          conversationLoadAmount={20}
+          conversationList={data?.me?.conversations?.edges}
+          conversationListLoading={loading && !hasData}
+          onLoadMoreConversations={async () => {
+            if (data?.me?.conversations?.pageInfo?.hasNextPage) {
+              loadMore(
+                (prev, next) => ({
+                  ...prev,
+                  me: {
+                    ...prev.me,
+                    conversations: {
+                      ...prev.me.conversations,
+                      edges: [
+                        ...prev.me.conversations.edges,
+                        ...next.me.conversations.edges,
+                      ],
+                      pageInfo: next.me.conversations.pageInfo,
+                    },
                   },
-                  { fetchMoreResult },
-                ) => {
-                  const previousConversationList =
-                    previousResult.conversationList
-                  const newConversationList = fetchMoreResult.conversationList
-
-                  const newConversationListData = {
-                    ...previousResult.conversationList,
-                    conversations: [
-                      ...previousConversationList.conversations,
-                      ...newConversationList.conversations,
-                    ],
-                    cursor: newConversationList.cursor,
-                    __typename: 'ConversationList',
-                  }
-                  const newData = {
-                    ...previousResult,
-                    conversationList: newConversationListData,
-                  }
-                  return newData
+                }),
+                {
+                  after: data.me.conversations.pageInfo.endCursor,
                 },
-              })
-            }}
-          />
-        )}
+              )
+            }
+          }}
+        />
       </SideContainer>
       <MainContainer>
         <Switch>
-          <Route path={`${match.path}/:conversationId`}>
+          <Route path={`${match.path}/:username`}>
             <InboxConversation />
           </Route>
           <Route path={match.path}>
@@ -177,10 +129,6 @@ const InboxPage: FC = () => {
       </MainContainer>
     </StyledContainer>
   )
-}
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 export default InboxPage

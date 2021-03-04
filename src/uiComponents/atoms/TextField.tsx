@@ -34,6 +34,10 @@ const StyledTextField = styled.input<StyledProps>`
     hasError &&
     css`
       border-color: ${red};
+
+      &:focus {
+        outline: none;
+      }
     `}
   }
 `

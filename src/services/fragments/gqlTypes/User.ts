@@ -16,5 +16,8 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
+  username: string;
   avatarUrl: string | null;
+  jobTitle: string | null;
+  lastNotificationsSeenTimestamp: any | null;
 }

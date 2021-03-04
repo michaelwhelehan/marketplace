@@ -58,6 +58,11 @@ class APIProxy {
     (data) => data!.accountUpdate,
   )
 
+  setAccountNotificationsUpdate = this.fireQuery(
+    MUTATIONS.AccountNotificationsUpdate,
+    (data) => data!.accountUpdateNotifications,
+  )
+
   client: ApolloClient<any>
 
   constructor(client: ApolloClient<any>) {

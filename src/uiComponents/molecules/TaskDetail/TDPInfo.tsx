@@ -51,7 +51,7 @@ const InfoValueTitle = styled(ParagraphXS)`
   text-transform: uppercase;
 `
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.a`
   margin-top: 5px;
   font-size: ${fsS}px;
   line-height: 1.25;
@@ -61,7 +61,6 @@ const StyledLink = styled(Link)`
 `
 
 const ReportLink = styled(Link)`
-  margin-top: 20px;
   font-size: ${fsXXS}px;
   line-height: 1.25;
   ${fwBold};
@@ -88,14 +87,14 @@ const InfoSection = styled.div`
   }
 `
 
-const InfoShare = styled.div`
-  margin-top: 10px;
-  display: flex;
+// const InfoShare = styled.div`
+//   margin-top: 10px;
+//   display: flex;
 
-  svg {
-    cursor: pointer;
-  }
-`
+//   svg {
+//     cursor: pointer;
+//   }
+// `
 
 const InfoBudgetValue = styled.div`
   margin-top: 10px;
@@ -123,7 +122,11 @@ const TDPInfo: FC<Props> = ({ task, editable = false }) => {
           </InfoIcon>
           <InfoValue>
             <InfoValueTitle>Posted By</InfoValueTitle>
-            <StyledLink to="/">
+            <StyledLink
+              target="_blank"
+              rel="noreferrer"
+              href={`/profile/${task.owner.username}`}
+            >
               {task.owner.firstName} {task.owner.lastName}
             </StyledLink>
           </InfoValue>
@@ -159,7 +162,7 @@ const TDPInfo: FC<Props> = ({ task, editable = false }) => {
       <InfoEnd>
         <InfoContainer>
           <StatusBar>
-            <TaskStatusIndicator status="open" />
+            <TaskStatusIndicator status={task.taskStatus} />
           </StatusBar>
         </InfoContainer>
         <InfoContainer>
@@ -176,7 +179,7 @@ const TDPInfo: FC<Props> = ({ task, editable = false }) => {
             </InfoSection>
           ) : (
             <InfoSection>
-              <InfoValueTitle>Share</InfoValueTitle>
+              {/* <InfoValueTitle>Share</InfoValueTitle>
               <InfoShare>
                 <Icon
                   name="FaFacebook"
@@ -197,7 +200,7 @@ const TDPInfo: FC<Props> = ({ task, editable = false }) => {
                   spacingEnd
                 />
                 <Icon name="MdCode" size={20} color={primaryFontColor} />
-              </InfoShare>
+              </InfoShare> */}
               <ReportLink to="">
                 <Icon name="MdFlag" size={10} /> Report this job
               </ReportLink>

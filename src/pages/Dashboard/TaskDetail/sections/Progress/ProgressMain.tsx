@@ -8,6 +8,7 @@ import {
 import ConversationConnected from '../../../../../components/Conversation/ConversationConnected'
 import { ScrollElementContextProvider } from '../../../../../contexts/ScrollElementContext'
 import { DashboardPanelContainer } from '../../../Panels/DashboardPanel'
+import { ConversationCategory } from '../../../../../types/conversation'
 
 const Container = styled.div``
 
@@ -70,7 +71,12 @@ const ProgressMain: FC<Props> = () => {
       </TimelineStartedContainer>
       <ConversationContainer>
         <ScrollElementContextProvider scrollElement={window}>
-          <ConversationConnected position="bottomUp" scrollType="windowed" />
+          <ConversationConnected
+            conversationCategory={ConversationCategory.ORDER}
+            conversationId="Q29udmVyc2F0aW9uOjE="
+            position="bottomUp"
+            scrollType="windowed"
+          />
         </ScrollElementContextProvider>
       </ConversationContainer>
     </Container>

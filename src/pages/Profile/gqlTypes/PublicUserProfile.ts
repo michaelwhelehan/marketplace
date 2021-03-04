@@ -77,12 +77,10 @@ export interface PublicUserProfile_publicUser {
    * The ID of the object.
    */
   id: string;
-  email: string;
   username: string;
   firstName: string;
   lastName: string;
   avatarUrl: string | null;
-  mobile: string | null;
   jobTitle: string | null;
   bio: string | null;
   /**

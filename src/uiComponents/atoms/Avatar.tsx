@@ -3,9 +3,10 @@ import styled from 'styled-components'
 import { OnlineStatusType } from '../../types/user'
 import StatusIndicator from './StatusIndicator'
 import { borderColorDark } from '../../styles/colors'
+import defaultAvatar from '../../assets/images/default-avatar.png'
 
 interface Props {
-  src: string
+  src?: string
   size: number
   onlineStatus?: OnlineStatusType
 }
@@ -30,6 +31,9 @@ const StyledStatusIndicator = styled(StatusIndicator)`
 `
 
 const Avatar: FC<Props> = ({ src, size, onlineStatus, ...props }) => {
+  if (!src) {
+    src = defaultAvatar
+  }
   return (
     <StyledAvatar {...props}>
       <StyledImage

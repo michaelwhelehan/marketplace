@@ -13,7 +13,9 @@ const Container = styled.div`
 `
 
 const PaymentMethodsPage: FC = () => {
-  const { currentTab, updateTab } = useTabs<TabType>('makePayments')
+  const { currentTab, updateTab } = useTabs<TabType>({
+    initialTab: 'makePayments',
+  })
 
   function renderTab() {
     switch (currentTab) {

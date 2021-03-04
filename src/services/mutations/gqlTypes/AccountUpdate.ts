@@ -101,6 +101,7 @@ export interface AccountUpdate_accountUpdate_user {
   mobile: string | null;
   jobTitle: string | null;
   bio: string | null;
+  lastNotificationsSeenTimestamp: any | null;
   /**
    * List of user's skills.
    */

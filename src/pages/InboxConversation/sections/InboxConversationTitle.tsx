@@ -5,6 +5,7 @@ import { ParagraphS } from '../../../uiComponents/atoms/Paragraphs'
 import UserName from '../../../uiComponents/atoms/UserName'
 import { UserType } from '../../../types/user'
 import { fromNow } from '../../../utils/date'
+import { ConversationMemberProfile_publicUser } from '../../../components/Conversation/gqlTypes/ConversationMemberProfile'
 
 const Container = styled.article`
   height: 100%;
@@ -24,20 +25,20 @@ const LastSeen = styled.div`
 `
 
 interface Props {
-  member: UserType
+  member: ConversationMemberProfile_publicUser
 }
 
 const InboxConversationTitle: FC<Props> = ({ member }) => {
   return (
     <Container>
       <Member>
-        <StatusIndicator onlineStatus={member.onlineStatus} />
+        <StatusIndicator onlineStatus="offline" />
         <UserName as="span" style={{ marginLeft: '5px' }}>
-          {member.name}
+          {member.firstName} {member.lastName}
         </UserName>
       </Member>
       <LastSeen>
-        <ParagraphS>Last seen {fromNow(member.lastSeen)}</ParagraphS>
+        <ParagraphS>Last seen {fromNow(new Date())}</ParagraphS>
       </LastSeen>
     </Container>
   )

@@ -1,1 +1,1 @@
-export type TabType = 'taskDetails' | 'offers' | 'hires' | 'taskProgress'
+export type TabType = 'details' | 'questions' | 'offers' | 'hires' | 'progress'

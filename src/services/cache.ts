@@ -1,10 +1,8 @@
+import { InMemoryCache, defaultDataIdFromObject } from '@apollo/client'
 import {
-  InMemoryCache,
-  defaultDataIdFromObject,
-  NormalizedCacheObject,
-} from '@apollo/client'
-import { persistCache as apolloPersistCache } from 'apollo-cache-persist'
-import { PersistentStorage, PersistedData } from 'apollo-cache-persist/types'
+  persistCache as apolloPersistCache,
+  PersistentStorage,
+} from 'apollo3-cache-persist'
 
 interface MarketplaceCacheConfig {
   /**
@@ -33,9 +31,7 @@ export const createMarketplaceCache = async ({
   if (persistCache) {
     await apolloPersistCache({
       cache: marketplaceCache,
-      storage: window.localStorage as PersistentStorage<
-        PersistedData<NormalizedCacheObject>
-      >,
+      storage: window.localStorage as PersistentStorage,
     })
   }
 

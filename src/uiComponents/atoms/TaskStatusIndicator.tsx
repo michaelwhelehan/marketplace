@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
-import { TaskStatusType } from '../../types/task'
+import { TaskStatus } from '../../types/task'
 import styled, { css } from 'styled-components'
 import { fwBold, fsXS } from '../../styles/typography'
 import { primaryFontColor, primaryColor } from '../../styles/colors'
 import { lighten } from 'polished'
 
-const StatusIndicator = styled.div<{ status: TaskStatusType }>`
+const StatusIndicator = styled.div<{ status: TaskStatus }>`
   border-radius: 16px;
   ${fwBold};
   font-size: ${fsXS}px;
@@ -14,7 +14,7 @@ const StatusIndicator = styled.div<{ status: TaskStatusType }>`
   color ${primaryFontColor};
 
   ${({ status }) => {
-    if (status === 'open') {
+    if (status === 'OPEN') {
       return css`
         color: ${primaryColor};
         background-color: ${lighten(0.4, primaryColor)};
@@ -24,17 +24,17 @@ const StatusIndicator = styled.div<{ status: TaskStatusType }>`
 `
 
 interface Props {
-  status: TaskStatusType
+  status: TaskStatus
 }
 
 const TaskStatusIndicator: FC<Props> = ({ status }) => {
   function renderStatus() {
     switch (status) {
-      case 'open':
+      case 'OPEN':
         return 'Open'
-      case 'in-progress':
+      case 'ASSIGNED':
         return 'In Progress'
-      case 'complete':
+      case 'COMPLETE':
         return 'Complete'
       default:
         return ''

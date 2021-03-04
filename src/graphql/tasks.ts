@@ -4,6 +4,7 @@ export const typeDefs = gql`
   extend type Query {
     createTaskVisible: Boolean
     makeOfferVisible: Boolean
+    makeOfferTaskId: ID
     rejectOfferVisible: Boolean
     hireVisible: Boolean
   }

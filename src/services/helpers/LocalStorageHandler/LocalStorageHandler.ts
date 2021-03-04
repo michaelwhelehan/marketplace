@@ -1,4 +1,4 @@
-import { LocalStorageItems } from './types'
+import { LocalStorageItems, TaskModel } from './types'
 import LocalStorageHandlerProxy from './Proxy'
 
 export class LocalStorageHandler extends LocalStorageHandlerProxy {
@@ -6,8 +6,16 @@ export class LocalStorageHandler extends LocalStorageHandlerProxy {
     return LocalStorageHandlerProxy.retrieveItem(LocalStorageItems.TOKEN)
   }
 
+  static getTask(): TaskModel | null {
+    return LocalStorageHandlerProxy.retrieveObject(LocalStorageItems.TASK)
+  }
+
   setSignInToken(token: string | null): void {
     this.saveItem(LocalStorageItems.TOKEN, token)
+  }
+
+  setTask(task: TaskModel | null): void {
+    this.saveObject(LocalStorageItems.TASK, task)
   }
 
   clear(): void {

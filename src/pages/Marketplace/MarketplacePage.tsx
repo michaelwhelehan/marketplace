@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC } from 'react'
 import styled from 'styled-components'
 import FilterHeader from '../../components/FilterHeader/FilterHeader'
 import BaseContainer from '../../uiComponents/atoms/Container'
@@ -11,6 +11,8 @@ import { MAIN_HEADER_HEIGHT, FILTER_HEADER_HEIGHT } from '../../constants/sizes'
 import { useGetTasksQuery } from './queries'
 import { fromXL } from '../../constants/breakpoints'
 import useUrlQueries from '../../hooks/useUrlQueries'
+import useTaskSubscribeMore from './useTaskSubscribeMore'
+import { TaskStatusFilter } from '../../types/task'
 
 const StyledContainer = styled(BaseContainer)`
   border-left: 1px solid #eee;
@@ -42,9 +44,11 @@ const MarketplacePage: FC = () => {
   const { params } = useUrlQueries({
     allowedParams: ['budget_gte', 'budget_lte'],
   })
-  const { data, loading, loadMore } = useGetTasksQuery({
+
+  const { data, loading, loadMore, subscribeMore } = useGetTasksQuery({
     pageSize: 20,
     filter: {
+      status: [TaskStatusFilter.OPEN, TaskStatusFilter.ASSIGNED],
       budget: {
         gte: params.budget_gte,
         lte: params.budget_lte,
@@ -53,12 +57,18 @@ const MarketplacePage: FC = () => {
   })
   const hasData = data?.tasks?.edges?.length > 0
 
+  const { numNewTasks, onLoadNewTasks } = useTaskSubscribeMore({
+    subscribeMore,
+  })
+
   return (
     <>
       <FilterHeader />
       <StyledContainer>
         <SideListContainer>
           <SideList
+            numNewTasks={numNewTasks}
+            onLoadNewTasks={onLoadNewTasks}
             tasksLoading={loading && !hasData}
             tasks={data?.tasks?.edges}
             tasksLoadAmount={20}
@@ -74,7 +84,7 @@ const MarketplacePage: FC = () => {
                     },
                   }),
                   {
-                    after: data?.tasks?.pageInfo?.endCursor,
+                    after: data.tasks.pageInfo.endCursor,
                   },
                 )
               }

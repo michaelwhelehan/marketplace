@@ -2,7 +2,8 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import Avatar from '../../../uiComponents/atoms/Avatar'
-import { UserType } from '../../../types/user'
+import { convertToHTML } from 'draft-convert'
+import { convertFromRaw } from 'draft-js'
 import {
   ParagraphS,
   ParagraphXXS,
@@ -10,7 +11,8 @@ import {
 import { borderColor, white } from '../../../styles/colors'
 import { fromNow } from '../../../utils/date'
 import UserName from '../../../uiComponents/atoms/UserName'
-import { LastMessageType } from '../../../types/conversation'
+import { UserConversations_me_conversations_edges_node } from '../gqlTypes/UserConversations'
+import { User } from '../../../services/fragments/gqlTypes/User'
 
 const StyledCard = styled.div`
   border-bottom: 1px solid ${borderColor};
@@ -29,6 +31,8 @@ const Message = styled(ParagraphS)`
   text-overflow: ellipsis;
 `
 
+const MessageText = styled.span``
+
 const PictureContainer = styled.div`
   flex: none;
 `
@@ -45,32 +49,42 @@ const TimestampContainer = styled.div`
 `
 
 interface Props {
-  member: UserType
-  lastMessage: LastMessageType
+  user: User
+  conversation: UserConversations_me_conversations_edges_node
 }
 
-const InboxConversationListCard: FC<Props> = ({ member, lastMessage }) => {
+const InboxConversationCard: FC<Props> = ({ user, conversation }) => {
+  const member = conversation.members[0]
+  const lastMessage = conversation.conversationFeed.edges[0].node
+
   return (
-    <StyledCard to="/dashboard/inbox/1" as={Link}>
+    <StyledCard to={`/dashboard/inbox/${member.username}`} as={Link}>
       <PictureContainer>
-        <Avatar
-          src={member.profilePictureUrl}
-          size={50}
-          onlineStatus={member.onlineStatus}
-        />
+        <Avatar src={member.avatarUrl} size={50} onlineStatus="offline" />
       </PictureContainer>
       <BodyContainer>
-        <UserName>{member.name}</UserName>
-        <Message>
-          {lastMessage.lastMessageFromMe && 'Me: '}
-          {lastMessage.lastMessageText}
-        </Message>
+        <UserName>
+          {member.firstName} {member.lastName}
+        </UserName>
+        <Message
+          dangerouslySetInnerHTML={{
+            __html: `${
+              user.id === lastMessage.sentBy.id ? 'Me: ' : ''
+            }${convertToHTML({
+              blockToHTML: (block: any) => {
+                if (block.type === 'unstyled') {
+                  return <MessageText />
+                }
+              },
+            })(convertFromRaw(lastMessage.rawBody))}`,
+          }}
+        />
       </BodyContainer>
       <TimestampContainer>
-        <ParagraphXXS>{fromNow(lastMessage.lastMessageTimestamp)}</ParagraphXXS>
+        <ParagraphXXS>{fromNow(lastMessage.created)}</ParagraphXXS>
       </TimestampContainer>
     </StyledCard>
   )
 }
 
-export default InboxConversationListCard
+export default InboxConversationCard

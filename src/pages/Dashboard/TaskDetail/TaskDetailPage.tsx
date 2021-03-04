@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 import styled from 'styled-components'
 import BaseContainer from '../../../uiComponents/atoms/Container'
 import TaskDetailHeader from './sections/TaskDetailHeader'
@@ -15,6 +15,11 @@ import ProgressMain from './sections/Progress/ProgressMain'
 import ProgressSummary from './sections/Progress/ProgressSummary'
 import { DashboardPanelContainer } from '../Panels/DashboardPanel'
 import { toXL } from '../../../constants/breakpoints'
+import { useGetTaskQuery } from '../../MarketplaceTDP/queries'
+import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom'
+import Loader from '../../../uiComponents/atoms/Loader/Loader'
+import { useAuth } from '../../../services'
+import QuestionsMain from './sections/Questions/QuestionsMain'
 
 const Container = styled(BaseContainer)`
   @media (${toXL}) {
@@ -40,51 +45,97 @@ const BottomContainerEnd = styled.aside`
   flex-basis: 300px;
 `
 
+interface MatchParams {
+  taskSlug: string
+  tab: TabType
+}
+
 interface Props {}
 
 const TaskDetailPage: FC<Props> = () => {
-  const { currentTab, updateTab } = useTabs<TabType>('offers')
+  const match = useRouteMatch<MatchParams>('/jobs/:taskSlug/:tab')
+  const parentMatch = useRouteMatch()
+  const { currentTab, updateTab } = useTabs<TabType>({
+    initialTab: match.params.tab,
+    navigateUrl: true,
+  })
+  const { user } = useAuth()
+  const { data, loading } = useGetTaskQuery({
+    slug: match.params.taskSlug,
+  })
 
-  function renderTabStart() {
-    switch (currentTab) {
-      case 'taskDetails':
-        return <TaskDetailsMain />
-      case 'offers':
-        return <OffersMain />
-      case 'hires':
-        return <HiresMain />
-      case 'taskProgress':
-        return <ProgressMain />
-      default:
-        return null
-    }
-  }
-
-  function renderTabEnd() {
-    switch (currentTab) {
-      case 'taskDetails':
-        return <TaskDetailsSummary />
-      case 'offers':
-        return <OffersSummary />
-      case 'hires':
-        return <HiresSummary />
-      case 'taskProgress':
-        return <ProgressSummary />
-      default:
-        return null
-    }
-  }
+  const routes = useMemo(
+    () => [
+      {
+        path: '/details',
+        main: () => <TaskDetailsMain task={data.task} user={user} />,
+        sidebar: () => <TaskDetailsSummary />,
+      },
+      {
+        path: '/questions',
+        main: () => <QuestionsMain task={data.task} />,
+        sidebar: () => <TaskDetailsSummary />,
+      },
+      {
+        path: '/offers',
+        main: () => <OffersMain taskSlug={match.params.taskSlug} />,
+        sidebar: () => <OffersSummary />,
+      },
+      {
+        path: '/hires',
+        main: () => <HiresMain />,
+        sidebar: () => <HiresSummary />,
+      },
+      {
+        path: '/progress',
+        main: () => <ProgressMain />,
+        sidebar: () => <ProgressSummary />,
+      },
+    ],
+    [data?.task, user, match.params.taskSlug],
+  )
 
   return (
     <Container>
-      <TopContainer>
-        <TaskDetailHeader />
-        <TaskDetailTabs currentTab={currentTab} updateTab={updateTab} />
-      </TopContainer>
-      <BottomContainer>
-        <BottomContainerStart>{renderTabStart()}</BottomContainerStart>
-        <BottomContainerEnd>{renderTabEnd()}</BottomContainerEnd>
-      </BottomContainer>
+      {loading ? (
+        <Loader name="Dashboard" />
+      ) : (
+        <>
+          <TopContainer>
+            <TaskDetailHeader task={data.task} />
+            <TaskDetailTabs
+              task={data.task}
+              user={user}
+              currentTab={currentTab}
+              updateTab={updateTab}
+            />
+          </TopContainer>
+          <BottomContainer>
+            <BottomContainerStart>
+              <Switch>
+                {routes.map((route, index) => (
+                  <Route
+                    key={index}
+                    path={`${parentMatch.path}${route.path}`}
+                    children={<route.main />}
+                  />
+                ))}
+              </Switch>
+            </BottomContainerStart>
+            <BottomContainerEnd>
+              <Switch>
+                {routes.map((route, index) => (
+                  <Route
+                    key={index}
+                    path={`${parentMatch.path}${route.path}`}
+                    children={<route.sidebar />}
+                  />
+                ))}
+              </Switch>
+            </BottomContainerEnd>
+          </BottomContainer>
+        </>
+      )}
     </Container>
   )
 }

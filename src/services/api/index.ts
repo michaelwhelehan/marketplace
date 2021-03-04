@@ -7,10 +7,13 @@ import { JobsManager } from '../jobs'
 import { MarketplaceState } from '../state'
 import { ConfigInput } from '../types'
 import { AuthAPI } from './Auth'
+import { TaskAPI } from './Task'
 import APIProxy from './APIProxy'
 
 export class MarketplaceAPI {
   auth: AuthAPI
+
+  task: TaskAPI
 
   /**
    * @deprecated Please do not use it anymore. Reference to API Proxy will be removed in future.
@@ -52,5 +55,6 @@ export class MarketplaceAPI {
     }
 
     this.auth = new AuthAPI(marketplaceState, jobsManager)
+    this.task = new TaskAPI(marketplaceState, jobsManager)
   }
 }

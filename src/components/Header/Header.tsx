@@ -11,21 +11,11 @@ import Notifications from './Notifications/Notifications'
 import Icon from '../../uiComponents/atoms/Icon'
 import UpdateIndicator from '../../uiComponents/atoms/UpdateIndicator'
 import Logo from '../../uiComponents/atoms/Logo'
-import { useAuth } from '../../services'
+import { useAccountNotificationsUpdate, useAuth } from '../../services'
 import { toXL } from '../../constants/breakpoints'
-
-type LinkIdType = 'browse' | 'tasks' | 'updates' | 'messages'
-
-type LinkType = {
-  id: LinkIdType
-  name: string
-  href?: string
-  onClick?: (e: MouseEvent<HTMLAnchorElement>) => void
-  hasDropDown?: boolean
-  renderDropDown?: () => JSX.Element
-  icon?: string
-  hasUpdates?: boolean
-}
+import { useGetUserActivityQuery } from './queries'
+import { differenceSeconds } from '../../utils/date'
+import { useActivityUpdateMutation } from './mutations'
 
 const StyledHeader = styled.header`
   height: ${MAIN_HEADER_HEIGHT}px;
@@ -79,57 +69,124 @@ const HeaderLinkIcon = styled.span`
   margin-right: 5px;
 `
 
+type LinkIdType =
+  | 'browse'
+  | 'marketplace'
+  | 'tasks'
+  | 'updates'
+  | 'messages'
+  | 'login'
+  | 'signup'
+
+interface LinkType {
+  id: LinkIdType
+  name: string
+  href?: string
+  onClick?: (e: MouseEvent<HTMLAnchorElement>) => void
+  hasDropDown?: boolean
+  renderDropDown?: () => JSX.Element
+  icon?: string
+  hasUpdates?: boolean
+}
+
 const Header: FC = () => {
   const { user } = useAuth()
+  const [setAccountNotificationsUpdate] = useAccountNotificationsUpdate()
+  const updateActivity = useActivityUpdateMutation()
+  const { data: activityData } = useGetUserActivityQuery({ pageSize: 10 })
   const [dropdownOpen, setDropdownOpen] = useState<LinkIdType | null>(null)
-  const links = [
-    user && {
-      id: 'browse',
-      name: 'Browse',
-      href: '/',
-      icon: 'MdSearch',
-    },
-    user && {
-      id: 'marketplace',
-      name: 'Marketplace',
-      href: '/',
-      icon: 'MdLanguage',
-    },
-    user && {
-      id: 'tasks',
-      name: 'My Jobs',
-      href: '/dashboard/my-jobs',
-      icon: 'MdBusinessCenter',
-    },
-    user && {
-      id: 'updates',
-      name: 'Updates',
-      onClick: (e) => {
-        e.preventDefault()
-        setDropdownOpen((prev) => (prev === 'updates' ? null : 'updates'))
-      },
-      hasDropDown: true,
-      renderDropDown: () => <Notifications />,
-      icon: 'MdNotificationsNone',
-      hasUpdates: true,
-    },
-    user && {
-      id: 'messages',
-      name: 'Messages',
-      href: '/dashboard/inbox',
-      icon: 'MdMailOutline',
-      hasUpdates: true,
-    },
-    !user && {
-      id: 'login',
-      name: 'Log in',
-      href: '/login',
-    },
-    !user && {
-      id: 'signup',
-      name: 'Sign up',
-      href: '/sign-up',
-    },
+  const links: LinkType[] = [
+    user &&
+      ({
+        id: 'browse',
+        name: 'Browse',
+        href: '/',
+        icon: 'MdSearch',
+      } as LinkType),
+    user &&
+      ({
+        id: 'marketplace',
+        name: 'Marketplace',
+        href: '/',
+        icon: 'MdLanguage',
+      } as LinkType),
+    user &&
+      ({
+        id: 'tasks',
+        name: 'My Jobs',
+        href: '/dashboard/my-jobs',
+        icon: 'MdBusinessCenter',
+      } as LinkType),
+    user &&
+      ({
+        id: 'updates',
+        name: 'Updates',
+        onClick: (e) => {
+          e.preventDefault()
+          const now = new Date()
+          setDropdownOpen((prev) => (prev === 'updates' ? null : 'updates'))
+          setAccountNotificationsUpdate(
+            {
+              input: { lastNotificationsSeenTimestamp: now },
+            },
+            {
+              optimisticResponse: {
+                // @ts-ignore
+                accountUpdateNotifications: {
+                  __typename: 'AccountUpdate',
+                  user: {
+                    __typename: 'User',
+                    id: user.id,
+                    lastNotificationsSeenTimestamp: now,
+                  },
+                  errors: [],
+                },
+              },
+            },
+          )
+        },
+        hasDropDown: true,
+        renderDropDown: () => (
+          <Notifications
+            activity={activityData.me.activity}
+            onClose={(activityId) => {
+              setDropdownOpen((prev) => (prev === 'updates' ? null : 'updates'))
+              updateActivity({
+                variables: { id: activityId, input: { read: true } },
+              })
+            }}
+          />
+        ),
+        icon: 'MdNotificationsNone',
+        hasUpdates:
+          user?.lastNotificationsSeenTimestamp &&
+          activityData?.me?.activity?.edges?.[0]?.node?.timestamp
+            ? differenceSeconds(
+                user.lastNotificationsSeenTimestamp,
+                activityData.me.activity.edges[0].node.timestamp,
+              ) <= 0
+            : false,
+      } as LinkType),
+    user &&
+      ({
+        id: 'messages',
+        name: 'Messages',
+        href: '/dashboard/inbox',
+        icon: 'MdMailOutline',
+        hasUpdates: true,
+      } as LinkType),
+    !user &&
+      ({
+        id: 'login',
+        name: 'Log in',
+        href: '/login',
+      } as LinkType),
+    !user &&
+      ({
+        id: 'signup',
+        name: 'Sign up',
+        href: '/sign-up',
+      } as LinkType),
   ].filter(Boolean)
 
   return (
@@ -154,7 +211,9 @@ const Header: FC = () => {
                   <span>{link.name}</span>
                 </HeaderLink>
                 {link.hasDropDown && dropdownOpen === link.id ? (
-                  <DropDown position="end">{link.renderDropDown()}</DropDown>
+                  <DropDown position="end" autoHeight>
+                    {link.renderDropDown()}
+                  </DropDown>
                 ) : null}
               </HeaderItem>
             ))}

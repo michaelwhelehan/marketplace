@@ -41,9 +41,81 @@ export enum AccountErrorCode {
 /**
  * An enumeration.
  */
+export enum ConversationCategory {
+  INBOX = "INBOX",
+  ORDER = "ORDER",
+  TASK = "TASK",
+}
+
+/**
+ * An enumeration.
+ */
+export enum ConversationMessageMessageType {
+  GENERATED = "GENERATED",
+  MEDIA = "MEDIA",
+  TEXT = "TEXT",
+}
+
+/**
+ * An enumeration.
+ */
+export enum OfferErrorCode {
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  NOT_FOUND = "NOT_FOUND",
+  OFFER_ERROR = "OFFER_ERROR",
+  REQUIRED = "REQUIRED",
+  UNIQUE = "UNIQUE",
+}
+
+/**
+ * An enumeration.
+ */
+export enum OfferStatus {
+  ACCEPTED = "ACCEPTED",
+  PENDING = "PENDING",
+  REJECTED = "REJECTED",
+}
+
+/**
+ * An enumeration.
+ */
+export enum TaskErrorCode {
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  NOT_FOUND = "NOT_FOUND",
+  REQUIRED = "REQUIRED",
+  TASK_ERROR = "TASK_ERROR",
+  UNIQUE = "UNIQUE",
+}
+
+/**
+ * An enumeration.
+ */
 export enum TaskLocationType {
   IN_PERSON = "IN_PERSON",
   REMOTE = "REMOTE",
+}
+
+/**
+ * An enumeration.
+ */
+export enum TaskStatus {
+  ASSIGNED = "ASSIGNED",
+  CANCELLED = "CANCELLED",
+  COMPLETE = "COMPLETE",
+  DELIVERED = "DELIVERED",
+  DRAFT = "DRAFT",
+  OPEN = "OPEN",
+}
+
+export enum TaskStatusFilter {
+  ASSIGNED = "ASSIGNED",
+  CANCELLED = "CANCELLED",
+  COMPLETE = "COMPLETE",
+  DELIVERED = "DELIVERED",
+  DRAFT = "DRAFT",
+  OPEN = "OPEN",
 }
 
 /**
@@ -62,6 +134,7 @@ export interface AccountInput {
   jobTitle?: string | null;
   mobile?: string | null;
   bio?: string | null;
+  lastNotificationsSeenTimestamp?: any | null;
   skills?: (string | null)[] | null;
   educations?: (EducationInput | null)[] | null;
   deleteEducation?: string | null;
@@ -71,6 +144,21 @@ export interface AccountInput {
   deletePortfolio?: string | null;
 }
 
+export interface ActivityInput {
+  read?: boolean | null;
+}
+
+export interface ConversationMessageCreateInput {
+  conversation?: string | null;
+  member?: string | null;
+  rawBody: any;
+  messageType: string;
+}
+
+export interface ConversationMessageUpdateInput {
+  rawBody: any;
+}
+
 export interface EducationInput {
   id?: string | null;
   school: string;
@@ -78,6 +166,19 @@ export interface EducationInput {
   startYear: string;
   endYear: string;
   description?: string | null;
+}
+
+export interface OfferCreateInput {
+  task: string;
+  amountAmount: any;
+  message?: string | null;
+  status?: string | null;
+  shortlisted?: boolean | null;
+}
+
+export interface OfferFilterInput {
+  amount?: PriceRangeInput | null;
+  taskSlug?: string | null;
 }
 
 export interface PortfolioInput {
@@ -94,6 +195,26 @@ export interface PriceRangeInput {
 
 export interface TaskFilterInput {
   budget?: PriceRangeInput | null;
+  status?: (TaskStatusFilter | null)[] | null;
+}
+
+export interface TaskInput {
+  title?: string | null;
+  categories?: (string | null)[] | null;
+  details?: string | null;
+  locationType?: string | null;
+  location?: string | null;
+  locationLatitude?: string | null;
+  locationLongitude?: string | null;
+  dueDate?: any | null;
+  budgetType?: string | null;
+  budgetAmount?: any | null;
+  budgetDuration?: number | null;
+}
+
+export interface UserTaskFilterInput {
+  budget?: PriceRangeInput | null;
+  status?: (TaskStatusFilter | null)[] | null;
 }
 
 export interface WorkExperienceInput {

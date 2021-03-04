@@ -1,7 +1,6 @@
 import { gql } from '@apollo/client'
 
 import { UserProfileDetails } from './gqlTypes/UserProfileDetails'
-import { SkillTags } from './gqlTypes/SkillTags'
 import { useQuery } from '../../../core/queries'
 
 export const userFragment = gql`
@@ -15,6 +14,7 @@ export const userFragment = gql`
     mobile
     jobTitle
     bio
+    lastNotificationsSeenTimestamp
     skills {
       id
       name
@@ -52,13 +52,6 @@ export const userFragment = gql`
   }
 `
 
-export const skillTagFragment = gql`
-  fragment SkillTag on SkillTag {
-    id
-    name
-  }
-`
-
 export const getUserProfileDetailsQuery = gql`
   ${userFragment}
   query UserProfileDetails {
@@ -68,23 +61,6 @@ export const getUserProfileDetailsQuery = gql`
   }
 `
 
-export const getSkillTagsQuery = gql`
-  ${skillTagFragment}
-  query SkillTags {
-    skillTags(first: 100) {
-      edges {
-        node {
-          ...SkillTag
-        }
-      }
-    }
-  }
-`
-
 export const useGetUserProfileDetailsQuery = () => {
   return useQuery<UserProfileDetails, any>(getUserProfileDetailsQuery)
-}
-
-export const useGetSkillTagsQuery = () => {
-  return useQuery<SkillTags, any>(getSkillTagsQuery)
 }

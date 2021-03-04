@@ -7,26 +7,34 @@ interface Props {
   placeholder?: string
   onChange: any
   fullWidth?: boolean
+  hasError?: boolean
 }
 
 const DateField: FC<Props> = ({
   placeholder,
   onChange,
   fullWidth = false,
+  hasError = false,
   ...props
 }) => {
   return (
     <DayPickerInput
-      component={props => (
+      component={(props) => (
         <TextFieldIcon
           iconName="MdDateRange"
           fullWidth={fullWidth}
+          hasError={hasError}
           {...props}
         />
       )}
       placeholder={placeholder}
       onDayChange={onChange}
       style={{ display: 'block' }}
+      dayPickerProps={{
+        disabledDays: {
+          before: new Date(),
+        },
+      }}
       {...props}
     />
   )

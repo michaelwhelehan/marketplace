@@ -1,169 +1,251 @@
-import React, { FC } from 'react'
-import { useQuery, useMutation, gql } from '@apollo/client'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import Conversation from '../../uiComponents/organisms/Conversation/Conversation'
-import ConversationMessageList from '../../uiComponents/organisms/Conversation/ConversationMessageList'
 import {
   ConversationPositionType,
   ConversationScrollType,
-  ConversationMessageType,
+  ConversationCategory,
 } from '../../types/conversation'
-import ConversationMessage from '../../uiComponents/organisms/Conversation/ConversationMessage'
+import { useGetConversationQuery } from './queries'
+import {
+  useConversationMessageCreateMutation,
+  useConversationMessageDeleteMutation,
+  useConversationMessageUpdateMutation,
+} from './mutations'
+import { useAuth } from '../../services'
+import { substractMinutes } from '../../utils/date'
+import useConversationSubscribeMore from './useConversationSubscribeMore'
+import { useHistory } from 'react-router-dom'
+import { EditorState, ContentState, Modifier } from 'draft-js'
+import { MentionData } from '@draft-js-plugins/mention'
+import Editor from '@draft-js-plugins/editor/lib/Editor'
+import { ConversationMemberProfile_publicUser } from './gqlTypes/ConversationMemberProfile'
 
-interface ConversationData {
-  conversation: {
-    id: string
-    conversationFeed: {
-      cursor: string
-      messages: ConversationMessageType[]
-    }
-  }
+function addMention(
+  editorState: EditorState,
+  mention: MentionData,
+  entityMutability: 'SEGMENTED' | 'IMMUTABLE' | 'MUTABLE',
+): EditorState {
+  const contentStateWithEntity = editorState
+    .getCurrentContent()
+    .createEntity('mention', entityMutability, {
+      mention,
+    })
+  const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
+
+  const currentSelectionState = editorState.getSelection()
+
+  let textWithEntity = Modifier.insertText(
+    editorState.getCurrentContent(),
+    currentSelectionState,
+    mention.name,
+    null,
+    entityKey,
+  )
+
+  textWithEntity = Modifier.insertText(
+    textWithEntity,
+    textWithEntity.getSelectionAfter(),
+    ' ',
+  )
+
+  const newEditorState = EditorState.push(
+    editorState,
+    textWithEntity,
+    'insert-fragment',
+  )
+  return EditorState.moveFocusToEnd(newEditorState)
 }
-
-interface ConversationVars {
-  conversationId: string
-  cursor: string
-  loadAmount: number
-}
-
-const CREATE_CONVERSATION_MESSAGE = gql`
-  mutation CreateConversationMessage($conversationId: ID!, $message: String!) {
-    createConversationMessage(
-      conversationId: $conversationId
-      message: $message
-    ) @client {
-      ...Message
-    }
-  }
-  ${ConversationMessage.fragments.message}
-`
-
-const GET_CONVERSATION_MESSAGES = gql`
-  query ConversationMessages(
-    $conversationId: ID!
-    $cursor: String
-    $loadAmount: Int
-  ) {
-    conversation(id: $conversationId) @client {
-      id
-      conversationFeed(cursor: $cursor, loadAmount: $loadAmount)
-        @connection(key: "conversationMessageFeed") {
-        ...MessageFeed
-      }
-    }
-  }
-  ${ConversationMessageList.fragments.messageFeed}
-`
 
 interface Props {
+  conversationCategory: ConversationCategory
+  conversationId?: string
+  conversationMemberUsername?: string
+  conversationMember?: ConversationMemberProfile_publicUser
   position: ConversationPositionType
   scrollType: ConversationScrollType
+  textFieldPlaceholder?: string
+  setCount?: (count: number) => void
 }
 
-const ConversationConnected: FC<Props> = ({ position, scrollType }) => {
-  const { data, loading, fetchMore } = useQuery<
-    ConversationData,
-    ConversationVars
-  >(GET_CONVERSATION_MESSAGES, {
+const ConversationConnected: FC<Props> = ({
+  conversationCategory,
+  conversationId,
+  conversationMemberUsername,
+  conversationMember,
+  position,
+  scrollType,
+  setCount,
+  textFieldPlaceholder = 'Send a message',
+}) => {
+  const editorRef = useRef<Editor>()
+  const [editorValue, setEditorValue] = useState<EditorState>(
+    EditorState.createEmpty(),
+  )
+  const history = useHistory()
+  const { user } = useAuth()
+  const {
+    data,
+    loading,
+    loadMore,
+    subscribeMore,
+    refetch,
+  } = useGetConversationQuery({
     variables: {
-      conversationId: '1',
-      cursor: undefined,
-      loadAmount: undefined,
+      category: conversationCategory,
+      id: conversationId,
+      username: conversationMemberUsername,
+      pageSize: 100,
+    },
+    subscriptionVariables: {
+      category: conversationCategory,
+      conversationId,
+      username: conversationMemberUsername,
     },
   })
-  const [createConversationMessage] = useMutation(CREATE_CONVERSATION_MESSAGE, {
-    update(cache, { data: { createConversationMessage } }) {
-      const { conversation } = cache.readQuery({
-        query: GET_CONVERSATION_MESSAGES,
-        variables: { conversationId: '1', cursor: undefined },
-      })
-      const previousConversationMessages = conversation.conversationFeed
-      const messages =
-        position === 'topDown'
-          ? [
-              createConversationMessage,
-              ...previousConversationMessages.messages,
-            ]
-          : [
-              ...previousConversationMessages.messages,
-              createConversationMessage,
-            ]
-      const data = {
-        conversation: {
-          ...conversation,
-          conversationFeed: {
-            ...previousConversationMessages,
-            messages,
-          },
-        },
-      }
-      cache.writeQuery({
-        query: GET_CONVERSATION_MESSAGES,
-        variables: { conversationId: '1', cursor: undefined },
-        data,
-      })
-    },
+  const conversation = data?.conversation
+  const hasData = conversation?.conversationFeed?.edges?.length > 0
+  const createConversationMessage = useConversationMessageCreateMutation({
+    conversationId: conversationId || conversation?.id,
+    position,
   })
+  const updateConversationMessage = useConversationMessageUpdateMutation()
+  const deleteConversationMessage = useConversationMessageDeleteMutation({
+    conversationId,
+  })
+
+  useEffect(() => {
+    if (setCount && data?.conversation?.conversationFeed?.totalCount) {
+      setCount(data?.conversation?.conversationFeed?.totalCount)
+    }
+  }, [data?.conversation?.conversationFeed?.totalCount, setCount])
+
+  useConversationSubscribeMore({ subscribeMore, position })
+
+  const handleReplyClick = useCallback(() => {
+    const editorState = EditorState.push(
+      editorValue,
+      ContentState.createFromText(''),
+    )
+    const mention = addMention(
+      editorState,
+      {
+        name: 'Matthew Russell',
+        link: 'https://twitter.com/mrussell247',
+        avatar:
+          'https://pbs.twimg.com/profile_images/517863945/mattsailing_400x400.jpg',
+        id: '123',
+      },
+      'SEGMENTED',
+    )
+    setEditorValue(mention)
+  }, [editorValue])
 
   return (
     <Conversation
       position={position}
       scrollType={scrollType}
-      messagesLoading={loading}
-      messageList={data?.conversation?.conversationFeed?.messages}
-      messagesLoadAmount={10}
-      memberName="Michael W"
-      onMessageCreated={(message) => {
-        createConversationMessage({
-          variables: { conversationId: '1', message },
+      messagesLoading={loading && !hasData}
+      currentUserId={user?.id}
+      conversation={conversation}
+      member={conversationMember}
+      textFieldPlaceholder={textFieldPlaceholder}
+      messagesLoadAmount={100}
+      editorRef={editorRef}
+      editorValue={editorValue}
+      setEditorValue={setEditorValue}
+      onReplyClick={handleReplyClick}
+      onMessageCreated={async (message) => {
+        if (!user) {
+          history.push('/login')
+          return
+        }
+
+        setEditorValue(EditorState.createEmpty())
+        await createConversationMessage({
+          variables: {
+            input: {
+              member: conversationMember?.id,
+              conversation: conversation.id,
+              messageType: 'text',
+              rawBody: message,
+            },
+          },
+          optimisticResponse: {
+            conversationMessageCreate: {
+              __typename: 'ConversationMessageCreate',
+              conversationMessage: {
+                __typename: 'ConversationMessage',
+                id: Math.round(Math.random() * -1000000).toString(),
+                sentBy: user,
+                rawBody: message,
+                messageType: 'TEXT' as any,
+                created: new Date(),
+                modified: new Date(),
+                url: null,
+              },
+            },
+          },
+        })
+        if (!conversation) {
+          refetch()
+        }
+      }}
+      onConversationMessageEdit={({ messageId, body }) => {
+        updateConversationMessage({
+          variables: { id: messageId, input: { rawBody: body } },
+          optimisticResponse: {
+            conversationMessageUpdate: {
+              __typename: 'ConversationMessageUpdate',
+              conversationMessage: {
+                __typename: 'ConversationMessage',
+                id: messageId,
+                sentBy: user,
+                rawBody: body,
+                messageType: 'TEXT' as any,
+                created: substractMinutes(new Date(), 5),
+                modified: new Date(),
+                url: null,
+              },
+            },
+          },
         })
       }}
-      onLoadMoreMessages={async (loadAmount) => {
-        await sleep(Math.floor(Math.random() * 1000) + 500)
-        await fetchMore({
-          query: GET_CONVERSATION_MESSAGES,
-          variables: {
-            conversationId: '1',
-            cursor: data.conversation.conversationFeed.cursor,
-            loadAmount,
-          },
-          updateQuery: (
-            previousResult: {
-              conversation: {
-                conversationFeed: { messages: any; cursor: string }
-              }
-            },
-            { fetchMoreResult },
-          ) => {
-            const previousConversationFeed =
-              previousResult.conversation.conversationFeed
-            const newConversationFeed =
-              fetchMoreResult.conversation.conversationFeed
-
-            const newConversationData = {
-              ...previousResult.conversation,
-              conversationFeed: {
-                messages: [
-                  ...newConversationFeed.messages,
-                  ...previousConversationFeed.messages,
-                ],
-                cursor: newConversationFeed.cursor,
-                __typename: 'ConversationFeed',
+      onConversationMessageDelete={({ messageId }) => {
+        deleteConversationMessage({
+          variables: { id: messageId },
+          optimisticResponse: {
+            conversationMessageDelete: {
+              __typename: 'ConversationMessageDelete',
+              conversationMessage: {
+                __typename: 'ConversationMessage',
+                id: messageId,
               },
-            }
-            const newData = {
-              ...previousResult,
-              conversation: newConversationData,
-            }
-            return newData
+            },
           },
         })
+      }}
+      onLoadMoreMessages={async () => {
+        if (data?.conversation?.conversationFeed?.pageInfo?.hasNextPage) {
+          loadMore(
+            (prev, next) => ({
+              ...prev,
+              conversationFeed: {
+                ...prev.conversation.conversationFeed,
+                edges: [
+                  ...prev.conversation.conversationFeed.edges,
+                  ...next.conversation.conversationFeed.edges,
+                ],
+                pageInfo: next.conversation.conversationFeed.pageInfo,
+              },
+            }),
+            {
+              after: data.conversation.conversationFeed.pageInfo?.endCursor,
+            },
+          )
+        }
       }}
     />
   )
-}
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 export default ConversationConnected

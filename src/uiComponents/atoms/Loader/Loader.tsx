@@ -17,7 +17,7 @@ interface Props {
 const Loader: FC<Props> = ({ name, padded = false }) => {
   let Loader = require('react-content-loader')[name]
   if (!Loader) {
-    Loader = require(`./custom/Dashboard`).default
+    Loader = require(`./custom/${name}`).default
   }
 
   if (!Loader) {

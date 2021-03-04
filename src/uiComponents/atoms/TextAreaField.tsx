@@ -17,11 +17,15 @@ const StyledTextField = styled.textarea<StyledProps>`
       width: 100%;
     `}
   height: ${({ short }) => (short ? '100px' : '200px')};
-  resize: vertical;
+  resize: none;
   ${({ hasError }) =>
     hasError &&
     css`
       border-color: ${red};
+
+      &:focus {
+        outline: none;
+      }
     `}
 `
 

@@ -16,6 +16,10 @@ import {
 } from './gqlTypes/PasswordChange'
 
 import { AccountUpdate, AccountUpdateVariables } from './gqlTypes/AccountUpdate'
+import {
+  AccountNotificationsUpdate,
+  AccountNotificationsUpdateVariables,
+} from './gqlTypes/AccountNotificationsUpdate'
 
 export type MutationOptions<TData, TVariables> = Omit<
   ApolloMutationOptions<TData, TVariables>,
@@ -30,6 +34,17 @@ export const MUTATIONS = {
   ) =>
     client.mutate({
       mutation: User.accountUpdate,
+      ...options,
+    }),
+  AccountNotificationsUpdate: <TCacheShape>(
+    client: ApolloClient<TCacheShape>,
+    options: MutationOptions<
+      AccountNotificationsUpdate,
+      AccountNotificationsUpdateVariables
+    >,
+  ) =>
+    client.mutate({
+      mutation: User.accountNotificationsUpdate,
       ...options,
     }),
   PasswordChange: <TCacheShape>(

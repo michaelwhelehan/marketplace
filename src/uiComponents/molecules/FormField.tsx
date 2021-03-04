@@ -92,31 +92,31 @@ const FormField: FC<Props> = ({
 
   return (
     <FormFieldWrapper spacingTop={spacingTop} spacingBottom={spacingBottom}>
-      <LabelWrapper>
-        {label ? (
+      {label ? (
+        <LabelWrapper>
           <StyledLabel required={required} as="label">
             {label} {required && '*'}
           </StyledLabel>
-        ) : null}
-        {renderHelpPopup ? (
-          <HelpPopup>
-            <span onClick={() => setPopupOpen((prev) => !prev)}>
-              Want help?{' '}
-              <Icon
-                name="MdErrorOutline"
-                size={16}
-                color={primaryColor}
-                spacingStart={5}
-              />
-            </span>
-            {popupOpen && (
-              <DropDown position="end" autoHeight>
-                {renderHelpPopup()}
-              </DropDown>
-            )}
-          </HelpPopup>
-        ) : null}
-      </LabelWrapper>
+          {renderHelpPopup ? (
+            <HelpPopup>
+              <span onClick={() => setPopupOpen((prev) => !prev)}>
+                Want help?{' '}
+                <Icon
+                  name="MdErrorOutline"
+                  size={16}
+                  color={primaryColor}
+                  spacingStart={5}
+                />
+              </span>
+              {popupOpen && (
+                <DropDown position="end" autoHeight>
+                  {renderHelpPopup()}
+                </DropDown>
+              )}
+            </HelpPopup>
+          ) : null}
+        </LabelWrapper>
+      ) : null}
       {helpText ? <HelpText>{helpText}</HelpText> : null}
       <Container>{children}</Container>
       {error ? <ErrorMessage>{error.message}</ErrorMessage> : null}

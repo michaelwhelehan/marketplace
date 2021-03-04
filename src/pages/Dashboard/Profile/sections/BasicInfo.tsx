@@ -29,9 +29,9 @@ import Button from '../../../../uiComponents/atoms/Button'
 import CheckboxField from '../../../../uiComponents/atoms/CheckboxField'
 import { UserProfileDetails_me } from '../gqlTypes/UserProfileDetails'
 import { useAccountUpdate } from '../../../../services'
-import { useGetSkillTagsQuery } from '../queries'
 import ChangeAvatar from './ChangeAvatar'
 import { titleCase } from '../../../../utils/format'
+import { useGetSkillTagsQuery } from '../../../../queries'
 
 const StyledForm = styled.form`
   padding-top: 20px;
@@ -106,7 +106,7 @@ type LanguageType = {
   level: OptionType
 }
 
-type FormValues = {
+interface FormValues {
   firstName: string
   lastName: string
   email: string
@@ -186,9 +186,9 @@ const BasicInfo: FC<Props> = ({ user }) => {
         setError(err.field, { type: 'manual', message: err.message }),
       )
     }
-  }, [data, error])
+  }, [data, error, alert, setError])
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     delete data.email
     delete data.transport
     delete data.languages

@@ -2,7 +2,11 @@
   "compilerOptions": {
     "declaration": true,
     "target": "es6",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -16,8 +20,13 @@
     "noEmit": true,
     "noUnusedLocals": false,
     "noFallthroughCasesInSwitch": true,
-    "jsx": "react",
-    "types": ["jest", "@types/webappsec-credential-management"]
+    "jsx": "react-jsx",
+    "types": [
+      "jest",
+      "@types/webappsec-credential-management"
+    ]
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }

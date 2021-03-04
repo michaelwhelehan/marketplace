@@ -73,9 +73,9 @@ const UserCard: FC<Props> = ({
       <Avatar src={user.profilePictureUrl} size={avatarSize} />
       <UserDetails display={display}>
         <UserName style={{ marginTop: '5px' }}>{user.name}</UserName>
-        {user.jobTitle ? (
-          <JobTitle style={{ marginTop: '5px' }}>{user.jobTitle}</JobTitle>
-        ) : null}
+        <JobTitle style={{ marginTop: '5px' }}>
+          {user.jobTitle ?? 'Freelancer'}
+        </JobTitle>
         <RatingContainer>
           {user.rating && user.numRatings ? (
             <Rating rating={user.rating} numRatings={user.numRatings} />

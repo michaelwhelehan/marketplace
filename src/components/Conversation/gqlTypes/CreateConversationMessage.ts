@@ -3,52 +3,43 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { ConversationMessageMessageType } from "./../../../../gqlTypes/globalTypes";
+
 // ====================================================
-// GraphQL mutation operation: CreateConversationMessage
+// GraphQL fragment: CreateConversationMessage
 // ====================================================
 
-export interface CreateConversationMessage_createConversationMessage_member {
+export interface CreateConversationMessage_message_sentBy {
   __typename: "User";
-  name: string;
-  profilePictureUrl: string | null;
-  onlineStatus: string;
-}
-
-export interface CreateConversationMessage_createConversationMessage_message_ConversationMessageText {
-  __typename: "ConversationMessageText";
-  type: string;
-  timestamp: any;
-  text: string;
-}
-
-export interface CreateConversationMessage_createConversationMessage_message_ConversationMessageImage {
-  __typename: "ConversationMessageImage";
-  type: string;
-  timestamp: any;
-  url: string;
-}
-
-export interface CreateConversationMessage_createConversationMessage_message_ConversationMessageVideo {
-  __typename: "ConversationMessageVideo";
-  type: string;
-  timestamp: any;
-  url: string;
-}
-
-export type CreateConversationMessage_createConversationMessage_message = CreateConversationMessage_createConversationMessage_message_ConversationMessageText | CreateConversationMessage_createConversationMessage_message_ConversationMessageImage | CreateConversationMessage_createConversationMessage_message_ConversationMessageVideo;
-
-export interface CreateConversationMessage_createConversationMessage {
-  __typename: "ConversationFeedMessage";
+  /**
+   * The ID of the object.
+   */
   id: string;
-  member: CreateConversationMessage_createConversationMessage_member;
-  message: CreateConversationMessage_createConversationMessage_message;
+  firstName: string;
+  lastName: string;
+  username: string;
+  avatarUrl: string | null;
+  jobTitle: string | null;
+}
+
+export interface CreateConversationMessage_message {
+  __typename: "ConversationMessage";
+  /**
+   * The ID of the object.
+   */
+  id: string;
+  sentBy: CreateConversationMessage_message_sentBy;
+  rawBody: any | null;
+  url: string | null;
+  created: any;
+  modified: any;
+  messageType: ConversationMessageMessageType;
 }
 
 export interface CreateConversationMessage {
-  createConversationMessage: CreateConversationMessage_createConversationMessage | null;
-}
-
-export interface CreateConversationMessageVariables {
-  conversationId: string;
-  message: string;
+  __typename: "CreateConversationMessagePayload";
+  /**
+   * The conversation message that was created.
+   */
+  message: CreateConversationMessage_message | null;
 }

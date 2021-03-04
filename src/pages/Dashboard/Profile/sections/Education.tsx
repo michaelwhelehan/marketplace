@@ -18,7 +18,6 @@ import useConfirmDialog from '../../../../hooks/useConfirmDialog'
 import { getYearOptions } from '../../../../utils/date'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { start } from 'repl'
 
 const StyledForm = styled.form`
   padding: 20px;
@@ -176,7 +175,6 @@ const Education: FC<Props> = ({ user }) => {
       <FormField label="Add education">
         {fields.map((item, index) => (
           <ItemWrapper key={item.identifier}>
-            {console.log(item)}
             <StartContainer>
               <input
                 type="hidden"

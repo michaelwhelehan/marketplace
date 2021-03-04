@@ -9,4 +9,5 @@
 
 export interface MakeOffer {
   makeOfferVisible: boolean | null;
+  makeOfferTaskId: string | null;
 }

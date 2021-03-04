@@ -5,6 +5,8 @@ import { TabType } from '../types'
 import Tab from '../../../../uiComponents/atoms/Tab'
 import styled from 'styled-components'
 import UpdateIndicator from '../../../../uiComponents/atoms/UpdateIndicator'
+import { Task_task } from '../../../MarketplaceTDP/gqlTypes/Task'
+import { User } from '../../../../services/fragments/gqlTypes/User'
 
 const TabWrapper = styled.div`
   position: relative;
@@ -13,32 +15,42 @@ const TabWrapper = styled.div`
 interface Props {
   currentTab: TabType
   updateTab: (tab: TabType) => void
+  task: Task_task
+  user: User
 }
 
-const TaskDetailTabs: FC<Props> = ({ currentTab, updateTab }) => {
+const TaskDetailTabs: FC<Props> = ({ currentTab, updateTab, task, user }) => {
   const tabs: Tabs<TabType>[] = [
     {
       title: 'Job Details',
-      active: currentTab === 'taskDetails',
-      type: 'taskDetails',
-    },
+      active: currentTab === 'details',
+      type: 'details',
+    } as Tabs<TabType>,
     {
-      title: 'Offers (4)',
+      title: 'Questions',
+      active: currentTab === 'questions',
+      type: 'questions',
+    } as Tabs<TabType>,
+    {
+      title: `Offers (${task.numOffers})`,
       active: currentTab === 'offers',
       type: 'offers',
-    },
-    {
-      title: 'Hires (1)',
-      active: currentTab === 'hires',
-      type: 'hires',
-    },
-    {
-      title: 'Job Progress',
-      active: currentTab === 'taskProgress',
-      type: 'taskProgress',
-      hasUpdates: true,
-    },
-  ]
+    } as Tabs<TabType>,
+    user.id === task.owner.id &&
+      ({
+        title: 'Hires (0)',
+        active: currentTab === 'hires',
+        type: 'hires',
+      } as Tabs<TabType>),
+    user.id === task.owner.id &&
+      (task.taskStatus === 'ASSIGNED' || task.taskStatus === 'DELIVERED') &&
+      ({
+        title: 'Job Progress',
+        active: currentTab === 'progress',
+        type: 'progress',
+        hasUpdates: true,
+      } as Tabs<TabType>),
+  ].filter(Boolean)
   return (
     <DashboardTabPanel>
       {tabs.map((tab, index) => (
