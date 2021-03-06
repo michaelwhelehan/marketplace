@@ -45,8 +45,8 @@ const TDPHeader: FC<Props> = ({ user, offers, task, onMakeOfferClick }) => {
   return (
     <Container>
       <StyledHeading>{task.title}</StyledHeading>
-      {user.id !== task.owner.id &&
-        !offers?.edges?.some(({ node }) => node.createdBy.id === user.id) && (
+      {user?.id !== task.owner.id &&
+        !offers?.edges?.some(({ node }) => node.createdBy.id === user?.id) && (
           <StyledButton large onClick={onMakeOfferClick}>
             Make offer on {task.budget.currency}
             {task.budget.amount}

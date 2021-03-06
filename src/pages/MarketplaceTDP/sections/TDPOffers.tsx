@@ -75,15 +75,15 @@ const TDPOffers: FC<Props> = ({ user, task, offers, onMakeOfferClick }) => {
             </OfferOuter>
           </Link>
         ))}
-        {user.id !== task.owner.id &&
-          !offers.edges.some(({ node }) => node.createdBy.id === user.id) && (
+        {user?.id !== task.owner.id &&
+          !offers.edges.some(({ node }) => node.createdBy.id === user?.id) && (
             <OfferOuter onClick={onMakeOfferClick}>
               <OfferInner>
                 <Icon name="MdAdd" size={35} color={white} />
               </OfferInner>
             </OfferOuter>
           )}
-        {user.id === task.owner.id && offers.edges.length === 0 && (
+        {user?.id === task.owner.id && offers.edges.length === 0 && (
           <p>Nobody has made an offer on your task yet.</p>
         )}
       </OfferContainer>
