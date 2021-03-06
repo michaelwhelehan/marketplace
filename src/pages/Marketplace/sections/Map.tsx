@@ -1,7 +1,11 @@
 import React, { FC, useState } from 'react'
 import styled from 'styled-components'
 import ReactMapGL from 'react-map-gl'
+import mapboxgl from 'mapbox-gl'
 import MapMarker from '../../../uiComponents/atoms/MapMarker'
+
+// eslint-disable-next-line import/no-webpack-loader-syntax
+;(mapboxgl as any).workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default
 
 type ViewPortType = {
   latitude: number
@@ -53,7 +57,7 @@ const Map: FC = () => {
         <MapMarker latitude={34.034801} longitude={-118.300794} />
         <MapMarker latitude={30.258472} longitude={-97.722509} />
         <MapMarker latitude={40.69702} longitude={-73.822849} />
-        <MapMarker latitude={52.205758} longitude={0.117880} />
+        <MapMarker latitude={52.205758} longitude={0.11788} />
         {/* <MapMarker latitude={47.690421} longitude={-122.362419} />
         <MapMarker latitude={39.724782} longitude={-104.998261} />
         <MapMarker latitude={35.204773} longitude={-80.852195} />
