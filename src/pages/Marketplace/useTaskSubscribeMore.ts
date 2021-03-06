@@ -37,6 +37,7 @@ export default function useTaskSubscribeMore({
               client.cache.writeFragment<Task>({
                 data: node,
                 fragment: taskFragment,
+                fragmentName: 'Task',
               }),
             )
 
